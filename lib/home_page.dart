@@ -28,9 +28,8 @@ class HomePage extends StatelessWidget {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text('Task Details'),
                           content: Container(
-                            width: double.maxFinite, // Expand the width
+                            width: MediaQuery.of(context).size.width * 0.9, // Expand width to 90% of screen
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,19 +48,32 @@ class HomePage extends StatelessWidget {
                             ),
                           ),
                           actions: <Widget>[
-                            IconButton(
-                              icon: Icon(Icons.arrow_back),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: () {
-                                Provider.of<TaskProvider>(context, listen: false)
-                                    .removeTask(task);
-                                Navigator.of(context).pop();
-                              },
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Align buttons evenly
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.arrow_back),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Provider.of<TaskProvider>(context, listen: false)
+                                        .markTaskAsCompleted(task);
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('Mark as Completed'),
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () {
+                                    Provider.of<TaskProvider>(context, listen: false)
+                                        .removeTask(task);
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
                             ),
                           ],
                         );
