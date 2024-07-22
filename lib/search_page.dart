@@ -29,63 +29,6 @@ class _SearchPageState extends State<SearchPage> {
     super.dispose();
   }
 
-  void _showTaskDetails(BuildContext context, Task task) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: Container(
-            width: MediaQuery.of(context).size.width * 0.9,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  task.title,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  task.description,
-                  style: TextStyle(fontSize: 18),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                TextButton(
-                  onPressed: () {
-                    Provider.of<TaskProvider>(context, listen: false)
-                        .markTaskAsCompleted(task);
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('Mark as Completed'),
-                ),
-                IconButton(
-                  icon: Icon(Icons.delete, color: Colors.red),
-                  onPressed: () {
-                    Provider.of<TaskProvider>(context, listen: false)
-                        .removeTask(task);
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,7 +80,8 @@ class _SearchPageState extends State<SearchPage> {
                       title: Text(task.title),
                       subtitle: Text(task.description),
                       onTap: () {
-                        _showTaskDetails(context, task);
+                        Navigator.pop(
+                            context, task); // ส่งข้อมูลกลับไปยังหน้า HomePage
                       },
                     );
                   },
