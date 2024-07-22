@@ -1,7 +1,8 @@
+// pages/home_page.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'add_task_page.dart';
 import 'providers/task_provider.dart';
+import 'add_task_page.dart';
 import 'search_page.dart';
 import 'view_task_page.dart'; // Import the ViewTasksPage
 
@@ -38,7 +39,8 @@ class HomePage extends StatelessWidget {
                                 Text(
                                   task.title,
                                   style: TextStyle(
-                                      fontSize: 24, fontWeight: FontWeight.bold),
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 SizedBox(height: 10),
                                 Text(
@@ -60,16 +62,18 @@ class HomePage extends StatelessWidget {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    Provider.of<TaskProvider>(context, listen: false)
+                                    Provider.of<TaskProvider>(context,
+                                            listen: false)
                                         .markTaskAsCompleted(task);
                                     Navigator.of(context).pop();
                                   },
                                   child: Text('Mark as Completed'),
                                 ),
                                 IconButton(
-                                  icon: Icon(Icons.delete),
+                                  icon: Icon(Icons.delete, color: Colors.red),
                                   onPressed: () {
-                                    Provider.of<TaskProvider>(context, listen: false)
+                                    Provider.of<TaskProvider>(context,
+                                            listen: false)
                                         .removeTask(task);
                                     Navigator.of(context).pop();
                                   },
