@@ -7,7 +7,8 @@ class EditTaskPage extends StatefulWidget {
   final Task task;
   final int index; // เพิ่มพารามิเตอร์ดัชนี
 
-  EditTaskPage({required this.task, required this.index}); // อัปเดตคอนสตรัคเตอร์
+  EditTaskPage(
+      {required this.task, required this.index}); // อัปเดตคอนสตรัคเตอร์
 
   @override
   _EditTaskPageState createState() => _EditTaskPageState();
@@ -54,7 +55,8 @@ class _EditTaskPageState extends State<EditTaskPage> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Provider.of<TaskProvider>(context, listen: false).updateTask(
+                    Provider.of<TaskProvider>(context, listen: false)
+                        .updateTask(
                       widget.index, // ส่งดัชนีที่นี่
                       widget.task.copyWith(
                         title: _titleController.text,
