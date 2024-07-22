@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'add_task_page.dart';
 import 'providers/task_provider.dart';
-import 'search_page.dart'; // Import the SearchPage
+import 'search_page.dart';
+import 'view_task_page.dart'; // Import the ViewTasksPage
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Track Goals')), // Change app name and center it
+        title: Center(child: Text('Track Goals')),
       ),
       body: Consumer<TaskProvider>(
         builder: (context, taskProvider, child) {
@@ -17,7 +18,7 @@ class HomePage extends StatelessWidget {
             itemCount: taskProvider.tasks.length,
             itemBuilder: (context, index) {
               final task = taskProvider.tasks[index];
-              return Card( // Wrap ListTile with Card for shadow effect
+              return Card(
                 elevation: 4,
                 margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 child: ListTile(
@@ -29,7 +30,7 @@ class HomePage extends StatelessWidget {
                       builder: (BuildContext context) {
                         return AlertDialog(
                           content: Container(
-                            width: MediaQuery.of(context).size.width * 0.9, // Expand width to 90% of screen
+                            width: MediaQuery.of(context).size.width * 0.9,
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,7 +50,7 @@ class HomePage extends StatelessWidget {
                           ),
                           actions: <Widget>[
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Align buttons evenly
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 IconButton(
                                   icon: Icon(Icons.arrow_back),
@@ -118,8 +119,12 @@ class HomePage extends StatelessWidget {
               context,
               MaterialPageRoute(builder: (context) => SearchPage()),
             );
+          } else if (index == 3) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ViewTasksPage()),
+            );
           }
-          // Add additional navigation logic for other items if needed
         },
       ),
     );
