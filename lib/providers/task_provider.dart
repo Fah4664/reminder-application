@@ -4,10 +4,10 @@ import '../models/task.dart';
 
 class TaskProvider with ChangeNotifier {
   List<Task> _tasks = [];
-  List<Task> _completedTasks = []; // New list for completed tasks
+  List<Task> _completedTasks = [];
 
   List<Task> get tasks => _tasks;
-  List<Task> get completedTasks => _completedTasks; // Getter for completed tasks
+  List<Task> get completedTasks => _completedTasks;
 
   void addTask(Task task) {
     _tasks.add(task);
@@ -16,15 +16,21 @@ class TaskProvider with ChangeNotifier {
 
   void removeTask(Task task) {
     _tasks.remove(task);
-    _completedTasks.remove(task); // Ensure the task is also removed from completed tasks
+    _completedTasks.remove(task);
     notifyListeners();
   }
 
   void markTaskAsCompleted(Task task) {
     if (_tasks.contains(task)) {
       _tasks.remove(task);
-      _completedTasks.add(task); // Add task to completed tasks
+      _completedTasks.add(task);
       notifyListeners();
     }
   }
+
+  void updateTask(int index, Task updatedTask) {
+    _tasks[index] = updatedTask;
+    notifyListeners();
+  }
+
 }
