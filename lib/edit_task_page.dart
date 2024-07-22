@@ -5,8 +5,9 @@ import 'models/task.dart';
 
 class EditTaskPage extends StatefulWidget {
   final Task task;
+  final int index; // เพิ่มพารามิเตอร์ดัชนี
 
-  EditTaskPage({required this.task});
+  EditTaskPage({required this.task, required this.index}); // อัปเดตคอนสตรัคเตอร์
 
   @override
   _EditTaskPageState createState() => _EditTaskPageState();
@@ -47,19 +48,20 @@ class _EditTaskPageState extends State<EditTaskPage> {
               children: <Widget>[
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop(); // Close the page
+                    Navigator.of(context).pop(); // ปิดหน้า
                   },
                   child: Text('Cancel'),
                 ),
                 ElevatedButton(
                   onPressed: () {
                     Provider.of<TaskProvider>(context, listen: false).updateTask(
+                      widget.index, // ส่งดัชนีที่นี่
                       widget.task.copyWith(
                         title: _titleController.text,
                         description: _descriptionController.text,
                       ),
                     );
-                    Navigator.of(context).pop(); // Close the page
+                    Navigator.of(context).pop(); // ปิดหน้า
                   },
                   child: Text('Update'),
                 ),
