@@ -1,6 +1,8 @@
+// pages/search_page.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'providers/task_provider.dart';
+import '../models/task.dart'; // Import Task model
+import '../providers/task_provider.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -25,6 +27,63 @@ class _SearchPageState extends State<SearchPage> {
   void dispose() {
     _searchController.dispose();
     super.dispose();
+  }
+
+  void _showTaskDetails(BuildContext context, Task task) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Container(
+            width: MediaQuery.of(context).size.width * 0.9,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  task.title,
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  task.description,
+                  style: TextStyle(fontSize: 18),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Close'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Provider.of<TaskProvider>(context, listen: false)
+                        .markTaskAsCompleted(task);
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Mark as Completed'),
+                ),
+                IconButton(
+                  icon: Icon(Icons.delete, color: Colors.red),
+                  onPressed: () {
+                    Provider.of<TaskProvider>(context, listen: false)
+                        .removeTask(task);
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -70,6 +129,9 @@ class _SearchPageState extends State<SearchPage> {
               return ListTile(
                 title: Text(task.title),
                 subtitle: Text(task.description),
+                onTap: () {
+                  _showTaskDetails(context, task);
+                },
               );
             },
           );
