@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'add_task_page.dart';
 import 'providers/task_provider.dart';
 import 'search_page.dart'; // Import the SearchPage
+import 'task_detail_page.dart'; // Import the TaskDetailPage
 
 class HomePage extends StatelessWidget {
   @override
@@ -20,6 +21,14 @@ class HomePage extends StatelessWidget {
               return ListTile(
                 title: Text(task.title),
                 subtitle: Text(task.description),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TaskDetailPage(task: task),
+                    ),
+                  );
+                },
               );
             },
           );
