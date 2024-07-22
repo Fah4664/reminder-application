@@ -5,6 +5,7 @@ import 'providers/task_provider.dart';
 import 'add_task_page.dart';
 import 'search_page.dart';
 import 'view_task_page.dart'; // Import the ViewTasksPage
+import 'edit_task_page.dart'; // Import the EditTaskPage
 
 class HomePage extends StatelessWidget {
   @override
@@ -58,6 +59,18 @@ class HomePage extends StatelessWidget {
                                   icon: Icon(Icons.arrow_back),
                                   onPressed: () {
                                     Navigator.of(context).pop();
+                                  },
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.edit),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(); // Close the dialog
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => EditTaskPage(task: task),
+                                      ),
+                                    );
                                   },
                                 ),
                                 TextButton(
