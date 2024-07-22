@@ -1,4 +1,3 @@
-// pages/home_page.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/task_provider.dart';
@@ -68,7 +67,10 @@ class HomePage extends StatelessWidget {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => EditTaskPage(task: task),
+                                        builder: (context) => EditTaskPage(
+                                          task: task,
+                                          index: index, // ส่งดัชนีที่นี่
+                                        ),
                                       ),
                                     );
                                   },
