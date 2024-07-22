@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'add_task_page.dart';
 import 'providers/task_provider.dart';
+import 'search_page.dart'; // Import the SearchPage
 
 class HomePage extends StatelessWidget {
   @override
@@ -50,6 +51,11 @@ class HomePage extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => AddTaskPage()),
+            );
+          } else if (index == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SearchPage()),
             );
           }
           // Add additional navigation logic for other items if needed
