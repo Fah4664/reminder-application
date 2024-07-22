@@ -56,11 +56,11 @@ class _SearchPageState extends State<SearchPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                TextButton(
+                IconButton(
+                  icon: Icon(Icons.arrow_back),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('Close'),
                 ),
                 TextButton(
                   onPressed: () {
