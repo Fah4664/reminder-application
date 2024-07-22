@@ -32,20 +32,43 @@ class HomePage extends StatelessWidget {
                         return AlertDialog(
                           content: Container(
                             width: MediaQuery.of(context).size.width * 0.9,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            child: Stack(
                               children: <Widget>[
-                                Text(
-                                  task.title,
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold),
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      task.title,
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Text(
+                                      task.description,
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(height: 10),
-                                Text(
-                                  task.description,
-                                  style: TextStyle(fontSize: 18),
+                                Positioned(
+                                  right: 0,
+                                  top: 0,
+                                  child: IconButton(
+                                    icon: Icon(Icons.edit),
+                                    onPressed: () {
+                                      Navigator.of(context).pop(); // Close the dialog
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => EditTaskPage(
+                                            task: task,
+                                            index: index, // ส่งดัชนีที่นี่
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ],
                             ),
@@ -60,21 +83,6 @@ class HomePage extends StatelessWidget {
                                     Navigator.of(context).pop();
                                   },
                                 ),
-                                IconButton(
-                                  icon: Icon(Icons.edit),
-                                  onPressed: () {
-                                    Navigator.of(context).pop(); // Close the dialog
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => EditTaskPage(
-                                          task: task,
-                                          index: index, // ส่งดัชนีที่นี่
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
                                 TextButton(
                                   onPressed: () {
                                     Provider.of<TaskProvider>(context,
@@ -85,7 +93,7 @@ class HomePage extends StatelessWidget {
                                   child: Text('Mark as Completed'),
                                 ),
                                 IconButton(
-                                  icon: Icon(Icons.delete, color: Colors.red),
+                                  icon: Icon(Icons.delete, color: Color.fromARGB(255, 0, 0, 0)),
                                   onPressed: () {
                                     Provider.of<TaskProvider>(context,
                                             listen: false)
