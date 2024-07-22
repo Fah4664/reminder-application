@@ -14,14 +14,19 @@ class AddTaskPage extends StatelessWidget {
         title: Center(
           child: Text('New Task', textAlign: TextAlign.center),
         ),
-        leading: TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text(
-            'Cancel',
-            style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
-          ),
+        leading: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+          ],
         ),
         actions: <Widget>[
           TextButton(
@@ -35,13 +40,14 @@ class AddTaskPage extends StatelessWidget {
                   description: description,
                 );
 
-                Provider.of<TaskProvider>(context, listen: false).addTask(newTask);
+                Provider.of<TaskProvider>(context, listen: false)
+                    .addTask(newTask);
                 Navigator.pop(context);
               }
             },
             child: Text(
               'Save',
-              style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
+              style: TextStyle(color: Colors.black),
             ),
           ),
           SizedBox(width: 20), // Add some spacing to the right of Save button
