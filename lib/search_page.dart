@@ -122,19 +122,26 @@ class _SearchPageState extends State<SearchPage> {
                     .contains(searchQuery.toLowerCase());
           }).toList();
 
-          return ListView.builder(
-            itemCount: results.length,
-            itemBuilder: (context, index) {
-              final task = results[index];
-              return ListTile(
-                title: Text(task.title),
-                subtitle: Text(task.description),
-                onTap: () {
-                  _showTaskDetails(context, task);
-                },
-              );
-            },
-          );
+          return results.isEmpty
+              ? Center(
+                  child: Text(
+                    'No tasks found',
+                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: results.length,
+                  itemBuilder: (context, index) {
+                    final task = results[index];
+                    return ListTile(
+                      title: Text(task.title),
+                      subtitle: Text(task.description),
+                      onTap: () {
+                        _showTaskDetails(context, task);
+                      },
+                    );
+                  },
+                );
         },
       ),
     );
