@@ -2,14 +2,14 @@
 class Task {
   final String title;
   final String description;
-  final bool isAllDay; // เพิ่มพารามิเตอร์นี้
+  final bool isAllDay;
   final DateTime? startDateTime;
   final DateTime? endDateTime;
 
   Task({
     required this.title,
     required this.description,
-    this.isAllDay = false, // ค่าเริ่มต้นเป็น false
+    this.isAllDay = false,
     this.startDateTime,
     this.endDateTime,
   });
@@ -17,12 +17,16 @@ class Task {
   Task copyWith({
     String? title,
     String? description,
-    bool? isAllDay, // เพิ่มพารามิเตอร์นี้
+    bool? isAllDay,
+    DateTime? startDateTime,
+    DateTime? endDateTime,
   }) {
     return Task(
       title: title ?? this.title,
       description: description ?? this.description,
-      isAllDay: isAllDay ?? this.isAllDay, // คัดลอกค่าของ isAllDay
+      isAllDay: isAllDay ?? this.isAllDay,
+      startDateTime: startDateTime ?? this.startDateTime,
+      endDateTime: endDateTime ?? this.endDateTime,
     );
   }
 }
