@@ -1,78 +1,97 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart'; // นำเข้าแพ็กเกจ intl
+import 'package:intl/intl.dart';
 import 'models/task.dart';
 import 'providers/task_provider.dart';
-import 'date_time_utils.dart'; // นำเข้าฟังก์ชันจากไฟล์ date_time_utils.dart
+import 'utils/date_time_utils.dart';
 
 class AddTaskPage extends StatefulWidget {
-  AddTaskPage({super.key});
+  const AddTaskPage({super.key});
 
   @override
-  _AddTaskPageState createState() => _AddTaskPageState();
+  AddTaskPageState createState() => AddTaskPageState();
 }
 
-class _AddTaskPageState extends State<AddTaskPage> {
+class AddTaskPageState extends State<AddTaskPage> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   bool isAllDay = false;
-  DateTime? startDateTime;
-  DateTime? endDateTime;
+  DateTime? startDate;
+  TimeOfDay? startTime;
+  DateTime? endDate;
+  TimeOfDay? endTime;
+
+  @override
+  void initState() {
+    super.initState();
+    // กำหนดค่าเริ่มต้นให้เป็นวันที่ปัจจุบัน
+    final now = DateTime.now(); // วันที่และเวลาในปัจจุบัน
+    startDate = now; // กำหนดวันที่เริ่มต้น
+    endDate = now; // กำหนดวันที่สิ้นสุด
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFFFFF),
+      backgroundColor: const Color(0xFFFFFFFF), // สีพื้นหลังของ Scaffold
       body: Center(
         child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 80.0),
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+          margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 80.0), // ระยะห่างรอบ ๆ Container
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0), // ระยะห่างภายใน Container
           decoration: BoxDecoration(
-            color: const Color(0xFFf2f2f2),
-            borderRadius: BorderRadius.circular(15.0),
+            color: const Color(0xFFf2f2f2), // สีพื้นหลังของ Container
+            borderRadius: BorderRadius.circular(15.0), // มุมโค้งมนของ Container
             boxShadow: <BoxShadow>[
               BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: const Offset(0, 3),
+                color: Colors.grey.withOpacity(0.5), // สีของเงา
+                spreadRadius: 5, // ระยะการกระจายของเงา
+                blurRadius: 7, // ความเบลอของเงา
+                offset: const Offset(0, 3), // ตำแหน่งของเงา
               ),
             ],
           ),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.min, // ขนาดของ Column
             children: <Widget>[
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween, // การจัดตำแหน่งของ Row
                 children: <Widget>[
                   TextButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.pop(context); // ปิดหน้า AddTaskPage
                     },
                     style: TextButton.styleFrom(
-                      foregroundColor: const Color(0xFF717273),
-                      padding: const EdgeInsets.symmetric(vertical: 10.0),
-                      backgroundColor: Colors.transparent,
+                      foregroundColor: const Color(0xFF717273), // สีของข้อความในปุ่ม
+                      padding: const EdgeInsets.symmetric(vertical: 10.0), // ระยะห่างภายในปุ่ม
+                      backgroundColor: Colors.transparent, // สีพื้นหลังของปุ่ม
                     ),
                     child: const Text(
-                      'Cancel',
-                      style: TextStyle(fontSize: 16),
+                      'Cancel', // ข้อความที่แสดงในปุ่ม
+                      style: TextStyle(fontSize: 16), // ขนาดตัวอักษรของข้อความในปุ่ม
                     ),
                   ),
                   const Text(
-                    'New Task',
+                    'New Task', // ข้อความที่แสดงบนหน้า
                     style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF000000),
+                      fontSize: 20, // ขนาดตัวอักษร
+                      fontWeight: FontWeight.bold, // น้ำหนักของตัวอักษร
+                      color: Color(0xFF000000), // สีของตัวอักษร
                     ),
                   ),
                   TextButton(
                     onPressed: () {
-                      final String title = titleController.text;
-                      final String description = descriptionController.text;
+                      final String title = titleController.text; // ข้อความจาก TextField สำหรับชื่อกิจกรรม
+                      final String description = descriptionController.text; // ข้อความจาก TextField สำหรับรายละเอียดกิจกรรม
 
                       if (title.isNotEmpty && description.isNotEmpty) {
+                        final DateTime? startDateTime = startDate != null && startTime != null
+                            ? DateTime(startDate!.year, startDate!.month, startDate!.day, startTime!.hour, startTime!.minute) // วันที่และเวลาของกิจกรรมเริ่มต้น
+                            : null;
+
+                        final DateTime? endDateTime = endDate != null && endTime != null
+                            ? DateTime(endDate!.year, endDate!.month, endDate!.day, endTime!.hour, endTime!.minute) // วันที่และเวลาของกิจกรรมสิ้นสุด
+                            : null;
+
                         final Task newTask = Task(
                           title: title,
                           description: description,
@@ -81,91 +100,88 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           endDateTime: endDateTime,
                         );
 
-                        Provider.of<TaskProvider>(context, listen: false)
-                            .addTask(newTask);
-                        Navigator.pop(context);
+                        Provider.of<TaskProvider>(context, listen: false).addTask(newTask); // เพิ่มกิจกรรมใหม่
+                        Navigator.pop(context); // ปิดหน้า AddTaskPage
                       }
                     },
                     style: TextButton.styleFrom(
-                      foregroundColor: const Color(0xFF717273),
-                      padding: const EdgeInsets.symmetric(vertical: 10.0),
-                      backgroundColor: Colors.transparent,
+                      foregroundColor: const Color(0xFF717273), // สีของข้อความในปุ่ม
+                      padding: const EdgeInsets.symmetric(vertical: 10.0), // ระยะห่างภายในปุ่ม
+                      backgroundColor: Colors.transparent, // สีพื้นหลังของปุ่ม
                     ),
                     child: const Text(
-                      'Save',
-                      style: TextStyle(fontSize: 16),
+                      'Save', // ข้อความที่แสดงในปุ่ม
+                      style: TextStyle(fontSize: 16), // ขนาดตัวอักษรของข้อความในปุ่ม
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 10), // ระยะห่างระหว่าง Widget
               Container(
-                padding: const EdgeInsets.only(top: 1.0, bottom: 1.0, left: 15.0, right: 15.0),
+                padding: const EdgeInsets.only(top: 1.0, bottom: 1.0, left: 15.0, right: 15.0), // ระยะห่างภายใน Container
                 decoration: BoxDecoration(
-                  color: const Color(0xFFffffff),
-                  borderRadius: BorderRadius.circular(8.0),
+                  color: const Color(0xFFffffff), // สีพื้นหลังของ Container
+                  borderRadius: BorderRadius.circular(8.0), // มุมโค้งมนของ Container
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start, // การจัดตำแหน่งของ Column
                   children: <Widget>[
-                    // TextField สำหรับ Task Name
                     TextField(
-                      controller: titleController,
+                      controller: titleController, // Controller สำหรับ TextField นี้
                       decoration: const InputDecoration(
-                        hintText: 'Task Name...',
+                        hintText: 'Task Name...', // ข้อความที่แสดงใน TextField เมื่อไม่มีข้อความ
                         hintStyle: TextStyle(
-                          fontSize: 23,
-                          color: Color(0xFFd0d0d0),
+                          fontSize: 23, // ขนาดตัวอักษรของข้อความที่แสดงใน TextField
+                          color: Color(0xFFd0d0d0), // สีของข้อความที่แสดงใน TextField
                         ),
-                        contentPadding: EdgeInsets.zero, // ไม่มี padding เพิ่มเติม
-                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.zero, // ระยะห่างภายใน TextField
+                        border: InputBorder.none, // ไม่มีขอบ TextField
                       ),
-                      style: const TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18), // ขนาดตัวอักษรของข้อความใน TextField
                     ),
-                    // Divider ไม่มีระยะห่าง
                     const Divider(
-                      color: Color(0xFFd0d0d0),
-                      thickness: 1, // ความหนาของเส้น
+                      color: Color(0xFFd0d0d0), // สีของ Divider
+                      thickness: 1, // ความหนาของ Divider
                     ),
-                    // TextField สำหรับ Task Description
                     TextField(
-                      controller: descriptionController,
+                      controller: descriptionController, // Controller สำหรับ TextField นี้
                       decoration: const InputDecoration(
-                        hintText: 'Task Description...',
+                        hintText: 'Task Description...', // ข้อความที่แสดงใน TextField เมื่อไม่มีข้อความ
                         hintStyle: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xFFd0d0d0),
+                          fontSize: 18, // ขนาดตัวอักษรของข้อความที่แสดงใน TextField
+                          color: Color(0xFFd0d0d0), // สีของข้อความที่แสดงใน TextField
                         ),
-                        contentPadding: EdgeInsets.zero, // ไม่มี padding เพิ่มเติม
-                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.zero, // ระยะห่างภายใน TextField
+                        border: InputBorder.none, // ไม่มีขอบ TextField
                       ),
-                      style: const TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18), // ขนาดตัวอักษรของข้อความใน TextField
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 5),
+              const SizedBox(height: 5), // ระยะห่างระหว่าง Widget
               Container(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.all(15.0), // ระยะห่างภายใน Container
                 decoration: BoxDecoration(
-                  color: const Color(0xFFffffff),
-                  borderRadius: BorderRadius.circular(10.0),
+                  color: const Color(0xFFffffff), // สีพื้นหลังของ Container
+                  borderRadius: BorderRadius.circular(10.0), // มุมโค้งมนของ Container
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start, // การจัดตำแหน่งของ Column
                   children: <Widget>[
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 1), // ระยะห่างระหว่าง Widget
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         const Text(
                           'All Day',
                           style: TextStyle(fontSize: 19),
                         ),
+                        const SizedBox(width: 10), // ระยะห่างระหว่าง 'All Day' กับปุ่ม
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              isAllDay = !isAllDay; // Toggle the state
+                              isAllDay = !isAllDay; // สลับสถานะของ isAllDay
                             });
                           },
                           child: Container(
@@ -182,11 +198,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   duration: const Duration(milliseconds: 200),
                                   alignment: isAllDay ? Alignment.centerRight : Alignment.centerLeft,
                                   child: Container(
-                                    width: 40,
-                                    height: 40,
+                                    width: 29,
+                                    height: 29, // ปรับให้ความสูงเท่ากันกับความกว้าง
                                     margin: const EdgeInsets.symmetric(horizontal: 4.0),
                                     decoration: BoxDecoration(
-                                      color: isAllDay ? const Color(0xFFFFFFFF) : const Color(0xFFFFFFFF),
+                                      color: const Color(0xFFFFFFFF),
                                       shape: BoxShape.circle,
                                     ),
                                   ),
@@ -197,86 +213,174 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 10), // ระยะห่างระหว่าง 'All Day' และวันที่ด้านล่าง
                     if (!isAllDay) ...[
-                      const Text(
-                        'Start Date & Time',
-                        style: TextStyle(fontSize: 19),
-                      ),
-                      TextButton(
-                        onPressed: () => selectDateTime(context, true, (dateTime) {
-                          if (mounted) {
-                            setState(() {
-                              startDateTime = dateTime;
-                            });
-                          }
-                        }),
-                        child: Text(
-                          startDateTime == null
-                              ? 'Select Date & Time'
-                              : DateFormat('yyyy-MM-dd HH:mm').format(startDateTime!),
-                          style: const TextStyle(fontSize: 16),
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          const Text(
+                            'Start Date',
+                            style: TextStyle(fontSize: 19),
+                          ),
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                TextButton(
+                                  onPressed: () => selectDate(context, true, (dateTime) {
+                                    setState(() {
+                                      startDate = dateTime;
+                                    });
+                                  }),
+                                  child: Text(
+                                    startDate == null
+                                        ? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                                        : DateFormat('yyyy-MM-dd').format(startDate!),
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                  style: TextButton.styleFrom(
+                                    padding: const EdgeInsets.all(1.0),
+                                    backgroundColor: const Color(0xFFe0e0e0),
+                                  ),
+                                ),
+                                const SizedBox(width: 20),
+                                TextButton(
+                                  onPressed: () => selectTime(context, true, (timeOfDay) {
+                                    setState(() {
+                                      startTime = timeOfDay;
+                                    });
+                                  }),
+                                  child: Text(
+                                    startTime == null
+                                        ? 'Time'
+                                        : startTime!.format(context),
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                  style: TextButton.styleFrom(
+                                    padding: const EdgeInsets.all(1.0),
+                                    backgroundColor: const Color(0xFFe0e0e0),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 10),
-                      const Text(
-                        'End Date & Time',
-                        style: TextStyle(fontSize: 19),
-                      ),
-                      TextButton(
-                        onPressed: () => selectDateTime(context, false, (dateTime) {
-                          if (mounted) {
-                            setState(() {
-                              endDateTime = dateTime;
-                            });
-                          }
-                        }),
-                        child: Text(
-                          endDateTime == null
-                              ? 'Select Date & Time'
-                              : DateFormat('yyyy-MM-dd HH:mm').format(endDateTime!),
-                          style: const TextStyle(fontSize: 16),
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          const Text(
+                            'End Date',
+                            style: TextStyle(fontSize: 19),
+                          ),
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                TextButton(
+                                  onPressed: () => selectDate(context, false, (dateTime) {
+                                    setState(() {
+                                      endDate = dateTime;
+                                    });
+                                  }),
+                                  child: Text(
+                                    endDate == null
+                                        ? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                                        : DateFormat('yyyy-MM-dd').format(endDate!),
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                  style: TextButton.styleFrom(
+                                    padding: const EdgeInsets.all(1.0),
+                                    backgroundColor: const Color(0xFFe0e0e0),
+                                  ),
+                                ),
+                                const SizedBox(width: 20),
+                                TextButton(
+                                  onPressed: () => selectTime(context, false, (timeOfDay) {
+                                    setState(() {
+                                      endTime = timeOfDay;
+                                    });
+                                  }),
+                                  child: Text(
+                                    endTime == null
+                                        ? 'Time'
+                                        : endTime!.format(context),
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                  style: TextButton.styleFrom(
+                                    padding: const EdgeInsets.all(1.0),
+                                    backgroundColor: const Color(0xFFe0e0e0),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ] else ...[
-                      const Text(
-                        'Start Date',
-                        style: TextStyle(fontSize: 19),
-                      ),
-                      TextButton(
-                        onPressed: () => selectDate(context, true, (dateTime) {
-                          if (mounted) {
-                            setState(() {
-                              startDateTime = dateTime;
-                            });
-                          }
-                        }),
-                        child: Text(
-                          startDateTime == null
-                              ? 'Select Date'
-                              : DateFormat('yyyy-MM-dd').format(startDateTime!),
-                          style: const TextStyle(fontSize: 16),
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          const Text(
+                            'Start Date',
+                            style: TextStyle(fontSize: 19),
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: TextButton(
+                                onPressed: () => selectDate(context, true, (dateTime) {
+                                  setState(() {
+                                    startDate = dateTime;
+                                  });
+                                }),
+                                child: Text(
+                                  startDate == null
+                                      ? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                                      : DateFormat('yyyy-MM-dd').format(startDate!),
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                                style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.all(1.0),
+                                  backgroundColor: const Color(0xFFe0e0e0),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 10),
-                      const Text(
-                        'End Date',
-                        style: TextStyle(fontSize: 19),
-                      ),
-                      TextButton(
-                        onPressed: () => selectDate(context, false, (dateTime) {
-                          if (mounted) {
-                            setState(() {
-                              endDateTime = dateTime;
-                            });
-                          }
-                        }),
-                        child: Text(
-                          endDateTime == null
-                              ? 'Select Date'
-                              : DateFormat('yyyy-MM-dd').format(endDateTime!),
-                          style: const TextStyle(fontSize: 16),
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          const Text(
+                            'End Date',
+                            style: TextStyle(fontSize: 19),
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: TextButton(
+                                onPressed: () => selectDate(context, false, (dateTime) {
+                                  setState(() {
+                                    endDate = dateTime;
+                                  });
+                                }),
+                                child: Text(
+                                  endDate == null
+                                      ? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                                      : DateFormat('yyyy-MM-dd').format(endDate!),
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                                style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.all(1.0),
+                                  backgroundColor: const Color(0xFFe0e0e0),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ],
