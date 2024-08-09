@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart'; // นำเข้าแพ็กเกจ intl
 import 'models/task.dart';
 import 'providers/task_provider.dart';
+import 'date_time_utils.dart'; // นำเข้าฟังก์ชันจากไฟล์ date_time_utils.dart
 
 class AddTaskPage extends StatefulWidget {
   AddTaskPage({super.key});
@@ -14,6 +16,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   bool isAllDay = false;
+  DateTime? startDateTime;
+  DateTime? endDateTime;
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +77,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           title: title,
                           description: description,
                           isAllDay: isAllDay,
+                          startDateTime: startDateTime,
+                          endDateTime: endDateTime,
                         );
 
                         Provider.of<TaskProvider>(context, listen: false)
@@ -191,6 +197,88 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 10),
+                    if (!isAllDay) ...[
+                      const Text(
+                        'Start Date & Time',
+                        style: TextStyle(fontSize: 19),
+                      ),
+                      TextButton(
+                        onPressed: () => selectDateTime(context, true, (dateTime) {
+                          if (mounted) {
+                            setState(() {
+                              startDateTime = dateTime;
+                            });
+                          }
+                        }),
+                        child: Text(
+                          startDateTime == null
+                              ? 'Select Date & Time'
+                              : DateFormat('yyyy-MM-dd HH:mm').format(startDateTime!),
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      const Text(
+                        'End Date & Time',
+                        style: TextStyle(fontSize: 19),
+                      ),
+                      TextButton(
+                        onPressed: () => selectDateTime(context, false, (dateTime) {
+                          if (mounted) {
+                            setState(() {
+                              endDateTime = dateTime;
+                            });
+                          }
+                        }),
+                        child: Text(
+                          endDateTime == null
+                              ? 'Select Date & Time'
+                              : DateFormat('yyyy-MM-dd HH:mm').format(endDateTime!),
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ] else ...[
+                      const Text(
+                        'Start Date',
+                        style: TextStyle(fontSize: 19),
+                      ),
+                      TextButton(
+                        onPressed: () => selectDate(context, true, (dateTime) {
+                          if (mounted) {
+                            setState(() {
+                              startDateTime = dateTime;
+                            });
+                          }
+                        }),
+                        child: Text(
+                          startDateTime == null
+                              ? 'Select Date'
+                              : DateFormat('yyyy-MM-dd').format(startDateTime!),
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      const Text(
+                        'End Date',
+                        style: TextStyle(fontSize: 19),
+                      ),
+                      TextButton(
+                        onPressed: () => selectDate(context, false, (dateTime) {
+                          if (mounted) {
+                            setState(() {
+                              endDateTime = dateTime;
+                            });
+                          }
+                        }),
+                        child: Text(
+                          endDateTime == null
+                              ? 'Select Date'
+                              : DateFormat('yyyy-MM-dd').format(endDateTime!),
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),
