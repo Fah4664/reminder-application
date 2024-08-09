@@ -3,11 +3,15 @@ class Task {
   final String title;
   final String description;
   final bool isAllDay; // เพิ่มพารามิเตอร์นี้
+  final DateTime? startDateTime;
+  final DateTime? endDateTime;
 
   Task({
     required this.title,
     required this.description,
     this.isAllDay = false, // ค่าเริ่มต้นเป็น false
+    this.startDateTime,
+    this.endDateTime,
   });
 
   Task copyWith({
@@ -22,4 +26,3 @@ class Task {
     );
   }
 }
-
