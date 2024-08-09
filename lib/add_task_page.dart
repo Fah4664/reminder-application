@@ -72,7 +72,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         final Task newTask = Task(
                           title: title,
                           description: description,
-                          isAllDay: isAllDay, // บันทึกสถานะ All Day
+                          isAllDay: isAllDay,
                         );
 
                         Provider.of<TaskProvider>(context, listen: false)
@@ -138,9 +138,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 5),
               Container(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(15.0),
                 decoration: BoxDecoration(
                   color: const Color(0xFFffffff),
                   borderRadius: BorderRadius.circular(10.0),
@@ -148,49 +148,46 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
-                      'Additional Information',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Color(0xFF000000),
-                      ),
-                    ),
                     const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         const Text(
                           'All Day',
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(fontSize: 19),
                         ),
-                        Row(
-                          children: <Widget>[
-                            TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  isAllDay = false;
-                                });
-                              },
-                              style: TextButton.styleFrom(
-                                backgroundColor: !isAllDay ? Colors.grey[300] : Colors.blue,
-                                foregroundColor: Colors.black,
-                              ),
-                              child: const Text('No'),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isAllDay = !isAllDay; // Toggle the state
+                            });
+                          },
+                          child: Container(
+                            width: 65,
+                            height: 35,
+                            decoration: BoxDecoration(
+                              color: isAllDay ? const Color(0xFF717273) : const Color(0xFFd0d0d0),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: const Color(0xFFFFFFFF)),
                             ),
-                            const SizedBox(width: 10),
-                            TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  isAllDay = true;
-                                });
-                              },
-                              style: TextButton.styleFrom(
-                                backgroundColor: isAllDay ? Colors.blue : Colors.grey[300],
-                                foregroundColor: Colors.black,
-                              ),
-                              child: const Text('Yes'),
+                            child: Stack(
+                              children: <Widget>[
+                                AnimatedAlign(
+                                  duration: const Duration(milliseconds: 200),
+                                  alignment: isAllDay ? Alignment.centerRight : Alignment.centerLeft,
+                                  child: Container(
+                                    width: 40,
+                                    height: 40,
+                                    margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                                    decoration: BoxDecoration(
+                                      color: isAllDay ? const Color(0xFFFFFFFF) : const Color(0xFFFFFFFF),
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
                       ],
                     ),
