@@ -76,7 +76,10 @@ class HomePage extends StatelessWidget {
                 width: 24,
               ),
               onPressed: () {
-                // Stay on this page, do nothing
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SearchPage()),
+                );
               },
             ),
             Spacer(),
