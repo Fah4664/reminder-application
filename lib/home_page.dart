@@ -35,71 +35,78 @@ class HomePage extends StatelessWidget {
           );
         },
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/icons/target.png', // ใช้ไอคอนจาก assets
-              height: 24,
-              width: 24,
-            ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/icons/Add Task.png', // ใช้ไอคอนจาก assets
-              height: 24,
-              width: 24,
-            ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/icons/search.png', // ใช้ไอคอนจาก assets
-              height: 24,
-              width: 24,
-            ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/icons/View Tasks.png', // ใช้ไอคอนจาก assets
-              height: 24,
-              width: 24,
-            ),
-            label: '',
-          ),
-        ],
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.black,
-        onTap: (index) async {
-          if (index == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AddTaskPage()),
-            );
-          } else if (index == 2) {
-            final selectedTask = await Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SearchPage()),
-            );
-
-            if (selectedTask != null && selectedTask is Task) {
-              // แสดงรายละเอียดของงานที่เลือก
-              _showTaskDetailsDialog(
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            SizedBox(width: 48), // ขนาดว่างด้านซ้าย
+            IconButton(
+              icon: Image.asset(
+                'assets/icons/target.png',
+                height: 24,
+                width: 24,
+              ),
+              onPressed: () {
+                Navigator.push(
                   context,
-                  selectedTask,
-                  Provider.of<TaskProvider>(context, listen: false)
-                      .tasks
-                      .indexOf(selectedTask));
-            }
-          } else if (index == 3) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ViewTasksPage()),
-            );
-          }
-        },
+                  MaterialPageRoute(builder: (context) => AddTaskPage()),
+                );
+              },
+            ),
+            Spacer(), // ช่องว่างที่จัดระเบียบ
+            IconButton(
+              icon: Image.asset(
+                'assets/icons/Add Task.png',
+                height: 24,
+                width: 24,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddTaskPage()),
+                );
+              },
+            ),
+            Spacer(), // ช่องว่างที่จัดระเบียบ
+            IconButton(
+              icon: Image.asset(
+                'assets/icons/search.png',
+                height: 24,
+                width: 24,
+              ),
+              onPressed: () async {
+                final selectedTask = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SearchPage()),
+                );
+
+                if (selectedTask != null && selectedTask is Task) {
+                  _showTaskDetailsDialog(
+                      context,
+                      selectedTask,
+                      Provider.of<TaskProvider>(context, listen: false)
+                          .tasks
+                          .indexOf(selectedTask));
+                }
+              },
+            ),
+            Spacer(), // ช่องว่างที่จัดระเบียบ
+            IconButton(
+              icon: Image.asset(
+                'assets/icons/View Tasks.png',
+                height: 24,
+                width: 24,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ViewTasksPage()),
+                );
+              },
+            ),
+            SizedBox(width: 48), // ขนาดว่างด้านขวา
+          ],
+        ),
       ),
     );
   }
