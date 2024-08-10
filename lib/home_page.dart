@@ -43,7 +43,7 @@ class HomePage extends StatelessWidget {
               height: 24,
               width: 24,
             ),
-            label: 'Home',
+            label: '',
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
@@ -51,7 +51,7 @@ class HomePage extends StatelessWidget {
               height: 24,
               width: 24,
             ),
-            label: 'Add Task',
+            label: '',
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
@@ -59,7 +59,7 @@ class HomePage extends StatelessWidget {
               height: 24,
               width: 24,
             ),
-            label: 'search',
+            label: '',
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
@@ -67,7 +67,7 @@ class HomePage extends StatelessWidget {
               height: 24,
               width: 24,
             ),
-            label: 'View Tasks.png',
+            label: '',
           ),
         ],
         selectedItemColor: Colors.black,
