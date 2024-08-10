@@ -1,4 +1,3 @@
-// pages/home_page.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/task_provider.dart';
@@ -37,22 +36,38 @@ class HomePage extends StatelessWidget {
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home, color: Colors.black),
+            icon: Image.asset(
+              'assets/icons/target.png', // ใช้ไอคอนจาก assets
+              height: 24,
+              width: 24,
+            ),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add, color: Colors.black),
+            icon: Image.asset(
+              'assets/icons/Add Task.png', // ใช้ไอคอนจาก assets
+              height: 24,
+              width: 24,
+            ),
             label: 'Add Task',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search, color: Colors.black),
-            label: 'Search',
+            icon: Image.asset(
+              'assets/icons/search.png', // ใช้ไอคอนจาก assets
+              height: 24,
+              width: 24,
+            ),
+            label: 'search',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.visibility, color: Colors.black),
-            label: 'View Tasks',
+            icon: Image.asset(
+              'assets/icons/View Tasks.png', // ใช้ไอคอนจาก assets
+              height: 24,
+              width: 24,
+            ),
+            label: 'View Tasks.png',
           ),
         ],
         selectedItemColor: Colors.black,
@@ -120,7 +135,7 @@ class HomePage extends StatelessWidget {
                   child: IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {
-                      Navigator.of(context).pop(); // Close the dialog
+                      Navigator.of(context).pop(); // ปิด dialog
                       Navigator.push(
                         context,
                         MaterialPageRoute(
