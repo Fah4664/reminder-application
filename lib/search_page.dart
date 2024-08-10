@@ -5,7 +5,6 @@ import '../providers/task_provider.dart';
 import 'add_task_page.dart';
 import 'view_task_page.dart';
 import 'home_page.dart';
-import 'search_page.dart'; // เพิ่มการนำเข้า SearchPage
 
 class SearchPage extends StatefulWidget {
   @override
@@ -131,10 +130,7 @@ class _SearchPageState extends State<SearchPage> {
                 width: 24,
               ),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SearchPage()),
-                );
+                // Stay on this page, do nothing
               },
             ),
             Spacer(),
