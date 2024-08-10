@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'add_task_page.dart';
 import 'providers/task_provider.dart';
+import 'home_page.dart';
+import 'search_page.dart'; // เพิ่มการนำเข้า SearchPage
 
 class ViewTasksPage extends StatelessWidget {
   @override
@@ -27,6 +30,67 @@ class ViewTasksPage extends StatelessWidget {
             },
           );
         },
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            SizedBox(width: 48), // ขนาดว่างด้านซ้าย
+            IconButton(
+              icon: Image.asset(
+                'assets/icons/target.png',
+                height: 27,
+                width: 27,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
+              },
+            ),
+            Spacer(),
+            IconButton(
+              icon: Image.asset(
+                'assets/icons/Add Task.png',
+                height: 29,
+                width: 29,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddTaskPage()),
+                );
+              },
+            ),
+            Spacer(),
+            IconButton(
+              icon: Image.asset(
+                'assets/icons/search.png',
+                height: 28,
+                width: 28,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SearchPage()),
+                );
+              },
+            ),
+            Spacer(),
+            IconButton(
+              icon: Image.asset(
+                'assets/icons/View Tasks.png',
+                height: 28,
+                width: 28,
+              ),
+              onPressed: () {
+                // Stay on this page, do nothing
+              },
+            ),
+            SizedBox(width: 48), // ขนาดว่างด้านขวา
+          ],
+        ),
       ),
     );
   }
