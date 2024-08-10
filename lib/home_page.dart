@@ -44,8 +44,8 @@ class HomePage extends StatelessWidget {
             IconButton(
               icon: Image.asset(
                 'assets/icons/target.png',
-                height: 24,
-                width: 24,
+                height: 27,
+                width: 27,
               ),
               onPressed: () {
                 Navigator.push(
@@ -58,8 +58,8 @@ class HomePage extends StatelessWidget {
             IconButton(
               icon: Image.asset(
                 'assets/icons/Add Task.png',
-                height: 24,
-                width: 24,
+                height: 29,
+                width: 29,
               ),
               onPressed: () {
                 Navigator.push(
@@ -72,8 +72,8 @@ class HomePage extends StatelessWidget {
             IconButton(
               icon: Image.asset(
                 'assets/icons/search.png',
-                height: 24,
-                width: 24,
+                height: 28,
+                width: 28,
               ),
               onPressed: () {
                 Navigator.push(
@@ -86,11 +86,14 @@ class HomePage extends StatelessWidget {
             IconButton(
               icon: Image.asset(
                 'assets/icons/View Tasks.png',
-                height: 24,
-                width: 24,
+                height: 28,
+                width: 28,
               ),
               onPressed: () {
-                // Stay on this page, do nothing
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ViewTasksPage()),
+                );
               },
             ),
             SizedBox(width: 48), // ขนาดว่างด้านขวา
