@@ -224,7 +224,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                           style: TextStyle(fontSize: 19),
                         ),
                         const SizedBox(
-                            width: 50), // ระยะห่างระหว่าง 'All Day' กับปุ่ม
+                            width: 40), // ระยะห่างระหว่าง 'All Day' กับปุ่ม
                         GestureDetector(
                           onTap: () {
                             setState(() {
@@ -251,8 +251,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                                       : Alignment.centerLeft,
                                   child: Container(
                                     width: 29,
-                                    height:
-                                        29, // ปรับให้ความสูงเท่ากันกับความกว้าง
+                                    height:29, // ปรับให้ความสูงเท่ากันกับความกว้าง
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 3.0),
                                     decoration: const BoxDecoration(
@@ -270,9 +269,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(
-                        height:
-                            1), // ระยะห่างระหว่าง 'All Day' และวันที่ด้านล่าง
+                    const SizedBox(height: 2), // ระยะห่างระหว่าง 'All Day' และวันที่ด้านล่าง
                     if (!isAllDay) ...[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -283,7 +280,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                           ),
                           SizedBox(
                             width: 100, // ขนาดความกว้างของปุ่ม
-                            height: 35,
+                            height: 33,
                             child: TextButton(
                               onPressed: () =>
                                   selectDate(context, true, (dateTime) {
@@ -308,7 +305,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                           const SizedBox(width: 10),
                           SizedBox(
                             width: 80, // ขนาดความกว้างของปุ่ม
-                            height: 35,
+                            height: 33,
                             child: TextButton(
                               onPressed: () =>
                                   selectTime(context, true, (timeOfDay) {
@@ -330,7 +327,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 1),
+                      const SizedBox(height: 2),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -340,7 +337,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                           ),
                           SizedBox(
                             width: 100, // ขนาดความกว้างของปุ่ม
-                            height: 35,
+                            height: 33,
                             child: TextButton(
                               onPressed: () =>
                                   selectDate(context, false, (dateTime) {
@@ -396,7 +393,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                           ),
                           SizedBox(
                             width: 100,
-                            height: 35,
+                            height: 33,
                             child: TextButton(
                               style: TextButton.styleFrom(
                                 padding: const EdgeInsets.all(3.0),
@@ -420,7 +417,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 1),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
