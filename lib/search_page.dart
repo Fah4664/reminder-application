@@ -98,8 +98,8 @@ class _SearchPageState extends State<SearchPage> {
             IconButton(
               icon: Image.asset(
                 'assets/icons/target.png',
-                height: 24,
-                width: 24,
+                height: 27,
+                width: 27,
               ),
               onPressed: () {
                 Navigator.push(
@@ -112,8 +112,8 @@ class _SearchPageState extends State<SearchPage> {
             IconButton(
               icon: Image.asset(
                 'assets/icons/Add Task.png',
-                height: 24,
-                width: 24,
+                height: 29,
+                width: 29,
               ),
               onPressed: () {
                 Navigator.push(
@@ -126,8 +126,8 @@ class _SearchPageState extends State<SearchPage> {
             IconButton(
               icon: Image.asset(
                 'assets/icons/search.png',
-                height: 24,
-                width: 24,
+                height: 28,
+                width: 28,
               ),
               onPressed: () {
                 // Stay on this page, do nothing
@@ -137,8 +137,8 @@ class _SearchPageState extends State<SearchPage> {
             IconButton(
               icon: Image.asset(
                 'assets/icons/View Tasks.png',
-                height: 24,
-                width: 24,
+                height: 28,
+                width: 28,
               ),
               onPressed: () {
                 Navigator.push(
