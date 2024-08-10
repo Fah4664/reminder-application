@@ -177,7 +177,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                           'All Day',
                           style: TextStyle(fontSize: 19),
                         ),
-                        const SizedBox(width: 10), // ระยะห่างระหว่าง 'All Day' กับปุ่ม
+                        const SizedBox(width: 50), // ระยะห่างระหว่าง 'All Day' กับปุ่ม
                         GestureDetector(
                           onTap: () {
                             setState(() {
@@ -200,10 +200,10 @@ class AddTaskPageState extends State<AddTaskPage> {
                                   child: Container(
                                     width: 29,
                                     height: 29, // ปรับให้ความสูงเท่ากันกับความกว้าง
-                                    margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFFFFFFFF),
-                                      shape: BoxShape.circle,
+                                    margin: const EdgeInsets.symmetric(horizontal: 3.0),
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xFFffffff), // สีพื้นหลังของ Container
+                                      borderRadius: BorderRadius.all(Radius.circular(15.0)), // มุมโค้งมนของ Container
                                     ),
                                   ),
                                 ),
@@ -213,7 +213,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10), // ระยะห่างระหว่าง 'All Day' และวันที่ด้านล่าง
+                    const SizedBox(height: 1), // ระยะห่างระหว่าง 'All Day' และวันที่ด้านล่าง
                     if (!isAllDay) ...[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -232,15 +232,15 @@ class AddTaskPageState extends State<AddTaskPage> {
                                       startDate = dateTime;
                                     });
                                   }),
+                                  style: TextButton.styleFrom(
+                                    padding: const EdgeInsets.all(1.0),
+                                    backgroundColor: const Color(0xFFe0e0e0),
+                                  ),
                                   child: Text(
                                     startDate == null
                                         ? DateFormat('yyyy-MM-dd').format(DateTime.now())
                                         : DateFormat('yyyy-MM-dd').format(startDate!),
                                     style: const TextStyle(fontSize: 16),
-                                  ),
-                                  style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.all(1.0),
-                                    backgroundColor: const Color(0xFFe0e0e0),
                                   ),
                                 ),
                                 const SizedBox(width: 20),
@@ -250,23 +250,23 @@ class AddTaskPageState extends State<AddTaskPage> {
                                       startTime = timeOfDay;
                                     });
                                   }),
+                                  style: TextButton.styleFrom(
+                                    padding: const EdgeInsets.all(1.0),
+                                    backgroundColor: const Color(0xFFe0e0e0),
+                                  ),
                                   child: Text(
                                     startTime == null
                                         ? 'Time'
                                         : startTime!.format(context),
                                     style: const TextStyle(fontSize: 16),
                                   ),
-                                  style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.all(1.0),
-                                    backgroundColor: const Color(0xFFe0e0e0),
-                                  ),
-                                ),
+                                )
                               ],
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 1),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -284,15 +284,15 @@ class AddTaskPageState extends State<AddTaskPage> {
                                       endDate = dateTime;
                                     });
                                   }),
+                                  style: TextButton.styleFrom(
+                                    padding: const EdgeInsets.all(1.0),
+                                    backgroundColor: const Color(0xFFe0e0e0),
+                                  ),
                                   child: Text(
                                     endDate == null
                                         ? DateFormat('yyyy-MM-dd').format(DateTime.now())
                                         : DateFormat('yyyy-MM-dd').format(endDate!),
                                     style: const TextStyle(fontSize: 16),
-                                  ),
-                                  style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.all(1.0),
-                                    backgroundColor: const Color(0xFFe0e0e0),
                                   ),
                                 ),
                                 const SizedBox(width: 20),
@@ -302,15 +302,15 @@ class AddTaskPageState extends State<AddTaskPage> {
                                       endTime = timeOfDay;
                                     });
                                   }),
+                                  style: TextButton.styleFrom(
+                                    padding: const EdgeInsets.all(1.0),
+                                    backgroundColor: const Color(0xFFe0e0e0),
+                                  ),
                                   child: Text(
                                     endTime == null
                                         ? 'Time'
                                         : endTime!.format(context),
                                     style: const TextStyle(fontSize: 16),
-                                  ),
-                                  style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.all(1.0),
-                                    backgroundColor: const Color(0xFFe0e0e0),
                                   ),
                                 ),
                               ],
@@ -330,6 +330,10 @@ class AddTaskPageState extends State<AddTaskPage> {
                             child: SizedBox(
                               width: double.infinity,
                               child: TextButton(
+                                style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.all(1.0),
+                                  backgroundColor: const Color(0xFFe0e0e0),
+                                ),
                                 onPressed: () => selectDate(context, true, (dateTime) {
                                   setState(() {
                                     startDate = dateTime;
@@ -340,10 +344,6 @@ class AddTaskPageState extends State<AddTaskPage> {
                                       ? DateFormat('yyyy-MM-dd').format(DateTime.now())
                                       : DateFormat('yyyy-MM-dd').format(startDate!),
                                   style: const TextStyle(fontSize: 16),
-                                ),
-                                style: TextButton.styleFrom(
-                                  padding: const EdgeInsets.all(1.0),
-                                  backgroundColor: const Color(0xFFe0e0e0),
                                 ),
                               ),
                             ),
@@ -362,6 +362,10 @@ class AddTaskPageState extends State<AddTaskPage> {
                             child: SizedBox(
                               width: double.infinity,
                               child: TextButton(
+                                style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.all(1.0),
+                                  backgroundColor: const Color(0xFFe0e0e0),
+                                ),
                                 onPressed: () => selectDate(context, false, (dateTime) {
                                   setState(() {
                                     endDate = dateTime;
@@ -372,10 +376,6 @@ class AddTaskPageState extends State<AddTaskPage> {
                                       ? DateFormat('yyyy-MM-dd').format(DateTime.now())
                                       : DateFormat('yyyy-MM-dd').format(endDate!),
                                   style: const TextStyle(fontSize: 16),
-                                ),
-                                style: TextButton.styleFrom(
-                                  padding: const EdgeInsets.all(1.0),
-                                  backgroundColor: const Color(0xFFe0e0e0),
                                 ),
                               ),
                             ),
