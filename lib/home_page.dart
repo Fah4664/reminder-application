@@ -76,10 +76,7 @@ class HomePage extends StatelessWidget {
                 width: 24,
               ),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SearchPage()),
-                );
+                // Stay on this page, do nothing
               },
             ),
             Spacer(),
@@ -90,7 +87,10 @@ class HomePage extends StatelessWidget {
                 width: 24,
               ),
               onPressed: () {
-                // Stay on this page, do nothing
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ViewTasksPage()),
+                );
               },
             ),
             SizedBox(width: 48), // ขนาดว่างด้านขวา
