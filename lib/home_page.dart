@@ -3,14 +3,15 @@ import 'package:provider/provider.dart';
 import 'providers/task_provider.dart';
 import 'add_task_page.dart';
 import 'search_page.dart';
-import 'view_task_page.dart'; // Import the ViewTasksPage
-import 'edit_task_page.dart'; // Import the EditTaskPage
-import '../models/task.dart'; // Import the Task model
+import 'view_task_page.dart';
+import 'edit_task_page.dart';
+import '../models/task.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white, // สีพื้นหลังของ Scaffold
       appBar: AppBar(
         title: Center(child: Text('Track Goals')),
       ),
@@ -49,11 +50,11 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddTaskPage()),
+                  MaterialPageRoute(builder: (context) => HomePage()),
                 );
               },
             ),
-            Spacer(), // ช่องว่างที่จัดระเบียบ
+            Spacer(),
             IconButton(
               icon: Image.asset(
                 'assets/icons/Add Task.png',
@@ -67,30 +68,21 @@ class HomePage extends StatelessWidget {
                 );
               },
             ),
-            Spacer(), // ช่องว่างที่จัดระเบียบ
+            Spacer(),
             IconButton(
               icon: Image.asset(
                 'assets/icons/search.png',
                 height: 24,
                 width: 24,
               ),
-              onPressed: () async {
-                final selectedTask = await Navigator.push(
+              onPressed: () {
+                Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => SearchPage()),
                 );
-
-                if (selectedTask != null && selectedTask is Task) {
-                  _showTaskDetailsDialog(
-                      context,
-                      selectedTask,
-                      Provider.of<TaskProvider>(context, listen: false)
-                          .tasks
-                          .indexOf(selectedTask));
-                }
               },
             ),
-            Spacer(), // ช่องว่างที่จัดระเบียบ
+            Spacer(),
             IconButton(
               icon: Image.asset(
                 'assets/icons/View Tasks.png',
@@ -98,10 +90,7 @@ class HomePage extends StatelessWidget {
                 width: 24,
               ),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ViewTasksPage()),
-                );
+                // Stay on this page, do nothing
               },
             ),
             SizedBox(width: 48), // ขนาดว่างด้านขวา
@@ -118,42 +107,18 @@ class HomePage extends StatelessWidget {
         return AlertDialog(
           content: Container(
             width: MediaQuery.of(context).size.width * 0.9,
-            child: Stack(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      task.title,
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      task.description,
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ],
+                Text(
+                  task.title,
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                Positioned(
-                  right: 0,
-                  top: 0,
-                  child: IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () {
-                      Navigator.of(context).pop(); // ปิด dialog
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EditTaskPage(
-                            task: task,
-                            index: index, // ส่งดัชนีที่นี่
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                SizedBox(height: 10),
+                Text(
+                  task.description,
+                  style: TextStyle(fontSize: 18),
                 ),
               ],
             ),
@@ -162,11 +127,11 @@ class HomePage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                IconButton(
-                  icon: Icon(Icons.arrow_back),
+                TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
+                  child: Text('Close'),
                 ),
                 TextButton(
                   onPressed: () {
@@ -182,6 +147,21 @@ class HomePage extends StatelessWidget {
                     Provider.of<TaskProvider>(context, listen: false)
                         .removeTask(task);
                     Navigator.of(context).pop();
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () {
+                    Navigator.of(context).pop(); // ปิด Dialog
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditTaskPage(
+                          task: task,
+                          index: index,
+                        ),
+                      ),
+                    );
                   },
                 ),
               ],
