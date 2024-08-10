@@ -222,46 +222,47 @@ class AddTaskPageState extends State<AddTaskPage> {
                             'Start Date',
                             style: TextStyle(fontSize: 19),
                           ),
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                TextButton(
-                                  onPressed: () => selectDate(context, true, (dateTime) {
-                                    setState(() {
-                                      startDate = dateTime;
-                                    });
-                                  }),
-                                  style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.all(1.0),
-                                    backgroundColor: const Color(0xFFe0e0e0),
-                                  ),
-                                  child: Text(
-                                    startDate == null
-                                        ? DateFormat('yyyy-MM-dd').format(DateTime.now())
-                                        : DateFormat('yyyy-MM-dd').format(startDate!),
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                                ),
-                                const SizedBox(width: 20),
-                                TextButton(
-                                  onPressed: () => selectTime(context, true, (timeOfDay) {
-                                    setState(() {
-                                      startTime = timeOfDay;
-                                    });
-                                  }),
-                                  style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.all(1.0),
-                                    backgroundColor: const Color(0xFFe0e0e0),
-                                  ),
-                                  child: Text(
-                                    startTime == null
-                                        ? 'Time'
-                                        : startTime!.format(context),
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                                )
-                              ],
+                          SizedBox(
+                            width: 100, // ขนาดความกว้างของปุ่ม
+                            height: 35,
+                            child: TextButton(
+                              onPressed: () => selectDate(context, true, (dateTime) {
+                                setState(() {
+                                  startDate = dateTime;
+                                });
+                              }),
+                              style: TextButton.styleFrom(
+                                padding: const EdgeInsets.all(3.0),
+                                backgroundColor: const Color(0xFFe0e0e0),
+                              ),
+                              child: Text(
+                                startDate == null
+                                    ? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                                    : DateFormat('yyyy-MM-dd').format(startDate!),
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          SizedBox(
+                            width: 80, // ขนาดความกว้างของปุ่ม
+                            height: 35,
+                            child: TextButton(
+                              onPressed: () => selectTime(context, true, (timeOfDay) {
+                                setState(() {
+                                  startTime = timeOfDay;
+                                });
+                              }),
+                              style: TextButton.styleFrom(
+                                padding: const EdgeInsets.all(3.0),
+                                backgroundColor: const Color(0xFFe0e0e0),
+                              ),
+                              child: Text(
+                                startTime == null
+                                    ? 'Time'
+                                    : startTime!.format(context),
+                                style: const TextStyle(fontSize: 16),
+                              ),
                             ),
                           ),
                         ],
@@ -274,46 +275,47 @@ class AddTaskPageState extends State<AddTaskPage> {
                             'End Date',
                             style: TextStyle(fontSize: 19),
                           ),
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                TextButton(
-                                  onPressed: () => selectDate(context, false, (dateTime) {
-                                    setState(() {
-                                      endDate = dateTime;
-                                    });
-                                  }),
-                                  style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.all(1.0),
-                                    backgroundColor: const Color(0xFFe0e0e0),
-                                  ),
-                                  child: Text(
-                                    endDate == null
-                                        ? DateFormat('yyyy-MM-dd').format(DateTime.now())
-                                        : DateFormat('yyyy-MM-dd').format(endDate!),
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                                ),
-                                const SizedBox(width: 20),
-                                TextButton(
-                                  onPressed: () => selectTime(context, false, (timeOfDay) {
-                                    setState(() {
-                                      endTime = timeOfDay;
-                                    });
-                                  }),
-                                  style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.all(1.0),
-                                    backgroundColor: const Color(0xFFe0e0e0),
-                                  ),
-                                  child: Text(
-                                    endTime == null
-                                        ? 'Time'
-                                        : endTime!.format(context),
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                                ),
-                              ],
+                          SizedBox(
+                            width: 100, // ขนาดความกว้างของปุ่ม
+                            height: 35,
+                            child: TextButton(
+                              onPressed: () => selectDate(context, false, (dateTime) {
+                                setState(() {
+                                  endDate = dateTime;
+                                });
+                              }),
+                              style: TextButton.styleFrom(
+                                padding: const EdgeInsets.all(3.0),
+                                backgroundColor: const Color(0xFFe0e0e0),
+                              ),
+                              child: Text(
+                                endDate == null
+                                    ? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                                    : DateFormat('yyyy-MM-dd').format(endDate!),
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 1),
+                          SizedBox(
+                            width: 80, // ขนาดความกว้างของปุ่ม
+                            height: 35,
+                            child: TextButton(
+                              onPressed: () => selectTime(context, false, (timeOfDay) {
+                                setState(() {
+                                  endTime = timeOfDay;
+                                });
+                              }),
+                              style: TextButton.styleFrom(
+                                padding: const EdgeInsets.all(3.0),
+                                backgroundColor: const Color(0xFFe0e0e0),
+                              ),
+                              child: Text(
+                                endTime == null
+                                    ? 'Time'
+                                    : endTime!.format(context),
+                                style: const TextStyle(fontSize: 16),
+                              ),
                             ),
                           ),
                         ],
@@ -326,25 +328,24 @@ class AddTaskPageState extends State<AddTaskPage> {
                             'Start Date',
                             style: TextStyle(fontSize: 19),
                           ),
-                          Expanded(
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: TextButton(
-                                style: TextButton.styleFrom(
-                                  padding: const EdgeInsets.all(1.0),
-                                  backgroundColor: const Color(0xFFe0e0e0),
-                                ),
-                                onPressed: () => selectDate(context, true, (dateTime) {
-                                  setState(() {
-                                    startDate = dateTime;
-                                  });
-                                }),
-                                child: Text(
-                                  startDate == null
-                                      ? DateFormat('yyyy-MM-dd').format(DateTime.now())
-                                      : DateFormat('yyyy-MM-dd').format(startDate!),
-                                  style: const TextStyle(fontSize: 16),
-                                ),
+                          SizedBox(
+                            width: 100,
+                            height: 35,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                padding: const EdgeInsets.all(3.0),
+                                backgroundColor: const Color(0xFFe0e0e0),
+                              ),
+                              onPressed: () => selectDate(context, true, (dateTime) {
+                                setState(() {
+                                  startDate = dateTime;
+                                });
+                              }),
+                              child: Text(
+                                startDate == null
+                                    ? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                                    : DateFormat('yyyy-MM-dd').format(startDate!),
+                                style: const TextStyle(fontSize: 16),
                               ),
                             ),
                           ),
@@ -358,25 +359,24 @@ class AddTaskPageState extends State<AddTaskPage> {
                             'End Date',
                             style: TextStyle(fontSize: 19),
                           ),
-                          Expanded(
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: TextButton(
-                                style: TextButton.styleFrom(
-                                  padding: const EdgeInsets.all(1.0),
-                                  backgroundColor: const Color(0xFFe0e0e0),
-                                ),
-                                onPressed: () => selectDate(context, false, (dateTime) {
-                                  setState(() {
-                                    endDate = dateTime;
-                                  });
-                                }),
-                                child: Text(
-                                  endDate == null
-                                      ? DateFormat('yyyy-MM-dd').format(DateTime.now())
-                                      : DateFormat('yyyy-MM-dd').format(endDate!),
-                                  style: const TextStyle(fontSize: 16),
-                                ),
+                          SizedBox(
+                            width: double.infinity, // ขนาดความกว้างเต็มที่ของปุ่ม
+                            height: 35,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                padding: const EdgeInsets.all(3.0),
+                                backgroundColor: const Color(0xFFe0e0e0),
+                              ),
+                              onPressed: () => selectDate(context, false, (dateTime) {
+                                setState(() {
+                                  endDate = dateTime;
+                                });
+                              }),
+                              child: Text(
+                                endDate == null
+                                    ? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                                    : DateFormat('yyyy-MM-dd').format(endDate!),
+                                style: const TextStyle(fontSize: 16),
                               ),
                             ),
                           ),
