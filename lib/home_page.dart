@@ -11,7 +11,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // สีพื้นหลังของ Scaffold
+      backgroundColor:
+          Color.fromARGB(255, 255, 255, 255), // สีพื้นหลังของ Scaffold
       appBar: AppBar(
         title: Center(child: Text('Track Goals')),
       ),
