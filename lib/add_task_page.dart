@@ -13,18 +13,18 @@ class AddTaskPage extends StatefulWidget {
 }
 
 class AddTaskPageState extends State<AddTaskPage> {
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
-  bool isAllDay = false;
-  DateTime? startDate;
-  TimeOfDay? startTime;
-  DateTime? endDate;
-  TimeOfDay? endTime;
+  final TextEditingController titleController = TextEditingController(); // ควบคุมข้อมูลของฟิลด์ชื่องาน
+  final TextEditingController descriptionController = TextEditingController(); // ควบคุมข้อมูลของฟิลด์คำอธิบายงาน
+  bool isAllDay = false; // สถานะการทำงานทั้งวัน
+  DateTime? startDate; // วันที่เริ่มต้นของงาน
+  TimeOfDay? startTime; // เวลาที่เริ่มต้นของงาน
+  DateTime? endDate; // วันที่สิ้นสุดของงาน
+  TimeOfDay? endTime; // เวลาที่สิ้นสุดของงาน
 
   @override
   void initState() {
     super.initState();
-    final now = DateTime.now();
+    final now = DateTime.now(); // กำหนดวันที่เริ่มต้นและสิ้นสุดเป็นวันปัจจุบัน
     startDate = now;
     endDate = now;
   }
@@ -32,20 +32,20 @@ class AddTaskPageState extends State<AddTaskPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFFFFF),
+      backgroundColor: const Color(0xFFFFFFFF), // สีพื้นหลังของหน้าจอ
       body: Center(
         child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 80.0),
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+          margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 80.0), // การเว้นขอบด้านข้างและด้านบน-ล่าง
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0), // การเว้นขอบภายในของคอนเทนเนอร์
           decoration: BoxDecoration(
-            color: const Color(0xFFf2f2f2),
-            borderRadius: BorderRadius.circular(15.0),
+            color: const Color(0xFFf2f2f2), // สีพื้นหลังของคอนเทนเนอร์
+            borderRadius: BorderRadius.circular(15.0), // มุมโค้งมนของคอนเทนเนอร์
             boxShadow: <BoxShadow>[
               BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: const Offset(0, 3),
+                color: Colors.grey.withOpacity(0.5), // สีเงาของกล่อง
+                spreadRadius: 5, // การกระจายของเงา
+                blurRadius: 7, // การเบลอของเงา
+                offset: const Offset(0, 3), // ตำแหน่งของเงา
               ),
             ],
           ),
@@ -57,7 +57,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                 children: <Widget>[
                   TextButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.pop(context); // ปิดหน้าจอปัจจุบัน
                     },
                     style: TextButton.styleFrom(
                       foregroundColor: const Color(0xFF717273),
@@ -79,10 +79,10 @@ class AddTaskPageState extends State<AddTaskPage> {
                   ),
                   TextButton(
                     onPressed: () {
-                      final String title = titleController.text;
-                      final String description = descriptionController.text;
+                      final String title = titleController.text; // ดึงข้อมูลชื่อจาก TextField
+                      final String description = descriptionController.text; // ดึงข้อมูลคำอธิบายจาก TextField
 
-                      if (title.isNotEmpty && description.isNotEmpty) {
+                      if (title.isNotEmpty && description.isNotEmpty) { // ตรวจสอบว่าข้อมูลครบถ้วน
                         final DateTime? startDateTime = startDate != null && startTime != null
                             ? DateTime(startDate!.year, startDate!.month, startDate!.day, startTime!.hour, startTime!.minute)
                             : null;
@@ -99,8 +99,8 @@ class AddTaskPageState extends State<AddTaskPage> {
                           endDateTime: endDateTime,
                         );
 
-                        Provider.of<TaskProvider>(context, listen: false).addTask(newTask);
-                        Navigator.pop(context);
+                        Provider.of<TaskProvider>(context, listen: false).addTask(newTask); // เพิ่มงานใหม่ไปยัง TaskProvider
+                        Navigator.pop(context); // ปิดหน้าจอปัจจุบัน
                       }
                     },
                     style: TextButton.styleFrom(
@@ -180,7 +180,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              isAllDay = !isAllDay;
+                              isAllDay = !isAllDay; // สลับสถานะการทำงานทั้งวัน
                             });
                           },
                           child: Container(
@@ -212,7 +212,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 1),
+                    const SizedBox(height: 10),
                     if (!isAllDay) ...[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -231,7 +231,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                                   child: TextButton(
                                     onPressed: () => selectDate(context, true, (dateTime) {
                                       setState(() {
-                                        startDate = dateTime;
+                                        startDate = dateTime; // เลือกวันที่เริ่มต้น
                                       });
                                     }),
                                     style: TextButton.styleFrom(
@@ -253,7 +253,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                                   child: TextButton(
                                     onPressed: () => selectTime(context, true, (timeOfDay) {
                                       setState(() {
-                                        startTime = timeOfDay;
+                                        startTime = timeOfDay; // เลือกเวลาที่เริ่มต้น
                                       });
                                     }),
                                     style: TextButton.styleFrom(
@@ -291,7 +291,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                                   child: TextButton(
                                     onPressed: () => selectDate(context, false, (dateTime) {
                                       setState(() {
-                                        endDate = dateTime;
+                                        endDate = dateTime; // เลือกวันที่สิ้นสุด
                                       });
                                     }),
                                     style: TextButton.styleFrom(
@@ -313,7 +313,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                                   child: TextButton(
                                     onPressed: () => selectTime(context, false, (timeOfDay) {
                                       setState(() {
-                                        endTime = timeOfDay;
+                                        endTime = timeOfDay; // เลือกเวลาที่สิ้นสุด
                                       });
                                     }),
                                     style: TextButton.styleFrom(
@@ -333,7 +333,69 @@ class AddTaskPageState extends State<AddTaskPage> {
                           ),
                         ],
                       ),
-                    ],
+                    ] else ...[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          const Text(
+                            'Start Date',
+                            style: TextStyle(fontSize: 19),
+                          ),
+                          SizedBox(
+                            width: 100,
+                            height: 35,
+                            child: TextButton(
+                              onPressed: () => selectDate(context, true, (dateTime) {
+                                setState(() {
+                                  startDate = dateTime; // เลือกวันที่เริ่มต้นสำหรับการทำงานทั้งวัน
+                                });
+                              }),
+                              style: TextButton.styleFrom(
+                                padding: const EdgeInsets.all(3.0),
+                                backgroundColor: const Color(0xFFe0e0e0),
+                              ),
+                              child: Text(
+                                startDate == null
+                                    ? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                                    : DateFormat('yyyy-MM-dd').format(startDate!),
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          const Text(
+                            'End Date',
+                            style: TextStyle(fontSize: 19),
+                          ),
+                          SizedBox(
+                            width: 100,
+                            height: 35,
+                            child: TextButton(
+                              onPressed: () => selectDate(context, false, (dateTime) {
+                                setState(() {
+                                  endDate = dateTime; // เลือกวันที่สิ้นสุดสำหรับการทำงานทั้งวัน
+                                });
+                              }),
+                              style: TextButton.styleFrom(
+                                padding: const EdgeInsets.all(3.0),
+                                backgroundColor: const Color(0xFFe0e0e0),
+                              ),
+                              child: Text(
+                                endDate == null
+                                    ? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                                    : DateFormat('yyyy-MM-dd').format(endDate!),
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ]
                   ],
                 ),
               ),
