@@ -5,6 +5,7 @@ import 'models/task.dart';
 import 'providers/task_provider.dart';
 import 'utils/date_time_utils.dart';
 import 'notification_box.dart'; // นำเข้าฟังก์ชัน NotificationBox
+import 'track_goals_box.dart'; // นำเข้า TrackGoals
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({super.key});
@@ -22,6 +23,7 @@ class AddTaskPageState extends State<AddTaskPage> {
   DateTime? endDate; // วันที่สิ้นสุดของงาน
   TimeOfDay? endTime; // เวลาที่สิ้นสุดของงาน
   String? notificationOption; // ประกาศตัวแปร notificationOption ที่เก็บค่าตัวเลือกการแจ้งเตือน
+  
 
   @override
   void initState() {
@@ -122,7 +124,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                 padding: const EdgeInsets.only(top: 1.0, bottom: 1.0, left: 15.0, right: 15.0),
                 decoration: BoxDecoration(
                   color: const Color(0xFFffffff),
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(15.0),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -413,7 +415,10 @@ class AddTaskPageState extends State<AddTaskPage> {
                     notificationOption = option;
                   });
                 },
-              )
+              ),
+
+              const SizedBox(height: 5), 
+              TrackGoals(), // ใช้ TrackGoalsContainer ที่นี่
 
             ],
           ),
