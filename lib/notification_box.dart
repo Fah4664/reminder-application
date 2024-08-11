@@ -117,7 +117,7 @@ class NotificationBoxState extends State<NotificationBox> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      widget.selectedOption == 'None' ? 'Add Notifications...' : widget.selectedOption!,
+                      widget.selectedOption == 'None' ? 'Add Notifications...' : (widget.selectedOption ?? 'Add Notifications...'),
                       style: TextStyle(
                         fontSize: 16, // ขนาดของฟอนต์ในกล่องตัวเลือก
                         color: const Color(0xFF717273).withOpacity(0.6), // สีของข้อความในกล่องตัวเลือก
