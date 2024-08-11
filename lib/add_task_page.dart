@@ -164,7 +164,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                 padding: const EdgeInsets.all(15.0), // ระยะห่างภายใน Container
                 decoration: BoxDecoration(
                   color: const Color(0xFFffffff), // สีพื้นหลังของ Container
-                  borderRadius: BorderRadius.circular(10.0), // มุมโค้งมนของ Container
+                  borderRadius: BorderRadius.circular(15.0), // มุมโค้งมนของ Container
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start, // การจัดตำแหน่งของ Column
