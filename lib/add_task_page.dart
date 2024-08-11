@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'models/task.dart';
 import 'providers/task_provider.dart';
 import 'utils/date_time_utils.dart';
+import 'notification_box.dart'; // นำเข้าฟังก์ชัน NotificationBox
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({super.key});
@@ -20,6 +21,7 @@ class AddTaskPageState extends State<AddTaskPage> {
   TimeOfDay? startTime; // เวลาที่เริ่มต้นของงาน
   DateTime? endDate; // วันที่สิ้นสุดของงาน
   TimeOfDay? endTime; // เวลาที่สิ้นสุดของงาน
+  String? notificationOption; // ประกาศตัวแปร notificationOption ที่เก็บค่าตัวเลือกการแจ้งเตือน
 
   @override
   void initState() {
@@ -158,7 +160,9 @@ class AddTaskPageState extends State<AddTaskPage> {
                   ],
                 ),
               ),
+
               const SizedBox(height: 5),
+
               Container(
                 padding: const EdgeInsets.all(15.0),
                 decoration: BoxDecoration(
@@ -399,6 +403,18 @@ class AddTaskPageState extends State<AddTaskPage> {
                   ],
                 ),
               ),
+              
+              const SizedBox(height: 5), // เพิ่มระยะห่างระหว่างกล่อง
+
+              NotificationBox(
+                selectedOption: notificationOption,
+                onOptionSelected: (option) {
+                  setState(() {
+                    notificationOption = option;
+                  });
+                },
+              )
+
             ],
           ),
         ),
