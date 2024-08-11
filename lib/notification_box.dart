@@ -50,16 +50,21 @@ class NotificationBoxState extends State<NotificationBox> {
       builder: (BuildContext context) {
         return AlertDialog(
           contentPadding: const EdgeInsets.all(5.0), // การตั้งค่าระยะห่างภายในของ AlertDialog
+          shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0), // ความโค้งของมุมของ AlertDialog
+          ),
+          backgroundColor: const Color(0xFFd0d0d0), // สีพื้นหลังของ AlertDialog
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: _options.map((option) {
               final isSelected = option == _selectedOptionInDialog;
               return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 1.0), // การตั้งค่าระยะห่างแนวตั้งของแต่ละตัวเลือก
+                padding: const EdgeInsets.symmetric(vertical: 0.5), // การตั้งค่าระยะห่างแนวตั้งของแต่ละตัวเลือก
                 child: Container(
+                  height: 50.0,
                   decoration: BoxDecoration(
-                    color: isSelected ? Colors.grey[200] : Colors.transparent, // เน้นแถวที่เลือก
-                    borderRadius: BorderRadius.circular(4.0),
+                    color: isSelected ? const Color(0xFFf2f2f2) : Colors.transparent, // เน้นแถวที่เลือก
+                    borderRadius: BorderRadius.circular(100.0),
                   ),
                   child: ListTile(
                     title: Text(
@@ -101,7 +106,7 @@ class NotificationBoxState extends State<NotificationBox> {
           children: <Widget>[
             const Text(
               'Notifications',
-              style: TextStyle(fontSize: 18), // ขนาดของฟอนต์สำหรับข้อความหัวข้อ
+              style: TextStyle(fontSize: 20), // ขนาดของฟอนต์สำหรับข้อความหัวข้อ
             ),
             const SizedBox(height: 10), // ระยะห่างระหว่างหัวข้อและกล่องตัวเลือก
             GestureDetector(
