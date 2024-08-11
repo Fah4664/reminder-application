@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/task_provider.dart';
-import 'home_page.dart';
+import 'splash_page.dart'; // เพิ่มการ import หน้าจอ SplashPage
 
 void main() {
   runApp(ReminderApp());
@@ -17,7 +17,7 @@ class ReminderApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: HomePage(),
+        home: SplashPage(), // เริ่มต้นที่หน้า SplashPage
       ),
     );
   }
