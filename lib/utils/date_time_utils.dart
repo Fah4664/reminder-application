@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 
-Future<void> selectDate(BuildContext context, bool isStart, Function(DateTime) onSelected) async {
-  final DateTime? picked = await showDatePicker(
+Future<void> selectDate(BuildContext context, bool isStart, Function(DateTime) onDateSelected) async {
+  final DateTime initialDate = DateTime.now();
+  final DateTime? pickedDate = await showDatePicker(
     context: context,
-    initialDate: DateTime.now(),
+    initialDate: initialDate,
     firstDate: DateTime(2000),
     lastDate: DateTime(2101),
   );
-  if (picked != null) {
-    onSelected(picked);
+  if (pickedDate != null) {
+    onDateSelected(pickedDate);
   }
 }
 
-Future<void> selectTime(BuildContext context, bool isStart, Function(TimeOfDay) onSelected) async {
-  final TimeOfDay? picked = await showTimePicker(
+Future<void> selectTime(BuildContext context, bool isStart, Function(TimeOfDay) onTimeSelected) async {
+  final TimeOfDay initialTime = TimeOfDay.now();
+  final TimeOfDay? pickedTime = await showTimePicker(
     context: context,
-    initialTime: TimeOfDay.now(),
+    initialTime: initialTime,
   );
-  if (picked != null) {
-    onSelected(picked);
+  if (pickedTime != null) {
+    onTimeSelected(pickedTime);
   }
 }
