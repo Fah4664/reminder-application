@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import '../models/task.dart'; // เพิ่มการ import คลาส Task
-
+import '../models/task.dart'; // การนำเข้าคลาส Task
 
 class TaskProvider with ChangeNotifier {
-  // ignore: prefer_final_fields
   List<Task> _tasks = [];
-  
-  // ignore: prefer_final_fields
   List<Task> _completedTasks = [];
 
   List<Task> get tasks => _tasks;
@@ -15,14 +11,14 @@ class TaskProvider with ChangeNotifier {
   void addTask(Task task) {
     _tasks.add(task);
     saveAllTasks();
-    notifyListeners();
+    notifyListeners(); // ทำให้แน่ใจว่า UI ได้รับการอัปเดต
   }
 
   void updateTask(int index, Task updatedTask) {
     if (index >= 0 && index < _tasks.length) {
       _tasks[index] = updatedTask;
       saveAllTasks();
-      notifyListeners();
+      notifyListeners(); // ทำให้แน่ใจว่า UI ได้รับการอัปเดต
     }
   }
 
@@ -42,7 +38,6 @@ class TaskProvider with ChangeNotifier {
     }
   }
 
-  // This method should be implemented for saving the tasks to storage
   void saveAllTasks() {
     // Implement the saving functionality here
   }
