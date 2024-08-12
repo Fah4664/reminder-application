@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/task.dart'; // การนำเข้าคลาส Task
+import '../models/task.dart';
 
 class TaskProvider with ChangeNotifier {
   List<Task> _tasks = [];
@@ -11,14 +11,14 @@ class TaskProvider with ChangeNotifier {
   void addTask(Task task) {
     _tasks.add(task);
     saveAllTasks();
-    notifyListeners(); // ทำให้แน่ใจว่า UI ได้รับการอัปเดต
+    notifyListeners();
   }
 
   void updateTask(int index, Task updatedTask) {
     if (index >= 0 && index < _tasks.length) {
       _tasks[index] = updatedTask;
       saveAllTasks();
-      notifyListeners(); // ทำให้แน่ใจว่า UI ได้รับการอัปเดต
+      notifyListeners();
     }
   }
 
@@ -33,6 +33,17 @@ class TaskProvider with ChangeNotifier {
     if (_tasks.contains(task)) {
       _tasks.remove(task);
       _completedTasks.add(task);
+      saveAllTasks();
+      notifyListeners();
+    }
+  }
+
+  void updateTaskProgress(int index, double newProgress) {
+    if (index >= 0 && index < _tasks.length) {
+      // Create a new Task with the updated progress
+      Task updatedTask = _tasks[index].copyWith(goalProgress: newProgress);
+      // Update the task in the list
+      _tasks[index] = updatedTask;
       saveAllTasks();
       notifyListeners();
     }
