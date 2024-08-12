@@ -28,16 +28,12 @@ class ColorPicker extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       decoration: BoxDecoration(
-        color: const Color(0xFFffffff),
+        color: const Color(0xFFf2f2f2),
         borderRadius: BorderRadius.circular(15.0),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Text(
-            'Pick a Color',
-            style: TextStyle(fontSize: 19),
-          ),
           const SizedBox(height: 10),
           Wrap(
             spacing: 8.0,
@@ -53,13 +49,13 @@ class ColorPicker extends StatelessWidget {
     return GestureDetector(
       onTap: () => onColorSelected(color),
       child: Container(
-        width: 40,
+        width: 30,
         height: 40,
         decoration: BoxDecoration(
           color: color,
           shape: BoxShape.circle,
           border: Border.all(
-            color: selectedColor == color ? Colors.black : Colors.transparent, // เปลี่ยนสีกรอบตามสีที่เลือก
+            color: selectedColor == color ? const Color(0xFF9b9a8c) : Colors.transparent, // เปลี่ยนสีกรอบตามสีที่เลือก
             width: 2,
           ),
         ),
