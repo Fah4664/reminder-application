@@ -49,7 +49,7 @@ class _TrackGoalsState extends State<TrackGoals> {
                     inactiveTrackColor: const Color(0xFFd0d0d0),
                     thumbColor: const Color(0xFF4c4949),
                     overlayColor: const Color(0xFFd0d0d0).withAlpha(30),
-                    trackHeight: 8.0, // ปรับความสูงของแถบเลื่อน
+                    trackHeight: 10.0, // ปรับความสูงของแถบเลื่อน
                   ),
                   child: Slider(
                     value: _sliderValue,
