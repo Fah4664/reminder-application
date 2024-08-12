@@ -7,7 +7,7 @@ class Task {
   final bool isAllDay;
   final DateTime? startDateTime;
   final DateTime? endDateTime;
-  final Color? color; // เพิ่ม property นี้
+  final Color? color;
 
   Task({
     required this.title,
@@ -15,7 +15,7 @@ class Task {
     this.isAllDay = false,
     this.startDateTime,
     this.endDateTime,
-    this.color, // เพิ่ม property นี้
+    this.color,
   });
 
   Task copyWith({
@@ -24,6 +24,7 @@ class Task {
     bool? isAllDay,
     DateTime? startDateTime,
     DateTime? endDateTime,
+    Color? color, // เพิ่ม property นี้
   }) {
     return Task(
       title: title ?? this.title,
@@ -31,6 +32,8 @@ class Task {
       isAllDay: isAllDay ?? this.isAllDay,
       startDateTime: startDateTime ?? this.startDateTime,
       endDateTime: endDateTime ?? this.endDateTime,
+      color: color ?? this.color, // เพิ่ม property นี้
     );
   }
 }
+
