@@ -25,9 +25,9 @@ class AddTaskPageState extends State<AddTaskPage> {
   TimeOfDay? startTime; // เวลาที่เริ่มต้นของงาน
   DateTime? endDate; // วันที่สิ้นสุดของงาน
   TimeOfDay? endTime; // เวลาที่สิ้นสุดของงาน
-  String?
-      notificationOption; // ประกาศตัวแปร notificationOption ที่เก็บค่าตัวเลือกการแจ้งเตือน
+  String? notificationOption; // ประกาศตัวแปร notificationOption ที่เก็บค่าตัวเลือกการแจ้งเตือน
   Color? selectedColor; // เพิ่มตัวแปรสำหรับเก็บสีที่เลือก
+  double _goalProgress = 0.0; // Initialize _goalProgress
 
   @override
   void initState() {
@@ -127,12 +127,13 @@ class AddTaskPageState extends State<AddTaskPage> {
                               isAllDay: isAllDay,
                               startDateTime: startDateTime,
                               endDateTime: endDateTime,
+                              color: selectedColor,
+                              goalProgress: 0.0, // กำหนดค่าเริ่มต้นของ goalProgress
                             );
 
-                            Provider.of<TaskProvider>(context, listen: false)
-                                .addTask(
-                                    newTask); // เพิ่มงานใหม่ไปยัง TaskProvider
+                            Provider.of<TaskProvider>(context, listen: false).addTask(newTask);
                             Navigator.pop(context); // ปิดหน้าจอปัจจุบัน
+
                           }
                         },
                         style: TextButton.styleFrom(
@@ -482,7 +483,14 @@ class AddTaskPageState extends State<AddTaskPage> {
 
                   const SizedBox(height: 5),
 
-                  const TrackGoals(), // Marking this widget as const
+                  TrackGoals(
+                    progress: _goalProgress, // ส่งค่าเริ่มต้นไปยัง TrackGoals
+                    onProgressChanged: (value) {
+                      setState(() {
+                        _goalProgress = value; // อัพเดตค่าความก้าวหน้าเมื่อมีการเปลี่ยนแปลง
+                      });
+                    },
+                  ),
 
                   const SizedBox(height: 5),
 
@@ -495,7 +503,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                             color; // อัพเดตสีที่ถูกเลือกเมื่อผู้ใช้เลือกสี
                       });
                     },
-                  )
+                  ),
                 ],
               ),
             ),
