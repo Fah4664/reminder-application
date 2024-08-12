@@ -17,14 +17,22 @@ class HomePage extends StatelessWidget {
       ),
       body: Consumer<TaskProvider>(
         builder: (context, taskProvider, child) {
+          if (taskProvider.tasks.isEmpty) {
+            return const Center(
+              child: Text('No tasks added yet.'),
+            );
+          }
+
           return ListView.builder(
             itemCount: taskProvider.tasks.length,
             itemBuilder: (context, index) {
               final task = taskProvider.tasks[index];
               return Card(
                 elevation: 4,
-                color: task.color ?? Colors.white, // ใช้สีของงาน หรือสีขาวถ้าไม่ได้เลือกสี
-                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                color: task.color ??
+                    Colors.white, // ใช้สีของงาน หรือสีขาวถ้าไม่ได้เลือกสี
+                margin:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 child: ListTile(
                   title: Text(task.title),
                   subtitle: Text(task.description),
@@ -62,11 +70,18 @@ class HomePage extends StatelessWidget {
                 height: 29,
                 width: 29,
               ),
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+                // รับผลลัพธ์จาก AddTaskPage
+                final newTask = await Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => AddTaskPage()),
                 );
+
+                if (newTask != null) {
+                  // ถ้ามีการเพิ่มงานใหม่ให้ทำการอัปเดตรายการงานในหน้า HomePage
+                  Provider.of<TaskProvider>(context, listen: false)
+                      .addTask(newTask);
+                }
               },
             ),
             Spacer(),
