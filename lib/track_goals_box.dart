@@ -14,11 +14,11 @@ class _TrackGoalsState extends State<TrackGoals> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(
-        left: 20.0,  // ระยะห่างด้านซ้าย
-        right: 20.0, // ระยะห่างด้านขวา
-        top: 15.0,   // ระยะห่างด้านบน
-        bottom: 2.0 // ระยะห่างด้านล่าง
-      ),
+          left: 20.0, // ระยะห่างด้านซ้าย
+          right: 20.0, // ระยะห่างด้านขวา
+          top: 15.0, // ระยะห่างด้านบน
+          bottom: 2.0 // ระยะห่างด้านล่าง
+          ),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15.0),
@@ -64,7 +64,8 @@ class _TrackGoalsState extends State<TrackGoals> {
                   ),
                 ),
               ),
-              const SizedBox(width: 10), // เพิ่มระยะห่างระหว่างแถบเลื่อนกับตัวเลข %
+              const SizedBox(
+                  width: 10), // เพิ่มระยะห่างระหว่างแถบเลื่อนกับตัวเลข %
               Text(
                 '${_sliderValue.toStringAsFixed(0)}%',
                 style: const TextStyle(fontSize: 18),
