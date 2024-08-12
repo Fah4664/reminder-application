@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 // models/task.dart
 class Task {
   final String title;
@@ -5,6 +7,7 @@ class Task {
   final bool isAllDay;
   final DateTime? startDateTime;
   final DateTime? endDateTime;
+  final Color? color; // เพิ่ม property นี้
 
   Task({
     required this.title,
@@ -12,6 +15,7 @@ class Task {
     this.isAllDay = false,
     this.startDateTime,
     this.endDateTime,
+    this.color, // เพิ่ม property นี้
   });
 
   Task copyWith({
