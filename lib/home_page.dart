@@ -24,6 +24,7 @@ class HomePage extends StatelessWidget {
               final task = taskProvider.tasks[index];
               return Card(
                 elevation: 4,
+                color: task.color ?? Colors.white, // ใช้สีของงาน หรือสีขาวถ้าไม่ได้เลือกสี
                 margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 child: ListTile(
                   title: Text(task.title),
@@ -33,6 +34,7 @@ class HomePage extends StatelessWidget {
                   },
                 ),
               );
+
             },
           );
         },
