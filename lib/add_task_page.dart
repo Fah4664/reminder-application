@@ -6,7 +6,7 @@ import 'providers/task_provider.dart';
 import 'utils/date_time_utils.dart';
 import 'notification_box.dart'; // นำเข้าฟังก์ชัน NotificationBox
 import 'track_goals_box.dart'; // นำเข้า TrackGoals
-//import 'color_picker.dart'; // นำเข้า ColorPicker
+import 'color_picker.dart'; // นำเข้า ColorPicker
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({super.key});
@@ -24,7 +24,7 @@ class AddTaskPageState extends State<AddTaskPage> {
   DateTime? endDate; // วันที่สิ้นสุดของงาน
   TimeOfDay? endTime; // เวลาที่สิ้นสุดของงาน
   String? notificationOption; // ประกาศตัวแปร notificationOption ที่เก็บค่าตัวเลือกการแจ้งเตือน
-  //Color? selectedColor; // เพิ่มตัวแปรสำหรับเก็บสีที่เลือก
+  Color? selectedColor; // เพิ่มตัวแปรสำหรับเก็บสีที่เลือก
   
 
   @override
@@ -427,16 +427,14 @@ class AddTaskPageState extends State<AddTaskPage> {
                   
                   const SizedBox(height: 5), 
 
-                  //ColorPicker(  //ColorPicker
-                    //selectedColor: selectedColor, // ส่งสีที่ถูกเลือกไปยัง ColorPicker
-                      //onColorSelected: (color) {
-                        //setState(() {
-                          //selectedColor = color; // อัพเดตสีที่ถูกเลือกเมื่อผู้ใช้เลือกสี
-                      //});
-                    //},
-                  //),
-
-                  const SizedBox(height: 5),
+                  ColorPicker(
+                    selectedColor: selectedColor, // ส่งสีที่เลือกไปยัง ColorPicker
+                    onColorSelected: (color) {
+                      setState(() {
+                        selectedColor = color; // อัพเดตสีที่ถูกเลือกเมื่อผู้ใช้เลือกสี
+                      });
+                    },
+                  )
           
                 ],
               ),
