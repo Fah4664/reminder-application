@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor:
-          Color.fromARGB(255, 255, 255, 255), // สีพื้นหลังของ Scaffold
+          Color(0xFFFFFFFF), // สีพื้นหลังของ Scaffold
       appBar: AppBar(
         title: Center(child: Text('Track Goals')),
       ),
