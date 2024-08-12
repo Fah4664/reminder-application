@@ -16,16 +16,18 @@ class AddTaskPage extends StatefulWidget {
 }
 
 class AddTaskPageState extends State<AddTaskPage> {
-  final TextEditingController titleController = TextEditingController(); // ควบคุมข้อมูลของฟิลด์ชื่องาน
-  final TextEditingController descriptionController = TextEditingController(); // ควบคุมข้อมูลของฟิลด์คำอธิบายงาน
+  final TextEditingController titleController =
+      TextEditingController(); // ควบคุมข้อมูลของฟิลด์ชื่องาน
+  final TextEditingController descriptionController =
+      TextEditingController(); // ควบคุมข้อมูลของฟิลด์คำอธิบายงาน
   bool isAllDay = false; // สถานะการทำงานทั้งวัน
   DateTime? startDate; // วันที่เริ่มต้นของงาน
   TimeOfDay? startTime; // เวลาที่เริ่มต้นของงาน
   DateTime? endDate; // วันที่สิ้นสุดของงาน
   TimeOfDay? endTime; // เวลาที่สิ้นสุดของงาน
-  String? notificationOption; // ประกาศตัวแปร notificationOption ที่เก็บค่าตัวเลือกการแจ้งเตือน
+  String?
+      notificationOption; // ประกาศตัวแปร notificationOption ที่เก็บค่าตัวเลือกการแจ้งเตือน
   Color? selectedColor; // เพิ่มตัวแปรสำหรับเก็บสีที่เลือก
-  
 
   @override
   void initState() {
@@ -43,11 +45,16 @@ class AddTaskPageState extends State<AddTaskPage> {
         child: SingleChildScrollView(
           child: IntrinsicHeight(
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 80.0), // การเว้นขอบด้านข้างและด้านบน-ล่าง
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0), // การเว้นขอบภายในของคอนเทนเนอร์
+              margin: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                  vertical: 80.0), // การเว้นขอบด้านข้างและด้านบน-ล่าง
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                  vertical: 20.0), // การเว้นขอบภายในของคอนเทนเนอร์
               decoration: BoxDecoration(
                 color: const Color(0xFFf2f2f2), // สีพื้นหลังของคอนเทนเนอร์
-                borderRadius: BorderRadius.circular(15.0), // มุมโค้งมนของคอนเทนเนอร์
+                borderRadius:
+                    BorderRadius.circular(15.0), // มุมโค้งมนของคอนเทนเนอร์
                 boxShadow: <BoxShadow>[
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.5), // สีเงาของกล่อง
@@ -87,17 +94,32 @@ class AddTaskPageState extends State<AddTaskPage> {
                       ),
                       TextButton(
                         onPressed: () {
-                          final String title = titleController.text; // ดึงข้อมูลชื่อจาก TextField
-                          final String description = descriptionController.text; // ดึงข้อมูลคำอธิบายจาก TextField
+                          final String title = titleController
+                              .text; // ดึงข้อมูลชื่อจาก TextField
+                          final String description = descriptionController
+                              .text; // ดึงข้อมูลคำอธิบายจาก TextField
 
-                          if (title.isNotEmpty && description.isNotEmpty) { // ตรวจสอบว่าข้อมูลครบถ้วน
-                            final DateTime? startDateTime = startDate != null && startTime != null
-                                ? DateTime(startDate!.year, startDate!.month, startDate!.day, startTime!.hour, startTime!.minute)
-                                : null;
+                          if (title.isNotEmpty && description.isNotEmpty) {
+                            // ตรวจสอบว่าข้อมูลครบถ้วน
+                            final DateTime? startDateTime =
+                                startDate != null && startTime != null
+                                    ? DateTime(
+                                        startDate!.year,
+                                        startDate!.month,
+                                        startDate!.day,
+                                        startTime!.hour,
+                                        startTime!.minute)
+                                    : null;
 
-                            final DateTime? endDateTime = endDate != null && endTime != null
-                                ? DateTime(endDate!.year, endDate!.month, endDate!.day, endTime!.hour, endTime!.minute)
-                                : null;
+                            final DateTime? endDateTime =
+                                endDate != null && endTime != null
+                                    ? DateTime(
+                                        endDate!.year,
+                                        endDate!.month,
+                                        endDate!.day,
+                                        endTime!.hour,
+                                        endTime!.minute)
+                                    : null;
 
                             final Task newTask = Task(
                               title: title,
@@ -107,7 +129,9 @@ class AddTaskPageState extends State<AddTaskPage> {
                               endDateTime: endDateTime,
                             );
 
-                            Provider.of<TaskProvider>(context, listen: false).addTask(newTask); // เพิ่มงานใหม่ไปยัง TaskProvider
+                            Provider.of<TaskProvider>(context, listen: false)
+                                .addTask(
+                                    newTask); // เพิ่มงานใหม่ไปยัง TaskProvider
                             Navigator.pop(context); // ปิดหน้าจอปัจจุบัน
                           }
                         },
@@ -125,7 +149,8 @@ class AddTaskPageState extends State<AddTaskPage> {
                   ),
                   const SizedBox(height: 10),
                   Container(
-                    padding: const EdgeInsets.only(top: 1.0, bottom: 1.0, left: 15.0, right: 15.0),
+                    padding: const EdgeInsets.only(
+                        top: 1.0, bottom: 1.0, left: 15.0, right: 15.0),
                     decoration: BoxDecoration(
                       color: const Color(0xFFffffff),
                       borderRadius: BorderRadius.circular(15.0),
@@ -190,29 +215,38 @@ class AddTaskPageState extends State<AddTaskPage> {
                             GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  isAllDay = !isAllDay; // สลับสถานะการทำงานทั้งวัน
+                                  isAllDay =
+                                      !isAllDay; // สลับสถานะการทำงานทั้งวัน
                                 });
                               },
                               child: Container(
                                 width: 65,
                                 height: 35,
                                 decoration: BoxDecoration(
-                                  color: isAllDay ? const Color(0xFF717273) : const Color(0xFFd0d0d0),
+                                  color: isAllDay
+                                      ? const Color(0xFF717273)
+                                      : const Color(0xFFd0d0d0),
                                   borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(color: const Color(0xFFFFFFFF)),
+                                  border: Border.all(
+                                      color: const Color(0xFFFFFFFF)),
                                 ),
                                 child: Stack(
                                   children: <Widget>[
                                     AnimatedAlign(
-                                      duration: const Duration(milliseconds: 200),
-                                      alignment: isAllDay ? Alignment.centerRight : Alignment.centerLeft,
+                                      duration:
+                                          const Duration(milliseconds: 200),
+                                      alignment: isAllDay
+                                          ? Alignment.centerRight
+                                          : Alignment.centerLeft,
                                       child: Container(
                                         width: 29,
                                         height: 29,
-                                        margin: const EdgeInsets.symmetric(horizontal: 3.0),
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 3.0),
                                         decoration: const BoxDecoration(
                                           color: Color(0xFFffffff),
-                                          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15.0)),
                                         ),
                                       ),
                                     ),
@@ -239,19 +273,24 @@ class AddTaskPageState extends State<AddTaskPage> {
                                       width: 100,
                                       height: 35,
                                       child: TextButton(
-                                        onPressed: () => selectDate(context, true, (dateTime) {
+                                        onPressed: () => selectDate(
+                                            context, true, (dateTime) {
                                           setState(() {
-                                            startDate = dateTime; // เลือกวันที่เริ่มต้น
+                                            startDate =
+                                                dateTime; // เลือกวันที่เริ่มต้น
                                           });
                                         }),
                                         style: TextButton.styleFrom(
                                           padding: const EdgeInsets.all(3.0),
-                                          backgroundColor: const Color(0xFFe0e0e0),
+                                          backgroundColor:
+                                              const Color(0xFFe0e0e0),
                                         ),
                                         child: Text(
                                           startDate == null
-                                              ? DateFormat('yyyy-MM-dd').format(DateTime.now())
-                                              : DateFormat('yyyy-MM-dd').format(startDate!),
+                                              ? DateFormat('yyyy-MM-dd')
+                                                  .format(DateTime.now())
+                                              : DateFormat('yyyy-MM-dd')
+                                                  .format(startDate!),
                                           style: const TextStyle(fontSize: 16),
                                         ),
                                       ),
@@ -261,14 +300,17 @@ class AddTaskPageState extends State<AddTaskPage> {
                                       width: 60,
                                       height: 35,
                                       child: TextButton(
-                                        onPressed: () => selectTime(context, true, (timeOfDay) {
+                                        onPressed: () => selectTime(
+                                            context, true, (timeOfDay) {
                                           setState(() {
-                                            startTime = timeOfDay; // เลือกเวลาที่เริ่มต้น
+                                            startTime =
+                                                timeOfDay; // เลือกเวลาที่เริ่มต้น
                                           });
                                         }),
                                         style: TextButton.styleFrom(
                                           padding: const EdgeInsets.all(3.0),
-                                          backgroundColor: const Color(0xFFe0e0e0),
+                                          backgroundColor:
+                                              const Color(0xFFe0e0e0),
                                         ),
                                         child: Text(
                                           startTime == null
@@ -299,19 +341,24 @@ class AddTaskPageState extends State<AddTaskPage> {
                                       width: 100,
                                       height: 35,
                                       child: TextButton(
-                                        onPressed: () => selectDate(context, false, (dateTime) {
+                                        onPressed: () => selectDate(
+                                            context, false, (dateTime) {
                                           setState(() {
-                                            endDate = dateTime; // เลือกวันที่สิ้นสุด
+                                            endDate =
+                                                dateTime; // เลือกวันที่สิ้นสุด
                                           });
                                         }),
                                         style: TextButton.styleFrom(
                                           padding: const EdgeInsets.all(3.0),
-                                          backgroundColor: const Color(0xFFe0e0e0),
+                                          backgroundColor:
+                                              const Color(0xFFe0e0e0),
                                         ),
                                         child: Text(
                                           endDate == null
-                                              ? DateFormat('yyyy-MM-dd').format(DateTime.now())
-                                              : DateFormat('yyyy-MM-dd').format(endDate!),
+                                              ? DateFormat('yyyy-MM-dd')
+                                                  .format(DateTime.now())
+                                              : DateFormat('yyyy-MM-dd')
+                                                  .format(endDate!),
                                           style: const TextStyle(fontSize: 16),
                                         ),
                                       ),
@@ -321,14 +368,17 @@ class AddTaskPageState extends State<AddTaskPage> {
                                       width: 60,
                                       height: 35,
                                       child: TextButton(
-                                        onPressed: () => selectTime(context, false, (timeOfDay) {
+                                        onPressed: () => selectTime(
+                                            context, false, (timeOfDay) {
                                           setState(() {
-                                            endTime = timeOfDay; // เลือกเวลาที่สิ้นสุด
+                                            endTime =
+                                                timeOfDay; // เลือกเวลาที่สิ้นสุด
                                           });
                                         }),
                                         style: TextButton.styleFrom(
                                           padding: const EdgeInsets.all(3.0),
-                                          backgroundColor: const Color(0xFFe0e0e0),
+                                          backgroundColor:
+                                              const Color(0xFFe0e0e0),
                                         ),
                                         child: Text(
                                           endTime == null
@@ -355,9 +405,11 @@ class AddTaskPageState extends State<AddTaskPage> {
                                 width: 100,
                                 height: 35,
                                 child: TextButton(
-                                  onPressed: () => selectDate(context, true, (dateTime) {
+                                  onPressed: () =>
+                                      selectDate(context, true, (dateTime) {
                                     setState(() {
-                                      startDate = dateTime; // เลือกวันที่เริ่มต้นสำหรับการทำงานทั้งวัน
+                                      startDate =
+                                          dateTime; // เลือกวันที่เริ่มต้นสำหรับการทำงานทั้งวัน
                                     });
                                   }),
                                   style: TextButton.styleFrom(
@@ -366,8 +418,10 @@ class AddTaskPageState extends State<AddTaskPage> {
                                   ),
                                   child: Text(
                                     startDate == null
-                                        ? DateFormat('yyyy-MM-dd').format(DateTime.now())
-                                        : DateFormat('yyyy-MM-dd').format(startDate!),
+                                        ? DateFormat('yyyy-MM-dd')
+                                            .format(DateTime.now())
+                                        : DateFormat('yyyy-MM-dd')
+                                            .format(startDate!),
                                     style: const TextStyle(fontSize: 16),
                                   ),
                                 ),
@@ -386,9 +440,11 @@ class AddTaskPageState extends State<AddTaskPage> {
                                 width: 100,
                                 height: 35,
                                 child: TextButton(
-                                  onPressed: () => selectDate(context, false, (dateTime) {
+                                  onPressed: () =>
+                                      selectDate(context, false, (dateTime) {
                                     setState(() {
-                                      endDate = dateTime; // เลือกวันที่สิ้นสุดสำหรับการทำงานทั้งวัน
+                                      endDate =
+                                          dateTime; // เลือกวันที่สิ้นสุดสำหรับการทำงานทั้งวัน
                                     });
                                   }),
                                   style: TextButton.styleFrom(
@@ -397,8 +453,10 @@ class AddTaskPageState extends State<AddTaskPage> {
                                   ),
                                   child: Text(
                                     endDate == null
-                                        ? DateFormat('yyyy-MM-dd').format(DateTime.now())
-                                        : DateFormat('yyyy-MM-dd').format(endDate!),
+                                        ? DateFormat('yyyy-MM-dd')
+                                            .format(DateTime.now())
+                                        : DateFormat('yyyy-MM-dd')
+                                            .format(endDate!),
                                     style: const TextStyle(fontSize: 16),
                                   ),
                                 ),
@@ -409,10 +467,11 @@ class AddTaskPageState extends State<AddTaskPage> {
                       ],
                     ),
                   ),
-                  
+
                   const SizedBox(height: 5), // เพิ่มระยะห่างระหว่างกล่อง
 
-                  NotificationBox( //NotificationBox
+                  NotificationBox(
+                    //NotificationBox
                     selectedOption: notificationOption,
                     onOptionSelected: (option) {
                       setState(() {
@@ -421,21 +480,22 @@ class AddTaskPageState extends State<AddTaskPage> {
                     },
                   ),
 
-                  const SizedBox(height: 5), 
+                  const SizedBox(height: 5),
 
                   const TrackGoals(), // Marking this widget as const
-                  
-                  const SizedBox(height: 5), 
+
+                  const SizedBox(height: 5),
 
                   ColorPicker(
-                    selectedColor: selectedColor, // ส่งสีที่เลือกไปยัง ColorPicker
+                    selectedColor:
+                        selectedColor, // ส่งสีที่เลือกไปยัง ColorPicker
                     onColorSelected: (color) {
                       setState(() {
-                        selectedColor = color; // อัพเดตสีที่ถูกเลือกเมื่อผู้ใช้เลือกสี
+                        selectedColor =
+                            color; // อัพเดตสีที่ถูกเลือกเมื่อผู้ใช้เลือกสี
                       });
                     },
                   )
-          
                 ],
               ),
             ),
