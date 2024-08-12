@@ -6,7 +6,7 @@ import 'search_page.dart';
 import 'view_task_page.dart';
 import 'edit_task_page.dart';
 import '../models/task.dart';
-//import 'track_goals_box.dart'; // นำเข้า TrackGoals
+// import 'track_goals_box.dart'; // นำเข้า TrackGoals
 
 class HomePage extends StatelessWidget {
   @override
@@ -48,12 +48,13 @@ class HomePage extends StatelessWidget {
                       const SizedBox(height: 10),
                     ],
                   ),
-                  
+                  onTap: () {
+                    _showTaskDetailsDialog(context, task, index);
+                  },
                 ),
               );
             },
           );
-
         },
       ),
       bottomNavigationBar: BottomAppBar(
@@ -82,14 +83,12 @@ class HomePage extends StatelessWidget {
                 width: 29,
               ),
               onPressed: () async {
-                // รับผลลัพธ์จาก AddTaskPage
                 final newTask = await Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => AddTaskPage()),
                 );
 
                 if (newTask != null) {
-                  // ถ้ามีการเพิ่มงานใหม่ให้ทำการอัปเดตรายการงานในหน้า HomePage
                   Provider.of<TaskProvider>(context, listen: false)
                       .addTask(newTask);
                 }
@@ -135,15 +134,20 @@ class HomePage extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          contentPadding: const EdgeInsets.all(15.0), // Padding รอบๆ เนื้อหาภายใน AlertDialog
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0), // กำหนดมุมโค้งมนของ AlertDialog
+          ),
           content: Container(
-            width: MediaQuery.of(context).size.width * 0.9,
+            width: MediaQuery.of(context).size.width * 0.9, // ความกว้าง 90% ของหน้าจอ
+            height: MediaQuery.of(context).size.height * 0.2, // ความสูง 20% ของหน้าจอ
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
                   task.title,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 10),
                 Text(
@@ -154,51 +158,72 @@ class HomePage extends StatelessWidget {
             ),
           ),
           actions: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('Close'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Provider.of<TaskProvider>(context, listen: false)
-                        .markTaskAsCompleted(task);
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('Mark as Completed'),
-                ),
-                IconButton(
-                  icon: Icon(Icons.delete, color: Colors.red),
-                  onPressed: () {
-                    Provider.of<TaskProvider>(context, listen: false)
-                        .removeTask(task);
-                    Navigator.of(context).pop();
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () {
-                    Navigator.of(context).pop(); // ปิด Dialog
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => EditTaskPage(
-                          task: task,
-                          index: index,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(15.0), // Padding รอบๆ ปุ่ม
+              child: Stack(
+                children: [
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        Navigator.of(context).pop(); // ปิด Dialog
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditTaskPage(
+                              task: task,
+                              index: index,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    child: IconButton(
+                      icon: Icon(Icons.arrow_back),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: IconButton(
+                      icon: Icon(Icons.delete, color: Colors.red),
+                      onPressed: () {
+                        Provider.of<TaskProvider>(context, listen: false)
+                            .removeTask(task);
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    left: MediaQuery.of(context).size.width * 0.33, // ตำแหน่งตรงกลางล่าง
+                    child: TextButton(
+                      onPressed: () {
+                        Provider.of<TaskProvider>(context, listen: false)
+                            .markTaskAsCompleted(task);
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Mark as Completed'),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         );
       },
     );
   }
+
+
+
 }
