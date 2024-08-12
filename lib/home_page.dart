@@ -11,10 +11,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          Color(0xFFFFFFFF), // สีพื้นหลังของ Scaffold
+      backgroundColor: const Color(0xFFFFFFFF), // สีพื้นหลังของ Scaffold
       appBar: AppBar(
-        title: Center(child: Text('Track Goals')),
+        title: const Center(child: Text('Track Goals')),
       ),
       body: Consumer<TaskProvider>(
         builder: (context, taskProvider, child) {
@@ -25,7 +24,7 @@ class HomePage extends StatelessWidget {
               return Card(
                 elevation: 4,
                 color: task.color ?? Colors.white, // ใช้สีของงาน หรือสีขาวถ้าไม่ได้เลือกสี
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 child: ListTile(
                   title: Text(task.title),
                   subtitle: Text(task.description),
@@ -34,7 +33,6 @@ class HomePage extends StatelessWidget {
                   },
                 ),
               );
-
             },
           );
         },
