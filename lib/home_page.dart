@@ -6,6 +6,7 @@ import 'search_page.dart';
 import 'view_task_page.dart';
 import 'edit_task_page.dart';
 import '../models/task.dart';
+//import 'track_goals_box.dart'; // นำเข้า TrackGoals
 
 class HomePage extends StatelessWidget {
   @override
@@ -29,27 +30,37 @@ class HomePage extends StatelessWidget {
               final task = taskProvider.tasks[index];
               return Card(
                 elevation: 4,
-                color: task.color ??
-                    Colors.white, // ใช้สีของงาน หรือสีขาวถ้าไม่ได้เลือกสี
-                margin:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                color: task.color ?? const Color(0xFFede3e3), // ใช้สีของงาน หรือสีเริ่มต้นถ้าไม่ได้เลือกสี
+                margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                 child: ListTile(
-                  title: Text(task.title),
-                  subtitle: Text(task.description),
-                  onTap: () {
-                    _showTaskDetailsDialog(context, task, index);
-                  },
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        task.title,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        '${task.startDateTime?.day}/${task.startDateTime?.month}/${task.startDateTime?.year} - ${task.endDateTime?.day}/${task.endDateTime?.month}/${task.endDateTime?.year}',
+                        style: const TextStyle(color: Colors.grey),
+                      ),
+                      const SizedBox(height: 10),
+                    ],
+                  ),
+                  
                 ),
               );
             },
           );
+
         },
       ),
       bottomNavigationBar: BottomAppBar(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            SizedBox(width: 48), // ขนาดว่างด้านซ้าย
+            const SizedBox(width: 48), // ขนาดว่างด้านซ้าย
             IconButton(
               icon: Image.asset(
                 'assets/icons/target.png',
