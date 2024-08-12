@@ -1,105 +1,72 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // ใช้สำหรับการเก็บข้อมูล
 
-class ColorPicker extends StatefulWidget {
-  final Color? selectedColor;
+class ColorPicker extends StatelessWidget {
+  static const List<Color> colors = [
+    Color(0xFFede3e3),
+    Color(0xFFffb4bb),
+    Color(0xFFffdfb9),
+    Color(0xFFffffb9),
+    Color(0xFFbaffc9),
+    Color(0xFFc0d7ff),
+    Color(0xFF73d1ea),
+    Color(0xFFbf9adf),
+    Color(0xFFd0d0d0),
+    Color(0xFF9b9a8c),
+  ];
+
+  final Color? selectedColor; // ส่งสีที่เลือกเข้ามาจากภายนอก
   final ValueChanged<Color> onColorSelected;
 
   const ColorPicker({
-    Key? key,
-    this.selectedColor,
+    super.key, // ใช้ super.key
+    this.selectedColor, // รับสีที่เลือกเข้ามา
     required this.onColorSelected,
-  }) : super(key: key);
-
-  @override
-  _ColorPickerState createState() => _ColorPickerState();
-}
-
-class _ColorPickerState extends State<ColorPicker> {
-  final List<Color> colors = [
-    Colors.pink[100]!,
-    Colors.redAccent[100]!,
-    Colors.orange[100]!,
-    Colors.yellow[100]!,
-    Colors.greenAccent[100]!,
-    Colors.blue[100]!,
-    Colors.blueAccent[100]!,
-    Colors.purple[100]!,
-    Colors.grey[100]!,
-    Colors.brown[300]!,
-  ];
-
-  Color? _selectedColor;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadSelectedColor();
-  }
-
-  Future<void> _loadSelectedColor() async {
-    final prefs = await SharedPreferences.getInstance();
-    final colorValue = prefs.getInt('selectedColor');
-    if (colorValue != null) {
-      setState(() {
-        _selectedColor = Color(colorValue);
-      });
-    }
-  }
-
-  Future<void> _saveSelectedColor(Color color) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('selectedColor', color.value);
-  }
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        GridView.builder(
-          shrinkWrap: true,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 5,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      decoration: BoxDecoration(
+        color: const Color(0xFFffffff),
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const Text(
+            'Pick a Color',
+            style: TextStyle(fontSize: 19),
           ),
-          itemCount: colors.length,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  _selectedColor = colors[index];
-                });
-                widget.onColorSelected(colors[index]);
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: colors[index],
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: _selectedColor == colors[index] ? Colors.white : Colors.transparent,
-                    width: 3.0,
-                  ),
-                ),
-                child: _selectedColor == colors[index]
-                    ? const Icon(Icons.check, color: Colors.white)
-                    : null,
-              ),
-            );
-          },
+          const SizedBox(height: 10),
+          Wrap(
+            spacing: 8.0,
+            runSpacing: 8.0,
+            children: colors.map((color) => _buildColorOption(color)).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildColorOption(Color color) {
+    return GestureDetector(
+      onTap: () => onColorSelected(color),
+      child: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: color,
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: selectedColor == color ? Colors.black : Colors.transparent, // เปลี่ยนสีกรอบตามสีที่เลือก
+            width: 2,
+          ),
         ),
-        ElevatedButton(
-          onPressed: () {
-            if (_selectedColor != null) {
-              _saveSelectedColor(_selectedColor!);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Color saved!')),
-              );
-            }
-          },
-          child: const Text('Save'),
-        ),
-      ],
+        child: selectedColor == color
+            ? const Icon(Icons.check, color: Colors.white)
+            : null,
+      ),
     );
   }
 }
