@@ -4,8 +4,8 @@ import 'providers/task_provider.dart';
 import 'add_task_page.dart';
 import 'search_page.dart';
 import 'view_task_page.dart';
-import 'edit_task_page.dart';
-import '../models/task.dart';
+//import '../models/task.dart';
+import 'task_details_popup.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -50,7 +50,7 @@ class HomePage extends StatelessWidget {
                     ],
                   ),
                   onTap: () {
-                    _showTaskDetailsDialog(context, task, index);
+                    showTaskDetailsDialog(context, task, index);
                   },
                 ),
               );
@@ -129,102 +129,5 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-
-  void _showTaskDetailsDialog(BuildContext context, Task task, int index) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          contentPadding: const EdgeInsets.all(15.0), // Padding รอบๆ เนื้อหาภายใน AlertDialog
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5.0), // กำหนดมุมโค้งมนของ AlertDialog
-          ),
-          content: Container(
-            width: MediaQuery.of(context).size.width * 0.9, // ความกว้าง 90% ของหน้าจอ
-            height: MediaQuery.of(context).size.height * 0.2, // ความสูง 20% ของหน้าจอ
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  task.title,
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  task.description,
-                  style: TextStyle(fontSize: 18),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(15.0), // Padding รอบๆ ปุ่ม
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: IconButton(
-                      icon: Icon(Icons.edit),
-                      onPressed: () {
-                        Navigator.of(context).pop(); // ปิด Dialog
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EditTaskPage(
-                              task: task,
-                              index: index,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_back),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: IconButton(
-                      icon: Icon(Icons.delete, color: Colors.red),
-                      onPressed: () {
-                        Provider.of<TaskProvider>(context, listen: false)
-                            .removeTask(task);
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    left: MediaQuery.of(context).size.width * 0.33, // ตำแหน่งตรงกลางล่าง
-                    child: TextButton(
-                      onPressed: () {
-                        Provider.of<TaskProvider>(context, listen: false)
-                            .markTaskAsCompleted(task);
-                        Navigator.of(context).pop();
-                      },
-                      child: Text('Mark as Completed'),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-
 
 }
