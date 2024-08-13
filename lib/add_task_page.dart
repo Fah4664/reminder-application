@@ -284,7 +284,10 @@ class AddTaskPageState extends State<AddTaskPage> {
                                         style: TextButton.styleFrom(
                                           padding: const EdgeInsets.all(3.0),
                                           backgroundColor:
-                                              const Color(0xFFe0e0e0),
+                                              const Color(0xFFd0d0d0),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5.0), // กำหนดความโค้งของขอบที่นี่
+                                          ),
                                         ),
                                         child: Text(
                                           startDate == null
@@ -292,7 +295,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                                                   .format(DateTime.now())
                                               : DateFormat('yyyy-MM-dd')
                                                   .format(startDate!),
-                                          style: const TextStyle(fontSize: 16),
+                                          style: const TextStyle(fontSize: 16, color: Color(0xFF000000)),
                                         ),
                                       ),
                                     ),
@@ -311,13 +314,16 @@ class AddTaskPageState extends State<AddTaskPage> {
                                         style: TextButton.styleFrom(
                                           padding: const EdgeInsets.all(3.0),
                                           backgroundColor:
-                                              const Color(0xFFe0e0e0),
+                                              const Color(0xFFd0d0d0),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5.0), // กำหนดความโค้งของขอบที่นี่
+                                          ),
                                         ),
                                         child: Text(
                                           startTime == null
                                               ? 'Time'
                                               : startTime!.format(context),
-                                          style: const TextStyle(fontSize: 16),
+                                          style: const TextStyle(fontSize: 16, color: Color(0xFF000000)),
                                         ),
                                       ),
                                     ),
@@ -352,7 +358,10 @@ class AddTaskPageState extends State<AddTaskPage> {
                                         style: TextButton.styleFrom(
                                           padding: const EdgeInsets.all(3.0),
                                           backgroundColor:
-                                              const Color(0xFFe0e0e0),
+                                              const Color(0xFFd0d0d0),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5.0), // กำหนดความโค้งของขอบที่นี่
+                                          ),
                                         ),
                                         child: Text(
                                           endDate == null
@@ -360,7 +369,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                                                   .format(DateTime.now())
                                               : DateFormat('yyyy-MM-dd')
                                                   .format(endDate!),
-                                          style: const TextStyle(fontSize: 16),
+                                          style: const TextStyle(fontSize: 16, color: Color(0xFF000000)),
                                         ),
                                       ),
                                     ),
@@ -379,13 +388,16 @@ class AddTaskPageState extends State<AddTaskPage> {
                                         style: TextButton.styleFrom(
                                           padding: const EdgeInsets.all(3.0),
                                           backgroundColor:
-                                              const Color(0xFFe0e0e0),
+                                              const Color(0xFFd0d0d0),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5.0), // กำหนดความโค้งของขอบที่นี่
+                                          ),
                                         ),
                                         child: Text(
                                           endTime == null
                                               ? 'Time'
                                               : endTime!.format(context),
-                                          style: const TextStyle(fontSize: 16),
+                                          style: const TextStyle(fontSize: 16, color: Color(0xFF000000)),
                                         ),
                                       ),
                                     ),
@@ -415,7 +427,10 @@ class AddTaskPageState extends State<AddTaskPage> {
                                   }),
                                   style: TextButton.styleFrom(
                                     padding: const EdgeInsets.all(3.0),
-                                    backgroundColor: const Color(0xFFe0e0e0),
+                                    backgroundColor: const Color(0xFFd0d0d0),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.0), // กำหนดความโค้งของขอบที่นี่
+                                    ),
                                   ),
                                   child: Text(
                                     startDate == null
@@ -423,7 +438,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                                             .format(DateTime.now())
                                         : DateFormat('yyyy-MM-dd')
                                             .format(startDate!),
-                                    style: const TextStyle(fontSize: 16),
+                                    style: const TextStyle(fontSize: 16, color: Color(0xFF000000)),
                                   ),
                                 ),
                               ),
@@ -450,7 +465,11 @@ class AddTaskPageState extends State<AddTaskPage> {
                                   }),
                                   style: TextButton.styleFrom(
                                     padding: const EdgeInsets.all(3.0),
-                                    backgroundColor: const Color(0xFFe0e0e0),
+                                    backgroundColor: const Color(0xFFd0d0d0
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.0), // กำหนดความโค้งของขอบที่นี่
+                                    ),
                                   ),
                                   child: Text(
                                     endDate == null
@@ -458,7 +477,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                                             .format(DateTime.now())
                                         : DateFormat('yyyy-MM-dd')
                                             .format(endDate!),
-                                    style: const TextStyle(fontSize: 16),
+                                    style: const TextStyle(fontSize: 16, color: Color(0xFF000000)),
                                   ),
                                 ),
                               ),
