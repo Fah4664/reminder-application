@@ -6,9 +6,10 @@ import 'search_page.dart';
 import 'view_task_page.dart';
 import 'edit_task_page.dart';
 import '../models/task.dart';
-// import 'track_goals_box.dart'; // นำเข้า TrackGoals
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
