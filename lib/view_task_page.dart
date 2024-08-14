@@ -6,11 +6,13 @@ import 'home_page.dart';
 import 'search_page.dart'; // เพิ่มการนำเข้า SearchPage
 
 class ViewTasksPage extends StatelessWidget {
+  const ViewTasksPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('View Completed Tasks')),
+        title: const Center(child: Text('View Completed Tasks')),
       ),
       body: Consumer<TaskProvider>(
         builder: (context, taskProvider, child) {
@@ -21,7 +23,8 @@ class ViewTasksPage extends StatelessWidget {
               final task = completedTasks[index];
               return Card(
                 elevation: 4,
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                margin:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 child: ListTile(
                   title: Text(task.title),
                   subtitle: Text(task.description),
@@ -35,7 +38,7 @@ class ViewTasksPage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            SizedBox(width: 48), // ขนาดว่างด้านซ้าย
+            const SizedBox(width: 48), // ขนาดว่างด้านซ้าย
             IconButton(
               icon: Image.asset(
                 'assets/icons/target.png',
@@ -45,11 +48,11 @@ class ViewTasksPage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
+                  MaterialPageRoute(builder: (context) => const HomePage()),
                 );
               },
             ),
-            Spacer(),
+            const Spacer(),
             IconButton(
               icon: Image.asset(
                 'assets/icons/Add Task.png',
@@ -59,11 +62,11 @@ class ViewTasksPage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddTaskPage()),
+                  MaterialPageRoute(builder: (context) => const AddTaskPage()),
                 );
               },
             ),
-            Spacer(),
+            const Spacer(),
             IconButton(
               icon: Image.asset(
                 'assets/icons/search.png',
@@ -73,11 +76,11 @@ class ViewTasksPage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SearchPage()),
+                  MaterialPageRoute(builder: (context) => const SearchPage()),
                 );
               },
             ),
-            Spacer(),
+            const Spacer(),
             IconButton(
               icon: Image.asset(
                 'assets/icons/View Tasks.png',
@@ -88,7 +91,7 @@ class ViewTasksPage extends StatelessWidget {
                 // Stay on this page, do nothing
               },
             ),
-            SizedBox(width: 48), // ขนาดว่างด้านขวา
+            const SizedBox(width: 48), // ขนาดว่างด้านขวา
           ],
         ),
       ),
