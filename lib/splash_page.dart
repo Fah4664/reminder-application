@@ -3,7 +3,10 @@ import 'dart:async';
 import 'home_page.dart';
 
 class SplashPage extends StatefulWidget {
+  const SplashPage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _SplashPageState createState() => _SplashPageState();
 }
 
@@ -11,7 +14,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 3), () {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
@@ -26,7 +29,7 @@ class _SplashPageState extends State<SplashPage> {
       backgroundColor: Colors.white,
       body: Center(
         child: Image.asset(
-          'assets/images/reminderapp.png', // ระบุเส้นทางไฟล์ของรูปภาพ
+          'assets/images/reminder.png', // ระบุเส้นทางไฟล์ของรูปภาพ
           width: 200,
           height: 200,
         ),
