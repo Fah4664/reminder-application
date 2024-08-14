@@ -19,7 +19,7 @@ class ReminderApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: SplashPage(), // ใช้ const กับ SplashPage
+        home: const SplashPage(), // ใช้ const กับ SplashPage
       ),
     );
   }
