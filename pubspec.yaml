@@ -31,7 +31,7 @@ flutter:
     - assets/icons/Add Task.png
     - assets/icons/search.png
     - assets/icons/View Tasks.png
-    - assets/images/reminderapp.png
+    - assets/images/reminder.png
 
 
 url_launcher :
