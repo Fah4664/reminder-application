@@ -6,16 +6,13 @@ import 'providers/task_provider.dart';
 import 'add_task_page.dart';
 import 'search_page.dart';
 import 'view_task_page.dart';
-//import '../models/task.dart';
-import 'task_details_popup.dart';
+import 'edit_task_page.dart';
+import '../models/task.dart';
+// import 'track_goals_box.dart'; // นำเข้า TrackGoals
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
-<<<<<<< HEAD
 
-=======
-  
->>>>>>> 172720f084c26cb027451bd3143a2e7db1007b87
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +55,7 @@ class HomePage extends StatelessWidget {
                     ],
                   ),
                   onTap: () {
-                    showTaskDetailsDialog(context, task, index);
+                    _showTaskDetailsDialog(context, task, index);
                   },
                 ),
               );
@@ -138,7 +135,6 @@ class HomePage extends StatelessWidget {
     );
   }
 
-<<<<<<< HEAD
   void _showTaskDetailsDialog(BuildContext context, Task task, int index) {
     showDialog(
       context: context,
@@ -239,6 +235,4 @@ class HomePage extends StatelessWidget {
       },
     );
   }
-=======
->>>>>>> 172720f084c26cb027451bd3143a2e7db1007b87
 }
