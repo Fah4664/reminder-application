@@ -7,10 +7,13 @@ class EditTaskPage extends StatefulWidget {
   final Task task;
   final int index; // เพิ่มพารามิเตอร์ดัชนี
 
-  EditTaskPage(
-      {required this.task, required this.index}); // อัปเดตคอนสตรัคเตอร์
+  const EditTaskPage(
+      {super.key,
+      required this.task,
+      required this.index}); // อัปเดตคอนสตรัคเตอร์
 
   @override
+  // ignore: library_private_types_in_public_api
   _EditTaskPageState createState() => _EditTaskPageState();
 }
 
@@ -29,7 +32,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Edit Task')),
+        title: const Center(child: Text('Edit Task')),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -37,13 +40,13 @@ class _EditTaskPageState extends State<EditTaskPage> {
           children: <Widget>[
             TextField(
               controller: _titleController,
-              decoration: InputDecoration(labelText: 'Title'),
+              decoration: const InputDecoration(labelText: 'Title'),
             ),
             TextField(
               controller: _descriptionController,
-              decoration: InputDecoration(labelText: 'Description'),
+              decoration: const InputDecoration(labelText: 'Description'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -51,7 +54,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                   onPressed: () {
                     Navigator.of(context).pop(); // ปิดหน้า
                   },
-                  child: Text('Cancel'),
+                  child: const Text('Cancel'),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -65,7 +68,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                     );
                     Navigator.of(context).pop(); // ปิดหน้า
                   },
-                  child: Text('Update'),
+                  child: const Text('Update'),
                 ),
               ],
             ),
