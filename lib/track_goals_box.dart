@@ -8,12 +8,13 @@ class TrackGoals extends StatefulWidget {
 
   // คอนสตรัคเตอร์ของ TrackGoals
   const TrackGoals({
-    Key? key,
+    super.key,
     required this.progress,
     required this.onProgressChanged,
-  }) : super(key: key);
+  });
 
   @override
+  // ignore: library_private_types_in_public_api
   _TrackGoalsState createState() => _TrackGoalsState();
 }
 
@@ -49,7 +50,8 @@ class _TrackGoalsState extends State<TrackGoals> {
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center, // การจัดแนวเนื้อหาภายในแนวตั้ง
+        crossAxisAlignment:
+            CrossAxisAlignment.center, // การจัดแนวเนื้อหาภายในแนวตั้ง
         children: <Widget>[
           const Text(
             'Track Goals', // ข้อความที่แสดง
@@ -61,10 +63,13 @@ class _TrackGoalsState extends State<TrackGoals> {
               Expanded(
                 child: SliderTheme(
                   data: SliderThemeData(
-                    activeTrackColor: const Color(0xFF717273), // สีของแทร็กที่ใช้งานอยู่
-                    inactiveTrackColor: const Color(0xFFd0d0d0), // สีของแทร็กที่ไม่ใช้งาน
+                    activeTrackColor:
+                        const Color(0xFF717273), // สีของแทร็กที่ใช้งานอยู่
+                    inactiveTrackColor:
+                        const Color(0xFFd0d0d0), // สีของแทร็กที่ไม่ใช้งาน
                     thumbColor: const Color(0xFF4c4949), // สีของลูกบอลบน Slider
-                    overlayColor: const Color(0xFFd0d0d0).withAlpha(30), // สีของ overlay บน Slider เมื่อจับ
+                    overlayColor: const Color(0xFFd0d0d0)
+                        .withAlpha(30), // สีของ overlay บน Slider เมื่อจับ
                     trackHeight: 10.0, // ความสูงของแทร็ก Slider
                   ),
                   child: Slider(
@@ -76,13 +81,15 @@ class _TrackGoalsState extends State<TrackGoals> {
                       setState(() {
                         // อัปเดตค่า _sliderValue และแจ้งการเปลี่ยนแปลงไปยังพาเรนต์
                         _sliderValue = value;
-                        widget.onProgressChanged(value / 100.0); // แจ้งพาเรนต์ด้วยค่าที่ถูกปรับเป็นช่วง 0-1
+                        widget.onProgressChanged(value /
+                            100.0); // แจ้งพาเรนต์ด้วยค่าที่ถูกปรับเป็นช่วง 0-1
                       });
                     },
                   ),
                 ),
               ),
-              const SizedBox(width: 10), // ระยะห่างระหว่าง Slider กับข้อความเปอร์เซ็นต์
+              const SizedBox(
+                  width: 10), // ระยะห่างระหว่าง Slider กับข้อความเปอร์เซ็นต์
               Text(
                 '${_sliderValue.toStringAsFixed(0)}%', // แสดงเปอร์เซ็นต์ที่ได้จาก Slider
                 style: const TextStyle(fontSize: 16), // ขนาดตัวอักษร
