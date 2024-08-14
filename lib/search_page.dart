@@ -146,7 +146,8 @@ class _SearchPageState extends State<SearchPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ViewTasksPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const ViewTasksPage()),
                 );
               },
             ),
