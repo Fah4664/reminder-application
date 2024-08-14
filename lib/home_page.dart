@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/task_provider.dart';
@@ -9,6 +11,8 @@ import '../models/task.dart';
 // import 'track_goals_box.dart'; // นำเข้า TrackGoals
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +34,9 @@ class HomePage extends StatelessWidget {
               final task = taskProvider.tasks[index];
               return Card(
                 elevation: 4,
-                color: task.color ?? const Color(0xFFede3e3), // ใช้สีของงาน หรือสีเริ่มต้นถ้าไม่ได้เลือกสี
+                color: task.color ??
+                    const Color(
+                        0xFFede3e3), // ใช้สีของงาน หรือสีเริ่มต้นถ้าไม่ได้เลือกสี
                 margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                 child: ListTile(
                   title: Column(
@@ -71,11 +77,11 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
+                  MaterialPageRoute(builder: (context) => const HomePage()),
                 );
               },
             ),
-            Spacer(),
+            const Spacer(),
             IconButton(
               icon: Image.asset(
                 'assets/icons/Add Task.png',
@@ -85,7 +91,7 @@ class HomePage extends StatelessWidget {
               onPressed: () async {
                 final newTask = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddTaskPage()),
+                  MaterialPageRoute(builder: (context) => const AddTaskPage()),
                 );
 
                 if (newTask != null) {
@@ -94,7 +100,7 @@ class HomePage extends StatelessWidget {
                 }
               },
             ),
-            Spacer(),
+            const Spacer(),
             IconButton(
               icon: Image.asset(
                 'assets/icons/search.png',
@@ -108,7 +114,7 @@ class HomePage extends StatelessWidget {
                 );
               },
             ),
-            Spacer(),
+            const Spacer(),
             IconButton(
               icon: Image.asset(
                 'assets/icons/View Tasks.png',
@@ -122,7 +128,7 @@ class HomePage extends StatelessWidget {
                 );
               },
             ),
-            SizedBox(width: 48), // ขนาดว่างด้านขวา
+            const SizedBox(width: 48), // ขนาดว่างด้านขวา
           ],
         ),
       ),
@@ -134,25 +140,30 @@ class HomePage extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          contentPadding: const EdgeInsets.all(15.0), // Padding รอบๆ เนื้อหาภายใน AlertDialog
+          contentPadding: const EdgeInsets.all(
+              15.0), // Padding รอบๆ เนื้อหาภายใน AlertDialog
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5.0), // กำหนดมุมโค้งมนของ AlertDialog
+            borderRadius:
+                BorderRadius.circular(5.0), // กำหนดมุมโค้งมนของ AlertDialog
           ),
-          content: Container(
-            width: MediaQuery.of(context).size.width * 0.9, // ความกว้าง 90% ของหน้าจอ
-            height: MediaQuery.of(context).size.height * 0.2, // ความสูง 20% ของหน้าจอ
+          content: SizedBox(
+            width: MediaQuery.of(context).size.width *
+                0.9, // ความกว้าง 90% ของหน้าจอ
+            height: MediaQuery.of(context).size.height *
+                0.2, // ความสูง 20% ของหน้าจอ
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
                   task.title,
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 22, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
                   task.description,
-                  style: TextStyle(fontSize: 18),
+                  style: const TextStyle(fontSize: 18),
                 ),
               ],
             ),
@@ -166,7 +177,7 @@ class HomePage extends StatelessWidget {
                     top: 0,
                     right: 0,
                     child: IconButton(
-                      icon: Icon(Icons.edit),
+                      icon: const Icon(Icons.edit),
                       onPressed: () {
                         Navigator.of(context).pop(); // ปิด Dialog
                         Navigator.push(
@@ -185,7 +196,7 @@ class HomePage extends StatelessWidget {
                     bottom: 0,
                     left: 0,
                     child: IconButton(
-                      icon: Icon(Icons.arrow_back),
+                      icon: const Icon(Icons.arrow_back),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
@@ -195,7 +206,7 @@ class HomePage extends StatelessWidget {
                     bottom: 0,
                     right: 0,
                     child: IconButton(
-                      icon: Icon(Icons.delete, color: Colors.red),
+                      icon: const Icon(Icons.delete, color: Colors.red),
                       onPressed: () {
                         Provider.of<TaskProvider>(context, listen: false)
                             .removeTask(task);
@@ -205,14 +216,15 @@ class HomePage extends StatelessWidget {
                   ),
                   Positioned(
                     bottom: 0,
-                    left: MediaQuery.of(context).size.width * 0.33, // ตำแหน่งตรงกลางล่าง
+                    left: MediaQuery.of(context).size.width *
+                        0.33, // ตำแหน่งตรงกลางล่าง
                     child: TextButton(
                       onPressed: () {
                         Provider.of<TaskProvider>(context, listen: false)
                             .markTaskAsCompleted(task);
                         Navigator.of(context).pop();
                       },
-                      child: Text('Mark as Completed'),
+                      child: const Text('Mark as Completed'),
                     ),
                   ),
                 ],
@@ -223,7 +235,4 @@ class HomePage extends StatelessWidget {
       },
     );
   }
-
-
-
 }
