@@ -7,12 +7,15 @@ import 'view_task_page.dart';
 import 'home_page.dart';
 
 class SearchPage extends StatefulWidget {
+  const SearchPage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _SearchPageState createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   String searchQuery = '';
 
   @override
@@ -36,7 +39,7 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -48,7 +51,7 @@ class _SearchPageState extends State<SearchPage> {
           ),
           child: TextField(
             controller: _searchController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'Search...',
               border: InputBorder.none,
               prefixIcon: Icon(Icons.search),
@@ -68,7 +71,7 @@ class _SearchPageState extends State<SearchPage> {
           }).toList();
 
           return results.isEmpty
-              ? Center(
+              ? const Center(
                   child: Text(
                     'No tasks found',
                     style: TextStyle(fontSize: 18, color: Colors.grey),
@@ -94,7 +97,7 @@ class _SearchPageState extends State<SearchPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            SizedBox(width: 48), // ขนาดว่างด้านซ้าย
+            const SizedBox(width: 48), // ขนาดว่างด้านซ้าย
             IconButton(
               icon: Image.asset(
                 'assets/icons/target.png',
@@ -104,11 +107,11 @@ class _SearchPageState extends State<SearchPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
+                  MaterialPageRoute(builder: (context) => const HomePage()),
                 );
               },
             ),
-            Spacer(),
+            const Spacer(),
             IconButton(
               icon: Image.asset(
                 'assets/icons/Add Task.png',
@@ -118,11 +121,11 @@ class _SearchPageState extends State<SearchPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddTaskPage()),
+                  MaterialPageRoute(builder: (context) => const AddTaskPage()),
                 );
               },
             ),
-            Spacer(),
+            const Spacer(),
             IconButton(
               icon: Image.asset(
                 'assets/icons/search.png',
@@ -133,7 +136,7 @@ class _SearchPageState extends State<SearchPage> {
                 // Stay on this page, do nothing
               },
             ),
-            Spacer(),
+            const Spacer(),
             IconButton(
               icon: Image.asset(
                 'assets/icons/View Tasks.png',
@@ -147,7 +150,7 @@ class _SearchPageState extends State<SearchPage> {
                 );
               },
             ),
-            SizedBox(width: 48), // ขนาดว่างด้านขวา
+            const SizedBox(width: 48), // ขนาดว่างด้านขวา
           ],
         ),
       ),
