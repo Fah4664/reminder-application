@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/task_provider.dart';
@@ -89,7 +88,7 @@ class HomePage extends StatelessWidget {
               onPressed: () async {
                 final newTask = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const AddTaskPage()),
+                  MaterialPageRoute(builder: (context) => AddTaskPage()),
                 );
 
                 if (newTask != null) {
