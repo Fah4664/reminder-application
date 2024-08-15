@@ -4,7 +4,7 @@ import 'providers/task_provider.dart';
 import 'edit_task_page.dart';
 import '../models/task.dart';
 
-void showTaskDetailsDialog(BuildContext context, Task task, int index) {
+void showTaskDetailsPopup(BuildContext context, Task task, int index) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
