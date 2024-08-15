@@ -4,21 +4,21 @@ import 'package:flutter/material.dart';
 class TrackGoals extends StatefulWidget {
   // รับค่าความก้าวหน้า (progress) และฟังก์ชันที่ใช้ในการแจ้งการเปลี่ยนแปลงของความก้าวหน้า
   final double progress;
-  final ValueChanged<double> onProgressChanged;
+  final ValueChanged<double> onProgressUpdated;
 
   // คอนสตรัคเตอร์ของ TrackGoals
   const TrackGoals({
     super.key,
     required this.progress,
-    required this.onProgressChanged,
+    required this.onProgressUpdated,
   });
 
   @override
   // ignore: library_private_types_in_public_api
-  _TrackGoalsState createState() => _TrackGoalsState();
+  TrackGoalsState createState() => TrackGoalsState();
 }
 
-class _TrackGoalsState extends State<TrackGoals> {
+class TrackGoalsState extends State<TrackGoals> {
   // ตัวแปรสำหรับเก็บค่าของ Slider
   late double _sliderValue;
 
@@ -81,7 +81,7 @@ class _TrackGoalsState extends State<TrackGoals> {
                       setState(() {
                         // อัปเดตค่า _sliderValue และแจ้งการเปลี่ยนแปลงไปยังพาเรนต์
                         _sliderValue = value;
-                        widget.onProgressChanged(value /
+                        widget.onProgressUpdated(value /
                             100.0); // แจ้งพาเรนต์ด้วยค่าที่ถูกปรับเป็นช่วง 0-1
                       });
                     },
