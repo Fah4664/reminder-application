@@ -27,16 +27,14 @@ class HomePage extends StatelessWidget {
               child: Text('No tasks added yet.'),
             );
           }
-
+       
           return ListView.builder(
             itemCount: taskProvider.tasks.length,
             itemBuilder: (context, index) {
               final task = taskProvider.tasks[index];
               return Card(
                 elevation: 4,
-                color: task.color ??
-                    const Color(
-                        0xFFede3e3), // ใช้สีของงาน หรือสีเริ่มต้นถ้าไม่ได้เลือกสี
+                color: task.color ?? const Color(0xFFede3e3),
                 margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                 child: ListTile(
                   title: Column(
@@ -47,11 +45,6 @@ class HomePage extends StatelessWidget {
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 5),
-                      Text(
-                        '${task.startDateTime?.day}/${task.startDateTime?.month}/${task.startDateTime?.year} - ${task.endDateTime?.day}/${task.endDateTime?.month}/${task.endDateTime?.year}',
-                        style: const TextStyle(color: Colors.grey),
-                      ),
-                      const SizedBox(height: 10),
                     ],
                   ),
                   onTap: () {
@@ -61,6 +54,11 @@ class HomePage extends StatelessWidget {
               );
             },
           );
+
+
+
+
+          
         },
       ),
       bottomNavigationBar: BottomAppBar(
