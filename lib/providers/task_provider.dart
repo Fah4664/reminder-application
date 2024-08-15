@@ -16,11 +16,23 @@ class TaskProvider with ChangeNotifier {
 
   void updateTask(int index, Task updatedTask) {
     if (index >= 0 && index < _tasks.length) {
-      _tasks[index] = updatedTask;
+      Task existingTask = _tasks[index];
+      _tasks[index] = existingTask.copyWith(
+        title: updatedTask.title,
+        description: updatedTask.description,
+        isAllDay: updatedTask.isAllDay,
+        startDateTime: updatedTask.startDateTime,
+        endDateTime: updatedTask.endDateTime,
+        color: updatedTask.color,
+        goalProgress: updatedTask.goalProgress,
+      );
       saveAllTasks();
       notifyListeners();
+    } else {
+      print('Invalid index: $index');
     }
   }
+
 
   void removeTask(Task task) {
     _tasks.remove(task);
