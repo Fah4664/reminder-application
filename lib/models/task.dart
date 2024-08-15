@@ -27,7 +27,7 @@ class Task {
     DateTime? startDateTime,
     DateTime? endDateTime,
     Color? color,
-    double? goalProgress, // เปลี่ยนที่นี่
+    double? goalProgress, 
   }) {
     return Task(
       title: title ?? this.title,
@@ -36,7 +36,7 @@ class Task {
       startDateTime: startDateTime ?? this.startDateTime,
       endDateTime: endDateTime ?? this.endDateTime,
       color: color ?? this.color,
-      goalProgress: goalProgress ?? this.goalProgress, // เปลี่ยนที่นี่
+      goalProgress: goalProgress ?? this.goalProgress, 
     );
   }
 }
