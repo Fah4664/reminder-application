@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/task_provider.dart';
 import 'edit_task_page.dart';
 import '../models/task.dart';
+
 
 void showTaskDetailsDialog(BuildContext context, Task task, int index) {
   showDialog(
@@ -80,6 +80,7 @@ void showTaskDetailsDialog(BuildContext context, Task task, int index) {
               ),
             ],
           ),
+
         ],
 
 
@@ -87,3 +88,5 @@ void showTaskDetailsDialog(BuildContext context, Task task, int index) {
     },
   );
 }
+
+            
