@@ -88,7 +88,7 @@ class HomePage extends StatelessWidget {
               onPressed: () async {
                 final newTask = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddTaskPage()),
+                  MaterialPageRoute(builder: (context) => const AddTaskPage()),
                 );
 
                 if (newTask != null) {
@@ -107,7 +107,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SearchPage()),
+                  MaterialPageRoute(builder: (context) => const SearchPage()),
                 );
               },
             ),
@@ -121,7 +121,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ViewTasksPage()),
+                  MaterialPageRoute(builder: (context) => const ViewTasksPage()),
                 );
               },
             ),
