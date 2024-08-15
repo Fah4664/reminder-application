@@ -1,6 +1,6 @@
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-//import 'package:logger/logger.dart';
 import 'providers/task_provider.dart';
 import 'edit_task_page.dart';
 import '../models/task.dart';
@@ -15,39 +15,15 @@ void showTaskDetailsDialog(BuildContext context, Task task, int index) {
           borderRadius: BorderRadius.circular(5.0),
         ),
         content: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.8,
-          height: MediaQuery.of(context).size.height * 0.3,
+          width: MediaQuery.of(context).size.width * 0.8, // ปรับขนาดให้เหมาะสม
+          height: MediaQuery.of(context).size.height * 0.3, // ปรับขนาดให้เหมาะสม
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    task.title,
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () {
-                      Navigator.of(context).pop(); // ปิด Dialog
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EditTaskPage(
-                            task: task,
-                            index: index,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-
-                ],
+              Text(
+                task.title,
+                style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
               Text(
@@ -60,40 +36,53 @@ void showTaskDetailsDialog(BuildContext context, Task task, int index) {
         actions: <Widget>[
           Row(
             children: [
-              IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              const Spacer(),
+              // ปุ่มที่อยู่ทางซ้าย
               TextButton(
                 onPressed: () {
-                  Provider.of<TaskProvider>(context, listen: false).markTaskAsCompleted(task);
+                  Navigator.of(context).pop();
+                  },
+                child: const Text('Close'),
+              ),
+              const Spacer(), // เพิ่มช่องว่างระหว่างปุ่ม
+              // ปุ่มที่อยู่ตรงกลาง
+              TextButton(
+                onPressed: () {
+                  Provider.of<TaskProvider>(context, listen: false)
+                      .markTaskAsCompleted(task);
                   Navigator.of(context).pop();
                 },
-                style: TextButton.styleFrom(
-                  foregroundColor: const Color(0xFF000000), // กำหนดสีข้อความ
-                  backgroundColor: const Color(0xFFd0d0d0), // กำหนดสีพื้นหลังของปุ่ม
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0), // กำหนดความโค้งของมุม
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.5), // กำหนดพื้นที่ภายในปุ่ม
-                ),
                 child: const Text('Mark as Completed'),
               ),
-              const Spacer(),
+              const Spacer(), // เพิ่มช่องว่างระหว่างปุ่ม
+              // ปุ่มที่อยู่ทางขวา
               IconButton(
-                icon: const Icon(Icons.delete, color: Color(0xFF000000)),
+                icon: const Icon(Icons.edit),
                 onPressed: () {
-                  Provider.of<TaskProvider>(context, listen: false).removeTask(task);
+                  Navigator.of(context).pop(); // ปิด Dialog
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditTaskPage(
+                        task: task,
+                        index: index,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.delete, color: Colors.red),
+                onPressed: () {
+                  Provider.of<TaskProvider>(context, listen: false)
+                      .removeTask(task);
                   Navigator.of(context).pop();
                 },
               ),
             ],
-          )
-
+          ),
         ],
+
+
       );
     },
   );
