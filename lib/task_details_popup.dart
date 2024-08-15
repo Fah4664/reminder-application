@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+//import 'package:logger/logger.dart';
 import 'providers/task_provider.dart';
 import 'edit_task_page.dart';
 import '../models/task.dart';
@@ -33,7 +34,7 @@ void showTaskDetailsDialog(BuildContext context, Task task, int index) {
                   IconButton(
                     icon: const Icon(Icons.edit),
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop(); // ปิด Dialog
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -45,6 +46,7 @@ void showTaskDetailsDialog(BuildContext context, Task task, int index) {
                       );
                     },
                   ),
+
                 ],
               ),
               const SizedBox(height: 10),
