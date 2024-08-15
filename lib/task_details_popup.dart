@@ -30,22 +30,18 @@ void showTaskDetailsPopup(BuildContext context, Task task, int index) {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  IconButton(
+                  IconButton( // แสดงหน้าจอการแก้ไข task หรือทำการอัปเดต task ตรงนี้
                     icon: const Icon(Icons.edit),
                     onPressed: () {
                       Navigator.of(context).pop(); // ปิด Dialog
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => EditTaskPage(
-                            task: task,
-                            index: index,
-                          ),
+                          builder: (context) => EditTaskPage(task: task),
                         ),
                       );
                     },
                   ),
-
                 ],
               ),
               const SizedBox(height: 10),
@@ -91,7 +87,6 @@ void showTaskDetailsPopup(BuildContext context, Task task, int index) {
               ),
             ],
           )
-
         ],
       );
     },
