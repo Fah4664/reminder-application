@@ -62,7 +62,7 @@ class ViewTasksPage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const AddTaskPage()),
+                  MaterialPageRoute(builder: (context) => AddTaskPage()),
                 );
               },
             ),
