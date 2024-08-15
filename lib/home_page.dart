@@ -48,7 +48,7 @@ class HomePage extends StatelessWidget {
                     ],
                   ),
                   onTap: () {
-                    showTaskDetailsDialog(context, task, index);
+                    showTaskDetailsPopup(context, task, index);
                   },
                 ),
               );
