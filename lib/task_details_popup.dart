@@ -48,7 +48,7 @@ void showTaskDetailsPopup(BuildContext context, Task task, int index) {
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
               Text(
                 task.description,
                 style: const TextStyle(
@@ -56,7 +56,7 @@ void showTaskDetailsPopup(BuildContext context, Task task, int index) {
                   color: Color(0xFF000000), // เปลี่ยนสีข้อความให้เหมาะสมกับพื้นหลัง
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
               Container(
                 width: 200,
                 height: 15,
@@ -76,7 +76,7 @@ void showTaskDetailsPopup(BuildContext context, Task task, int index) {
                   ),
                 ),
               ),
-              const SizedBox(height: 5),
+              const SizedBox(height: 10),
               Text(
                 formatDateRange(task.startDateTime, task.endDateTime),
                 style: const TextStyle(fontSize: 16, color: Color(0xFF000000)), // เปลี่ยนสีข้อความให้เหมาะสมกับพื้นหลัง
