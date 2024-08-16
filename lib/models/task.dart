@@ -9,7 +9,7 @@ class Task {
   DateTime? endDateTime;
   String notificationOption;
   Color? color;
-  double goalProgress;
+  double sliderValue;
 
   Task({
     required this.id,
@@ -20,11 +20,11 @@ class Task {
     required this.endDateTime,
     this.notificationOption = 'None',
     required this.color,
-    required this.goalProgress,
+    required this.sliderValue,
   });
 
   // Getter สำหรับตรวจสอบสถานะว่า task เสร็จสมบูรณ์หรือไม่
-  bool get isCompleted => goalProgress >= 100.0;
+  bool get isCompleted => sliderValue >= 100.0;
 
   Task copyWith({
     String? id,
@@ -35,7 +35,7 @@ class Task {
     DateTime? endDateTime,
     String ? notificationOption,
     Color? color,
-    double? goalProgress,
+    double? sliderValue,
   }) {
     return Task(
       id: id ?? this.id,
@@ -46,7 +46,7 @@ class Task {
       endDateTime: endDateTime ?? this.endDateTime,
       notificationOption: notificationOption ?? this.notificationOption,
       color: color ?? this.color,
-      goalProgress: goalProgress ?? this.goalProgress,
+      sliderValue: sliderValue ?? this.sliderValue,
     );
   }
 }
