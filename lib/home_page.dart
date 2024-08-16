@@ -40,9 +40,30 @@ class HomePage extends StatelessWidget {
                     children: [
                       Text(
                         task.title,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 5),
+                      Container(
+                        width: 200,
+                        height: 15,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFd0d0d0),
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            width: (MediaQuery.of(context).size.width - 100) * (task.sliderValue * 100 / 150),
+                            height: 15,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF717273),
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                          ),
+                        ),
+                      )
+
+
                     ],
                   ),
                   onTap: () {
