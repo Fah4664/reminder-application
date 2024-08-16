@@ -290,13 +290,13 @@ class TaskFormState extends State<TaskForm> {
                                           startDate == null
                                               ? DateFormat('yyyy-MM-dd').format(DateTime.now())
                                               : DateFormat('yyyy-MM-dd').format(startDate!),
-                                          style: const TextStyle(fontSize: 16, color: Color(0xFF000000)),
+                                          style: const TextStyle(fontSize: 15, color: Color(0xFF000000)),
                                         ),
                                       ),
                                     ),
                                     const SizedBox(width: 10),
                                     SizedBox(
-                                      width: 60,
+                                      width: 65,
                                       height: 35,
                                       child: TextButton(
                                         onPressed: () => selectTime(context, true, (timeOfDay) {
@@ -313,7 +313,7 @@ class TaskFormState extends State<TaskForm> {
                                         ),
                                         child: Text(
                                           startTime == null ? 'Time' : startTime!.format(context),
-                                          style: const TextStyle(fontSize: 16, color: Color(0xFF000000)),
+                                          style: const TextStyle(fontSize: 15, color: Color(0xFF000000)),
                                         ),
                                       ),
                                     ),
@@ -354,13 +354,13 @@ class TaskFormState extends State<TaskForm> {
                                           endDate == null
                                               ? DateFormat('yyyy-MM-dd').format(DateTime.now())
                                               : DateFormat('yyyy-MM-dd').format(endDate!),
-                                          style: const TextStyle(fontSize: 16, color: Color(0xFF000000)),
+                                          style: const TextStyle(fontSize: 15, color: Color(0xFF000000)),
                                         ),
                                       ),
                                     ),
                                     const SizedBox(width: 10),
                                     SizedBox(
-                                      width: 60,
+                                      width: 65,
                                       height: 35,
                                       child: TextButton(
                                         onPressed: () => selectTime(context, false, (timeOfDay) {
@@ -377,7 +377,7 @@ class TaskFormState extends State<TaskForm> {
                                         ),
                                         child: Text(
                                           endTime == null ? 'Time' : endTime!.format(context),
-                                          style: const TextStyle(fontSize: 16, color: Color(0xFF000000)),
+                                          style: const TextStyle(fontSize: 15, color: Color(0xFF000000)),
                                         ),
                                       ),
                                     ),
@@ -414,7 +414,7 @@ class TaskFormState extends State<TaskForm> {
                                     startDate == null
                                         ? DateFormat('yyyy-MM-dd').format(DateTime.now())
                                         : DateFormat('yyyy-MM-dd').format(startDate!),
-                                    style: const TextStyle(fontSize: 16, color: Color(0xFF000000)),
+                                    style: const TextStyle(fontSize: 15, color: Color(0xFF000000)),
                                   ),
                                 ),
                               ),
@@ -448,7 +448,7 @@ class TaskFormState extends State<TaskForm> {
                                     endDate == null
                                         ? DateFormat('yyyy-MM-dd').format(DateTime.now())
                                         : DateFormat('yyyy-MM-dd').format(endDate!),
-                                    style: const TextStyle(fontSize: 16, color: Color(0xFF000000)),
+                                    style: const TextStyle(fontSize: 15, color: Color(0xFF000000)),
                                   ),
                                 ),
                               ),
