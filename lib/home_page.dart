@@ -48,8 +48,7 @@ class HomePage extends StatelessWidget {
                       const SizedBox(height: 5),
                       Text(
                         formatDateRange(task.startDateTime, task.endDateTime),
-                        style: const TextStyle(
-                            fontSize: 16, color: Color.fromRGBO(0, 0, 0, 1)),
+                        style: const TextStyle(fontSize: 16, color: Color(0xFF000000)), // เปลี่ยนสีข้อความให้เหมาะสมกับพื้นหลัง
                       ),
                       const SizedBox(height: 5),
                       Container(
@@ -72,15 +71,17 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
                       ),
+
                     ],
                   ),
                   onTap: () {
-                    showTaskDetailsPopup(context, task, index);
+                    showTaskDetailsPopup(context, task, index); // ใช้สีจาก Task
                   },
                 ),
               );
             },
           );
+          
         },
       ),
       bottomNavigationBar: BottomAppBar(
