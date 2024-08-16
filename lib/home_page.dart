@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/task_provider.dart';
+//import 'package:intl/intl.dart';
 import 'add_task_page.dart';
 import 'search_page.dart';
 import 'view_task_page.dart';
 //import 'edit_task_page.dart';
 //import '../models/task.dart';
 import 'task_details_popup.dart';
+import 'utils/date_utils.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -43,6 +45,12 @@ class HomePage extends StatelessWidget {
                         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 5),
+                      Text(
+                        formatDateRange(task.startDateTime, task.endDateTime),
+                        style: const TextStyle(fontSize: 16, color: Color(0xFF000000)),
+                      ),
+
+                      const SizedBox(height: 5),
                       Container(
                         width: 200,
                         height: 15,
@@ -61,8 +69,7 @@ class HomePage extends StatelessWidget {
                             ),
                           ),
                         ),
-                      )
-
+                      ),
 
                     ],
                   ),
