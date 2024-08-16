@@ -14,7 +14,7 @@ class NotificationPage extends StatelessWidget {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     final String taskName = args['taskName'];
     final String taskDetails = args['taskDetails'];
-    final String notificationTime = args['notificationTime'];
+    final DateTime eventDateTime = DateTime.parse(args['eventDateTime']); // สมมติว่าเป็นรูปแบบ ISO8601
 
     return Scaffold(
       appBar: AppBar(
@@ -23,7 +23,18 @@ class NotificationPage extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            _showNotification(context, taskName, taskDetails, notificationTime);
+            // รับตัวเลือกการแจ้งเตือนที่เลือก
+            final String selectedNotificationOption = args['notificationTime'] ?? 'None';
+            // คำนวณเวลาการแจ้งเตือนตามตัวเลือกที่เลือก
+            DateTime notificationDateTime = _calculateNotificationTime(eventDateTime, selectedNotificationOption);
+            
+            // แสดงการแจ้งเตือนเฉพาะเมื่อเวลาที่คำนวณไว้ในอนาคต
+            if (notificationDateTime.isAfter(DateTime.now())) {
+              _showNotification(context, taskName, taskDetails, notificationDateTime);
+            } else {
+              // จัดการกรณีที่เวลาการแจ้งเตือนอยู่ในอดีต
+              print('เวลาการแจ้งเตือนอยู่ในอดีต');
+            }
           },
           child: const Text('Show Notification'),
         ),
@@ -31,8 +42,45 @@ class NotificationPage extends StatelessWidget {
     );
   }
 
+  DateTime _calculateNotificationTime(DateTime eventDateTime, String option) {
+    Duration offset;
+    switch (option) {
+      case '5 minutes before':
+        offset = Duration(minutes: 5);
+        break;
+      case '10 minutes before':
+        offset = Duration(minutes: 10);
+        break;
+      case '15 minutes before':
+        offset = Duration(minutes: 15);
+        break;
+      case '30 minutes before':
+        offset = Duration(minutes: 30);
+        break;
+      case '1 hour before':
+        offset = Duration(hours: 1);
+        break;
+      case '2 hours before':
+        offset = Duration(hours: 2);
+        break;
+      case '1 day before':
+        offset = Duration(days: 1);
+        break;
+      case '2 days before':
+        offset = Duration(days: 2);
+        break;
+      case '1 week before':
+        offset = Duration(days: 7);
+        break;
+      case 'At time of event':
+      default:
+        return eventDateTime; // ไม่มีการลบเวลา
+    }
+    return eventDateTime.subtract(offset);
+  }
+
   Future<void> _showNotification(BuildContext context, String taskName,
-      String taskDetails, String notificationTime) async {
+      String taskDetails, DateTime notificationDateTime) async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
       'your_channel_id',
@@ -44,10 +92,15 @@ class NotificationPage extends StatelessWidget {
     const NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
     );
-    await flutterLocalNotificationsPlugin.show(
-      0,
+
+    // ใช้รหัสเฉพาะสำหรับแต่ละการแจ้งเตือน
+    final int notificationId = DateTime.now().millisecondsSinceEpoch.remainder(10000);
+
+    await flutterLocalNotificationsPlugin.schedule(
+      notificationId,
       'Reminder',
-      'Task: $taskName\nDetails: $taskDetails\nNotification Time: $notificationTime',
+      'Task: $taskName\nDetails: $taskDetails',
+      notificationDateTime,
       platformChannelSpecifics,
       payload: 'item x',
     );
