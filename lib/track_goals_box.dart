@@ -20,13 +20,13 @@ class TrackGoals extends StatefulWidget {
 
 class TrackGoalsState extends State<TrackGoals> {
   // ตัวแปรสำหรับเก็บค่าของ Slider
-  late double _sliderValue;
+  late double sliderValue;
 
   @override
   void initState() {
     super.initState();
     // แปลงค่าความก้าวหน้า (progress) จากช่วง 0-1 ไปเป็นเปอร์เซ็นต์ (0-100)
-    _sliderValue = widget.progress * 100.0; // Convert to percentage
+    sliderValue = widget.progress * 100.0; // Convert to percentage
   }
 
   @override
@@ -73,16 +73,15 @@ class TrackGoalsState extends State<TrackGoals> {
                     trackHeight: 10.0, // ความสูงของแทร็ก Slider
                   ),
                   child: Slider(
-                    value: _sliderValue, // ค่าเริ่มต้นของ Slider
+                    value: sliderValue, // ค่าเริ่มต้นของ Slider
                     min: 0.0, // ค่าต่ำสุดของ Slider
                     max: 100.0, // ค่าสูงสุดของ Slider
                     divisions: 100, // จำนวนหน่วยที่แยก Slider
                     onChanged: (double value) {
                       setState(() {
                         // อัปเดตค่า _sliderValue และแจ้งการเปลี่ยนแปลงไปยังพาเรนต์
-                        _sliderValue = value;
-                        widget.onProgressUpdated(value /
-                            100.0); // แจ้งพาเรนต์ด้วยค่าที่ถูกปรับเป็นช่วง 0-1
+                        sliderValue = value;
+                        widget.onProgressUpdated(value / 100.0); // แจ้งพาเรนต์ด้วยค่าที่ถูกปรับเป็นช่วง 0-1
                       });
                     },
                   ),
@@ -91,7 +90,7 @@ class TrackGoalsState extends State<TrackGoals> {
               const SizedBox(
                   width: 10), // ระยะห่างระหว่าง Slider กับข้อความเปอร์เซ็นต์
               Text(
-                '${_sliderValue.toStringAsFixed(0)}%', // แสดงเปอร์เซ็นต์ที่ได้จาก Slider
+                '${sliderValue.toStringAsFixed(0)}%', // แสดงเปอร์เซ็นต์ที่ได้จาก Slider
                 style: const TextStyle(fontSize: 16), // ขนาดตัวอักษร
               ),
             ],
