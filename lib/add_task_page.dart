@@ -9,6 +9,7 @@ class AddTaskPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Task'),
+        automaticallyImplyLeading: false, // ปิดการแสดงปุ่มย้อนกลับ
       ),
       body: const Padding(
         padding: EdgeInsets.all(16.0),
