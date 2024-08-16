@@ -58,7 +58,8 @@ class TaskProvider with ChangeNotifier {
   void setNotificationOption(String taskId, String newNotificationOption) {
     final index = _tasks.indexWhere((task) => task.id == taskId);
     if (index != -1) {
-      final updatedTask = _tasks[index].copyWith(notificationOption: newNotificationOption);
+      final updatedTask =
+          _tasks[index].copyWith(notificationOption: newNotificationOption);
       _tasks[index] = updatedTask;
       saveAllTasks(); // บันทึกการเปลี่ยนแปลง
       notifyListeners(); // แจ้งให้ผู้ฟังทราบว่ามีการเปลี่ยนแปลง
