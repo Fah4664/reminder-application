@@ -35,9 +35,15 @@ class TaskFormState extends State<TaskForm> {
     super.initState();
     titleController = TextEditingController(text: widget.initialTask?.title ?? '');
     descriptionController = TextEditingController(text: widget.initialTask?.description ?? '');
-    startDate = widget.initialTask?.startDateTime ?? DateTime.now();
-    endDate = widget.initialTask?.endDateTime ?? DateTime.now();
     isAllDay = widget.initialTask?.isAllDay ?? false;
+    startDate = widget.initialTask?.startDateTime ?? DateTime.now();
+    startTime = widget.initialTask?.startDateTime != null
+        ? TimeOfDay.fromDateTime(widget.initialTask!.startDateTime!)
+        : TimeOfDay.now();
+    endDate = widget.initialTask?.endDateTime ?? DateTime.now();
+    endTime = widget.initialTask?.endDateTime != null
+        ? TimeOfDay.fromDateTime(widget.initialTask!.endDateTime!)
+        : TimeOfDay.now();
     selectedColor = widget.initialTask?.color ?? Colors.grey;
     notificationOption = widget.initialTask?.notificationOption ?? 'None';
     sliderValue = widget.initialTask?.sliderValue ?? 0.0; // กำหนดค่าเริ่มต้นให้กับ _progress ถ้าไม่มีค่าให้เป็น 0.0
