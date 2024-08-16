@@ -6,7 +6,7 @@ import 'add_task_page.dart';
 import 'search_page.dart';
 import 'view_task_page.dart';
 //import 'edit_task_page.dart';
-//import '../models/task.dart';
+import '../models/task.dart';
 import 'task_details_popup.dart';
 import 'utils/date_utils.dart';
 
@@ -31,7 +31,11 @@ class HomePage extends StatelessWidget {
           return ListView.builder(
             itemCount: taskProvider.tasks.length,
             itemBuilder: (context, index) {
-              final task = taskProvider.tasks[index];
+              // จัดเรียง task ตามวันที่สิ้นสุด
+              final sortedTasks = List<Task>.from(taskProvider.tasks)
+                ..sort((a, b) => a.endDateTime!.compareTo(b.endDateTime!));
+              final task = sortedTasks[index];
+
               return Card(
                 elevation: 4,
                 color: task.color ?? const Color(0xFFede3e3),
