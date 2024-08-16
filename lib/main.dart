@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/task_provider.dart';
 import 'splash_page.dart'; // เพิ่มการ import หน้าจอ SplashPage
+import 'notification_page.dart'; // เพิ่มการ import หน้าจอ NotificationPage
 
 void main() {
   runApp(const ReminderApp()); // ใช้ const กับ constructor
@@ -20,6 +21,9 @@ class ReminderApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: const SplashPage(), // ใช้ const กับ SplashPage
+        routes: {
+          '/notification': (context) => const NotificationPage(),
+        },
       ),
     );
   }
