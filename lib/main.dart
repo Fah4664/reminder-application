@@ -28,3 +28,35 @@ class ReminderApp extends StatelessWidget {
     );
   }
 }
+
+class PopupButton extends StatelessWidget {
+  const PopupButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () => _showPopup(context),
+      child: const Text('Show Popup'),
+    );
+  }
+
+  void _showPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Popup Title'),
+          content: const Text('This is a sample popup message.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
