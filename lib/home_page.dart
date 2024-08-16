@@ -42,14 +42,15 @@ class HomePage extends StatelessWidget {
                     children: [
                       Text(
                         task.title,
-                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 5),
                       Text(
                         formatDateRange(task.startDateTime, task.endDateTime),
-                        style: const TextStyle(fontSize: 16, color: Color(0xFF000000)),
+                        style: const TextStyle(
+                            fontSize: 16, color: Color.fromRGBO(0, 0, 0, 1)),
                       ),
-
                       const SizedBox(height: 5),
                       Container(
                         width: 200,
@@ -61,7 +62,8 @@ class HomePage extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Container(
-                            width: (MediaQuery.of(context).size.width - 100) * (task.sliderValue * 100 / 150),
+                            width: (MediaQuery.of(context).size.width - 100) *
+                                (task.sliderValue * 100 / 150),
                             height: 15,
                             decoration: BoxDecoration(
                               color: const Color(0xFF717273),
@@ -70,7 +72,6 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
                       ),
-
                     ],
                   ),
                   onTap: () {
