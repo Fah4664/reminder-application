@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-import 'package:logger/logger.dart';
+//import 'package:logger/logger.dart';
 import 'models/task.dart';
 import 'providers/task_provider.dart';
 import 'utils/date_time_utils.dart';
@@ -18,18 +18,19 @@ class TaskForm extends StatefulWidget {
   TaskFormState createState() => TaskFormState();
 }
 
+
 class TaskFormState extends State<TaskForm> {
   late TextEditingController titleController;
   late TextEditingController descriptionController;
   late TextEditingController progress; 
-  DateTime? startDate; // เพิ่มตัวแปร startDate
-  TimeOfDay? startTime; // เพิ่มตัวแปร startTime
-  DateTime? endDate; // เพิ่มตัวแปร endDate
-  TimeOfDay? endTime; // เพิ่มตัวแปร endTime
+  DateTime? startDate;
+  TimeOfDay? startTime;
+  DateTime? endDate;
+  TimeOfDay? endTime;
   late bool isAllDay; 
   late Color selectedColor; 
-  String notificationOption = 'None'; // ประกาศตัวแปรสำหรับเก็บค่าการแจ้งเตือน
-  double _progress = 0.0;  // ตัวแปรสำหรับเก็บค่าความก้าวหน้า (progress) ของ Slider
+  String? notificationOption;
+  double _progress = 0.0; 
 
   double get progressValue {
     final String progressString = progress.text;
@@ -39,15 +40,14 @@ class TaskFormState extends State<TaskForm> {
   @override
   void initState() {
     super.initState();
-    // ตรวจสอบว่า widget.initialTask ไม่เป็น null ก่อนเข้าถึงคุณสมบัติ
     titleController = TextEditingController(text: widget.initialTask?.title ?? '');
     descriptionController = TextEditingController(text: widget.initialTask?.description ?? '');
     progress = TextEditingController(text: widget.initialTask?.goalProgress.toString() ?? '0');
-    // การเข้าถึงที่มีเงื่อนไขสำหรับตัวแปรอื่น ๆ
-    startDate = widget.initialTask?.startDateTime ?? DateTime.now(); // or any default value
-    endDate = widget.initialTask?.endDateTime ?? DateTime.now(); // or any default value
+    startDate = widget.initialTask?.startDateTime ?? DateTime.now();
+    endDate = widget.initialTask?.endDateTime ?? DateTime.now();
     isAllDay = widget.initialTask?.isAllDay ?? false;
-    selectedColor = widget.initialTask?.color ?? Colors.grey; // or any default color
+    selectedColor = widget.initialTask?.color ?? Colors.grey;
+    notificationOption = widget.initialTask?.notificationOption ?? 'None';
   }
 
   @override
@@ -64,7 +64,6 @@ class TaskFormState extends State<TaskForm> {
     final String progressString = progress.text;
     final double progressValue = double.tryParse(progressString) ?? 0.0;
 
-    // ตรวจสอบว่าค่าที่กรอกมาไม่เป็นค่าว่าง
     if (title.isNotEmpty && description.isNotEmpty) {
       final DateTime? startDateTime = startDate != null && startTime != null
           ? DateTime(
@@ -76,17 +75,15 @@ class TaskFormState extends State<TaskForm> {
           : null;
 
       final DateTime? endDateTime = endDate != null && endTime != null
-          ? DateTime(
-              endDate!.year,
-              endDate!.month,
-              endDate!.day,
-              endTime!.hour,
-              endTime!.minute)
-          : null;
+        ? DateTime(
+            endDate!.year,
+            endDate!.month,
+            endDate!.day,
+            endTime!.hour,
+            endTime!.minute)
+        : null;
 
-      // ตรวจสอบว่ามี initialTask หรือไม่
       if (widget.initialTask != null) {
-        // อัปเดต Task ที่มีอยู่
         widget.initialTask!.title = title;
         widget.initialTask!.description = description;
         widget.initialTask!.isAllDay = isAllDay;
@@ -94,11 +91,11 @@ class TaskFormState extends State<TaskForm> {
         widget.initialTask!.endDateTime = endDateTime;
         widget.initialTask!.color = selectedColor;
         widget.initialTask!.goalProgress = progressValue;
+        widget.initialTask!.notificationOption = notificationOption ?? 'None';
 
-        // ส่ง Task ที่แก้ไขแล้วกลับ
+        Provider.of<TaskProvider>(context, listen: false).updateTask(widget.initialTask!);
         Navigator.pop(context, widget.initialTask);
       } else {
-        // สร้าง Task ใหม่
         final String id = UniqueKey().toString();
 
         final Task newTask = Task(
@@ -108,44 +105,44 @@ class TaskFormState extends State<TaskForm> {
           isAllDay: isAllDay,
           startDateTime: startDateTime,
           endDateTime: endDateTime,
+          notificationOption: notificationOption ?? 'None',
           color: selectedColor,
           goalProgress: progressValue,
         );
 
-        // เพิ่ม Task ใหม่ลงใน TaskProvider
         Provider.of<TaskProvider>(context, listen: false).addTask(newTask);
-        // ปิดหน้าจอการสร้างงานใหม่
         Navigator.pop(context);
       }
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
+    final isEditing = widget.initialTask != null;
+    final buttonText = isEditing ? 'Update' : 'Save';
+
     return Scaffold(
-      backgroundColor: const Color(0xFFFFFFFF), // สีพื้นหลังของหน้าจอ
+      backgroundColor: const Color(0xFFFFFFFF),
       body: Center(
         child: SingleChildScrollView(
           child: IntrinsicHeight(
             child: Container(
               margin: const EdgeInsets.symmetric(
                   horizontal: 20.0,
-                  vertical: 80.0), // การเว้นขอบด้านข้างและด้านบน-ล่าง
+                  vertical: 80.0),
               padding: const EdgeInsets.symmetric(
                   horizontal: 20.0,
-                  vertical: 20.0), // การเว้นขอบภายในของคอนเทนเนอร์
+                  vertical: 20.0),
               decoration: BoxDecoration(
-                color: const Color(0xFFf2f2f2), // สีพื้นหลังของคอนเทนเนอร์
+                color: const Color(0xFFf2f2f2),
                 borderRadius:
-                    BorderRadius.circular(15.0), // มุมโค้งมนของคอนเทนเนอร์
+                    BorderRadius.circular(15.0),
                 boxShadow: <BoxShadow>[
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.5), // สีเงาของกล่อง
-                    spreadRadius: 5, // การกระจายของเงา
-                    blurRadius: 7, // การเบลอของเงา
-                    offset: const Offset(0, 3), // ตำแหน่งของเงา
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
@@ -157,7 +154,7 @@ class TaskFormState extends State<TaskForm> {
                     children: <Widget>[
                       TextButton(
                         onPressed: () {
-                          Navigator.pop(context); // ปิดหน้าจอปัจจุบัน
+                          Navigator.pop(context);
                         },
                         style: TextButton.styleFrom(
                           foregroundColor: const Color(0xFF717273),
@@ -178,74 +175,17 @@ class TaskFormState extends State<TaskForm> {
                         ),
                       ),
                       TextButton(
-                        onPressed: () {
-                          // ดึงค่าจาก TextField
-                          final String title = titleController.text;
-                          final String description = descriptionController.text;
-
-                          // ตรวจสอบว่าค่าที่กรอกมาไม่เป็นค่าว่าง
-                          if (title.isNotEmpty && description.isNotEmpty) {
-                            
-                            // สร้างค่า DateTime สำหรับวันที่เริ่มต้น ถ้าวันที่และเวลาที่เริ่มต้นไม่เป็น null
-                            final DateTime? startDateTime = startDate != null && startTime != null
-                                ? DateTime(
-                                    startDate!.year,
-                                    startDate!.month,
-                                    startDate!.day,
-                                    startTime!.hour,
-                                    startTime!.minute)
-                                : null;
-
-                            // สร้างค่า DateTime สำหรับวันที่สิ้นสุด ถ้าวันที่และเวลาที่สิ้นสุดไม่เป็น null
-                            final DateTime? endDateTime = endDate != null && endTime != null
-                                ? DateTime(
-                                    endDate!.year,
-                                    endDate!.month,
-                                    endDate!.day,
-                                    endTime!.hour,
-                                    endTime!.minute)
-                                : null;
-
-                            // Debugging lines เพื่อแสดงค่า startDateTime และ endDateTime ใน console
-                            final logger = Logger();
-                            // ตัวอย่างการใช้ logger
-                            logger.d('Debug message: Start DateTime: $startDateTime');
-                            logger.d('Debug message: End DateTime: $endDateTime');
-
-                            final String id = UniqueKey().toString(); // สร้างค่า id ใหม่
-
-                            // สร้างวัตถุ Task ใหม่
-                            final Task newTask = Task(
-                              id: id,
-                              title: title, // หัวข้อของงาน
-                              description: description, // รายละเอียดของงาน
-                              isAllDay: isAllDay, // เป็นงานที่ใช้เวลาทั้งวันหรือไม่
-                              startDateTime: startDateTime, // วันที่เริ่มต้นของงาน
-                              endDateTime: endDateTime, // วันที่สิ้นสุดของงาน
-                              color: selectedColor, // สีที่เลือกสำหรับงาน
-                              goalProgress: progressValue, // เป้าหมายความคืบหน้าของงาน
-                            );
-
-                            // เพิ่ม Task ใหม่ลงใน TaskProvider
-                            Provider.of<TaskProvider>(context, listen: false).addTask(newTask);
-                            // ปิดหน้าจอการสร้างงานใหม่
-                            Navigator.pop(context);
-                          }
-                        },
-                        // กำหนดสไตล์ของปุ่ม TextButton
+                        onPressed: saveForm,
                         style: TextButton.styleFrom(
                           foregroundColor: const Color(0xFF717273),
                           padding: const EdgeInsets.symmetric(vertical: 10.0),
                           backgroundColor: Colors.transparent,
                         ),
-                        // ข้อความที่แสดงบนปุ่ม
-                        child: const Text(
-                          'Save',
-                          style: TextStyle(fontSize: 16),
+                        child: Text(
+                          buttonText,
+                          style: const TextStyle(fontSize: 16),
                         ),
                       ),
-
-
                     ],
                   ),
                   const SizedBox(height: 5),
@@ -262,7 +202,6 @@ class TaskFormState extends State<TaskForm> {
                           titleController: titleController,
                           descriptionController: descriptionController,
                         ),
-                        // Other widgets go here
                       ],
                     ),
                   ),
@@ -527,11 +466,10 @@ class TaskFormState extends State<TaskForm> {
                   const SizedBox(height: 5), // เพิ่มระยะห่างระหว่างกล่อง
 
                   NotificationBox(
-                    //NotificationBox
-                    selectedOption: notificationOption,
-                    onOptionSelected: (option) {
+                    notificationOption: notificationOption, // Use notificationOption here
+                    onOptionSelected: (newOption) {
                       setState(() {
-                        notificationOption = option;
+                        notificationOption = newOption; // Update notificationOption
                       });
                     },
                   ),
