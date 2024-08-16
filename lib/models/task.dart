@@ -7,6 +7,7 @@ class Task {
   bool isAllDay;
   DateTime? startDateTime;
   DateTime? endDateTime;
+  String notificationOption;
   Color? color;
   double goalProgress;
 
@@ -15,9 +16,10 @@ class Task {
     required this.title,
     required this.description,
     this.isAllDay = false,
-    this.startDateTime,
-    this.endDateTime,
-    this.color,
+    required this.startDateTime,
+    required this.endDateTime,
+    this.notificationOption = 'None',
+    required this.color,
     required this.goalProgress,
   });
 
@@ -31,6 +33,7 @@ class Task {
     bool? isAllDay,
     DateTime? startDateTime,
     DateTime? endDateTime,
+    String ? notificationOption,
     Color? color,
     double? goalProgress,
   }) {
@@ -41,6 +44,7 @@ class Task {
       isAllDay: isAllDay ?? this.isAllDay,
       startDateTime: startDateTime ?? this.startDateTime,
       endDateTime: endDateTime ?? this.endDateTime,
+      notificationOption: notificationOption ?? this.notificationOption,
       color: color ?? this.color,
       goalProgress: goalProgress ?? this.goalProgress,
     );
