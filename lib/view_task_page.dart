@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:reminder_application/task_details_popup.dart';
 import 'package:reminder_application/utils/date_utils.dart';
 import 'add_task_page.dart';
 import 'providers/task_provider.dart';
