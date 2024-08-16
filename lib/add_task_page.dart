@@ -6,12 +6,8 @@ class AddTaskPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Task'),
-        automaticallyImplyLeading: false, // ปิดการแสดงปุ่มย้อนกลับ
-      ),
-      body: const Padding(
+    return const Scaffold(
+      body: Padding(
         padding: EdgeInsets.all(16.0),
         child: TaskForm(),
       ),
