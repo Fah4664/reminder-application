@@ -22,7 +22,6 @@ class TaskForm extends StatefulWidget {
 class TaskFormState extends State<TaskForm> {
   late TextEditingController titleController;
   late TextEditingController descriptionController;
-  late TextEditingController progress; 
   DateTime? startDate;
   TimeOfDay? startTime;
   DateTime? endDate;
@@ -30,39 +29,31 @@ class TaskFormState extends State<TaskForm> {
   late bool isAllDay; 
   late Color selectedColor; 
   String? notificationOption;
-  double _progress = 0.0; 
-
-  double get progressValue {
-    final String progressString = progress.text;
-    return double.tryParse(progressString) ?? 0.0;
-  }
+  double sliderValue = 0.0; 
 
   @override
   void initState() {
     super.initState();
     titleController = TextEditingController(text: widget.initialTask?.title ?? '');
     descriptionController = TextEditingController(text: widget.initialTask?.description ?? '');
-    progress = TextEditingController(text: widget.initialTask?.goalProgress.toString() ?? '0');
     startDate = widget.initialTask?.startDateTime ?? DateTime.now();
     endDate = widget.initialTask?.endDateTime ?? DateTime.now();
     isAllDay = widget.initialTask?.isAllDay ?? false;
     selectedColor = widget.initialTask?.color ?? Colors.grey;
     notificationOption = widget.initialTask?.notificationOption ?? 'None';
+    sliderValue = widget.initialTask?.sliderValue ?? 0.0; // กำหนดค่าเริ่มต้นให้กับ _progress ถ้าไม่มีค่าให้เป็น 0.0
   }
 
   @override
   void dispose() {
     titleController.dispose();
     descriptionController.dispose();
-    progress.dispose();
     super.dispose();
   }
 
   void saveForm() {
     final String title = titleController.text;
     final String description = descriptionController.text;
-    final String progressString = progress.text;
-    final double progressValue = double.tryParse(progressString) ?? 0.0;
 
     if (title.isNotEmpty && description.isNotEmpty) {
       final DateTime? startDateTime = startDate != null && startTime != null
@@ -90,7 +81,7 @@ class TaskFormState extends State<TaskForm> {
         widget.initialTask!.startDateTime = startDateTime;
         widget.initialTask!.endDateTime = endDateTime;
         widget.initialTask!.color = selectedColor;
-        widget.initialTask!.goalProgress = progressValue;
+        widget.initialTask!.sliderValue = sliderValue;
         widget.initialTask!.notificationOption = notificationOption ?? 'None';
 
         Provider.of<TaskProvider>(context, listen: false).updateTask(widget.initialTask!);
@@ -107,7 +98,7 @@ class TaskFormState extends State<TaskForm> {
           endDateTime: endDateTime,
           notificationOption: notificationOption ?? 'None',
           color: selectedColor,
-          goalProgress: progressValue,
+          sliderValue: sliderValue, // บันทึกค่า sliderValue ลงไป
         );
 
         Provider.of<TaskProvider>(context, listen: false).addTask(newTask);
@@ -477,10 +468,10 @@ class TaskFormState extends State<TaskForm> {
                   const SizedBox(height: 5),
 
                   TrackGoals(
-                    progress: _progress, // ส่งค่าเริ่มต้นไปยัง TrackGoals
+                    progress: sliderValue, // ส่งค่าเริ่มต้นไปยัง TrackGoals
                     onProgressUpdated: (value) {
                       setState(() {
-                        _progress = value; // อัพเดตค่าความก้าวหน้าเมื่อมีการเปลี่ยนแปลง
+                        sliderValue = value; // อัพเดตค่าความก้าวหน้าเมื่อมีการเปลี่ยนแปลง
                       });
                     },
                   ),
