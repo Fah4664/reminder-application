@@ -32,7 +32,7 @@ class TaskProvider with ChangeNotifier {
         startDateTime: updatedTask.startDateTime,
         endDateTime: updatedTask.endDateTime,
         color: updatedTask.color,
-        goalProgress: updatedTask.goalProgress,
+        sliderValue: updatedTask.sliderValue,
       );
       // ถ้า task ถูกทำเครื่องหมายว่าเสร็จสมบูรณ์ให้ย้ายไปที่ _completedTasks
       if (updatedTask.isCompleted) {
@@ -79,7 +79,7 @@ class TaskProvider with ChangeNotifier {
   // ฟังก์ชันสำหรับอัปเดตความก้าวหน้า (progress) ของ task
   void updateTaskProgress(int index, double newProgress) {
     if (index >= 0 && index < _tasks.length) {
-      _tasks[index] = _tasks[index].copyWith(goalProgress: newProgress);
+      _tasks[index] = _tasks[index].copyWith(sliderValue: newProgress);
       saveAllTasks(); // บันทึกการเปลี่ยนแปลง
       notifyListeners(); // แจ้งให้ผู้ฟังทราบว่ามีการเปลี่ยนแปลง
     }
