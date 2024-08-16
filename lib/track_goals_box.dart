@@ -52,7 +52,7 @@ class TrackGoalsState extends State<TrackGoals> {
             'Track Goals',
             style: TextStyle(fontSize: 20),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           Row(
             children: <Widget>[
               Expanded(
