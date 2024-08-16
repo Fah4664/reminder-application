@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:reminder_application/task_details_popup.dart';
+import 'package:reminder_application/utils/date_utils.dart';
 import 'add_task_page.dart';
 import 'providers/task_provider.dart';
 import 'home_page.dart';
@@ -17,17 +19,60 @@ class ViewTasksPage extends StatelessWidget {
       body: Consumer<TaskProvider>(
         builder: (context, taskProvider, child) {
           final completedTasks = taskProvider.completedTasks;
+          if (completedTasks.isEmpty) {
+            return const Center(
+              child: Text('No completed tasks.'),
+            );
+          }
+
           return ListView.builder(
             itemCount: completedTasks.length,
             itemBuilder: (context, index) {
               final task = completedTasks[index];
               return Card(
                 elevation: 4,
+                color: task.color ?? const Color(0xFFede3e3),
                 margin:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 child: ListTile(
-                  title: Text(task.title),
-                  subtitle: Text(task.description),
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        task.title,
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        formatDateRange(task.startDateTime,
+                            task.endDateTime), // แสดงช่วงวันที่
+                        style: const TextStyle(
+                            fontSize: 16, color: Color(0xFF000000)),
+                      ),
+                      const SizedBox(height: 5),
+                      Container(
+                        width: 200,
+                        height: 15,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFd0d0d0),
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            width: (MediaQuery.of(context).size.width - 100) *
+                                (task.sliderValue * 100 / 150),
+                            height: 15,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF717273),
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
