@@ -22,7 +22,7 @@ class ReminderApp extends StatelessWidget {
         ),
         home: const SplashPage(), // ใช้ const กับ SplashPage
         //routes: {
-          //'/notification': (context) => const NotificationPage(),
+        //'/notification': (context) => const NotificationPage(),
         //},
       ),
     );
