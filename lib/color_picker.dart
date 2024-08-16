@@ -34,10 +34,11 @@ class ColorPicker extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
+          // ใช้ `Wrap` เพื่อให้สีจัดเรียงในสองบรรทัด
           Wrap(
-            spacing: 8.0,
-            runSpacing: 8.0,
+            spacing: 30.0, // ช่องว่างระหว่างสี
+            runSpacing: 8.0, // ช่องว่างระหว่างบรรทัด
             children: colors.map((color) => _buildColorOption(color)).toList(),
           ),
         ],
@@ -55,7 +56,7 @@ class ColorPicker extends StatelessWidget {
           color: color,
           shape: BoxShape.circle,
           border: Border.all(
-            color: selectedColor == color ? const Color(0xFF9b9a8c) : Colors.transparent, // เปลี่ยนสีกรอบตามสีที่เลือก
+            color: selectedColor == color ? const Color(0xFFede3e3) : Colors.transparent, // เปลี่ยนสีกรอบตามสีที่เลือก
             width: 2,
           ),
         ),
