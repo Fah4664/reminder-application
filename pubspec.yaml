@@ -16,6 +16,8 @@ dependencies:
   url_launcher: ^6.3.0
   shared_preferences: ^2.0.15
   flutter_local_notifications: ^14.0.0
+  flutter_svg: ^1.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -32,6 +34,8 @@ flutter:
     - assets/icons/search.png
     - assets/icons/View Tasks.png
     - assets/images/reminder.png
+    - assets/icons/pencil.svg
+    - assets/icons/trash-xmark.svg
 
 
 url_launcher :
