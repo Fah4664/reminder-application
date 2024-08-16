@@ -1,4 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/task_provider.dart';
@@ -26,7 +25,7 @@ class HomePage extends StatelessWidget {
               child: Text('No tasks added yet.'),
             );
           }
-       
+
           return ListView.builder(
             itemCount: taskProvider.tasks.length,
             itemBuilder: (context, index) {
@@ -53,11 +52,6 @@ class HomePage extends StatelessWidget {
               );
             },
           );
-
-
-
-
-          
         },
       ),
       bottomNavigationBar: BottomAppBar(
@@ -72,7 +66,7 @@ class HomePage extends StatelessWidget {
                 width: 27,
               ),
               onPressed: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const HomePage()),
                 );
@@ -121,7 +115,8 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ViewTasksPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const ViewTasksPage()),
                 );
               },
             ),
@@ -131,5 +126,4 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-
 }
