@@ -52,7 +52,10 @@ class HomePage extends StatelessWidget {
                       const SizedBox(height: 5),
                       Text(
                         formatDateRange(task.startDateTime, task.endDateTime),
-                        style: const TextStyle(fontSize: 16, color: Color(0xFF000000)), // เปลี่ยนสีข้อความให้เหมาะสมกับพื้นหลัง
+                        style: const TextStyle(
+                            fontSize: 16,
+                            color: Color(
+                                0xFF000000)), // เปลี่ยนสีข้อความให้เหมาะสมกับพื้นหลัง
                       ),
                       const SizedBox(height: 5),
                       Container(
@@ -75,7 +78,6 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
                       ),
-
                     ],
                   ),
                   onTap: () {
@@ -85,7 +87,6 @@ class HomePage extends StatelessWidget {
               );
             },
           );
-          
         },
       ),
       bottomNavigationBar: BottomAppBar(
