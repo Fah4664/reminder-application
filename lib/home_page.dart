@@ -115,14 +115,14 @@ class HomePage extends StatelessWidget {
                 width: 29,
               ),
               onPressed: () async {
+                // เก็บ TaskProvider ไว้ในตัวแปรก่อนที่จะมี async gap
+                final taskProvider = Provider.of<TaskProvider>(context, listen: false);
                 final newTask = await Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const AddTaskPage()),
                 );
-
                 if (newTask != null) {
-                  Provider.of<TaskProvider>(context, listen: false)
-                      .addTask(newTask);
+                  taskProvider.addTask(newTask);
                 }
               },
             ),
