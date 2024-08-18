@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
     <!-- สิทธิ์สำหรับการสั่น -->
     <uses-permission android:name="android.permission.VIBRATE"/>
 
