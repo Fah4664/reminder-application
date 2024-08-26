@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+//import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'models/task.dart';
-import 'providers/task_provider.dart';
+//import 'providers/task_provider.dart';
 import 'utils/date_time_utils.dart';
 import 'notification_box.dart';
 import 'track_goals_box.dart';
 import 'color_picker.dart'; 
 import 'task_title.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TaskForm extends StatefulWidget {
   final Task? initialTask; // ใช้ในการแก้ไข
@@ -25,10 +26,10 @@ class TaskFormState extends State<TaskForm> {
   TimeOfDay? startTime;
   DateTime? endDate;
   TimeOfDay? endTime;
-  late bool isAllDay; 
-  late Color selectedColor; 
+  late bool isAllDay;
+  late Color selectedColor;
   String? notificationOption;
-  double sliderValue = 0.0; 
+  double sliderValue = 0.0;
 
   @override
   void initState() {
@@ -44,9 +45,11 @@ class TaskFormState extends State<TaskForm> {
     endTime = widget.initialTask?.endDateTime != null
         ? TimeOfDay.fromDateTime(widget.initialTask!.endDateTime!)
         : TimeOfDay.now();
-    selectedColor = widget.initialTask?.color ?? Colors.grey;
+    selectedColor = widget.initialTask?.color != null
+        ? colorFromString(widget.initialTask!.color!) // แปลง String เป็น Color
+        : Colors.grey;
     notificationOption = widget.initialTask?.notificationOption ?? 'None';
-    sliderValue = widget.initialTask?.sliderValue ?? 0.0; // กำหนดค่าเริ่มต้นให้กับ _progress ถ้าไม่มีค่าให้เป็น 0.0
+    sliderValue = widget.initialTask?.sliderValue ?? 0.0; // กำหนดค่าเริ่มต้นให้กับ sliderValue ถ้าไม่มีค่าให้เป็น 0.0
   }
 
   @override
@@ -56,11 +59,10 @@ class TaskFormState extends State<TaskForm> {
     super.dispose();
   }
 
-  void saveForm() {
+  void saveForm() async {
     final String title = titleController.text;
     final String description = descriptionController.text;
-
-    if (title.isNotEmpty && description.isNotEmpty) {
+    if (title.isNotEmpty) {
       final DateTime? startDateTime = startDate != null && startTime != null
           ? DateTime(
               startDate!.year,
@@ -69,44 +71,45 @@ class TaskFormState extends State<TaskForm> {
               startTime!.hour,
               startTime!.minute)
           : null;
-
       final DateTime? endDateTime = endDate != null && endTime != null
-        ? DateTime(
-            endDate!.year,
-            endDate!.month,
-            endDate!.day,
-            endTime!.hour,
-            endTime!.minute)
-        : null;
-
+          ? DateTime(
+              endDate!.year,
+              endDate!.month,
+              endDate!.day,
+              endTime!.hour,
+              endTime!.minute)
+          : null;
+      final colorString = selectedColor.value.toRadixString(16).padLeft(8, '0'); // แปลง Color เป็น String
+      
       if (widget.initialTask != null) {
-        widget.initialTask!.title = title;
-        widget.initialTask!.description = description;
-        widget.initialTask!.isAllDay = isAllDay;
-        widget.initialTask!.startDateTime = startDateTime;
-        widget.initialTask!.endDateTime = endDateTime;
-        widget.initialTask!.color = selectedColor;
-        widget.initialTask!.sliderValue = sliderValue;
-        widget.initialTask!.notificationOption = notificationOption ?? 'None';
-
-        Provider.of<TaskProvider>(context, listen: false).updateTask(widget.initialTask!);
+        // Update existing task
+        final taskRef = FirebaseFirestore.instance.collection('tasks').doc(widget.initialTask!.id);
+        await taskRef.update({
+          'title': title,
+          'description': description,
+          'isAllDay': isAllDay,
+          'startDateTime': startDateTime?.toIso8601String(),
+          'endDateTime': endDateTime?.toIso8601String(),
+          'color': colorString,
+          'sliderValue': sliderValue,
+          'notificationOption': notificationOption ?? 'None',
+        });
         Navigator.pop(context, widget.initialTask);
       } else {
-        final String id = UniqueKey().toString();
-
-        final Task newTask = Task(
-          id: id,
+        // Add new task
+        final taskRef = FirebaseFirestore.instance.collection('tasks').doc();
+        final newTask = Task(
+          id: taskRef.id,
           title: title,
           description: description,
           isAllDay: isAllDay,
           startDateTime: startDateTime,
           endDateTime: endDateTime,
           notificationOption: notificationOption ?? 'None',
-          color: selectedColor,
-          sliderValue: sliderValue, // บันทึกค่า sliderValue ลงไป
+          color: colorString,
+          sliderValue: sliderValue,
         );
-
-        Provider.of<TaskProvider>(context, listen: false).addTask(newTask);
+        await taskRef.set(newTask.toMap()); // Ensure your Task model has a toMap() method
         Navigator.pop(context);
       }
     }
@@ -501,4 +504,26 @@ class TaskFormState extends State<TaskForm> {
       ),
     );
   }
+  // ฟังก์ชันสำหรับแปลงจาก String เป็น Color
+  // ฟังก์ชันเพื่อแปลงสตริงสีเป็นอ็อบเจกต์ Color
+
+
+  Color colorFromString(String colorString) {
+    // ตรวจสอบให้แน่ใจว่าสตริงสีอยู่ในรูปแบบที่ถูกต้อง
+    if (colorString.startsWith('#')) {
+      colorString = colorString.substring(1); // ลบ # ออก
+    }  
+    if (colorString.length == 6) {
+      colorString = 'FF' + colorString; // เพิ่มค่า alpha ถ้าขาด
+    } else if (colorString.length != 8) {
+      throw FormatException('Invalid color format');
+    }
+    // แปลงสตริงสีเป็นตัวเลขฐาน 16และตรวจสอบการแปลง
+    try {
+      return Color(int.parse(colorString, radix: 16));
+    } catch (e) {
+      throw FormatException('Invalid color value');
+    }
+  }
+  
 }
