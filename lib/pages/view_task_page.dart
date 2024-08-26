@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reminder_application/utils/date_utils.dart';
 import 'add_task_page.dart';
-import 'providers/task_provider.dart';
+import '../providers/task_provider.dart';
 import 'home_page.dart';
 import 'search_page.dart'; // เพิ่มการนำเข้า SearchPage
-import 'utils/color_utils.dart';
+import '../utils/color_utils.dart';
 
 class ViewTasksPage extends StatelessWidget {
   const ViewTasksPage({super.key});
@@ -31,7 +31,9 @@ class ViewTasksPage extends StatelessWidget {
               final task = completedTasks[index];
               return Card(
                 elevation: 4,
-                color: task.color != null ? colorFromString(task.color!) : const Color(0xFFede3e3),
+                color: task.color != null
+                    ? colorFromString(task.color!)
+                    : const Color(0xFFede3e3),
                 margin:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 child: ListTile(
