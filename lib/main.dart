@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/task_provider.dart';
-import 'splash_page.dart'; // เพิ่มการ import หน้าจอ SplashPage
+import 'pages/splash_page.dart'; // เพิ่มการ import หน้าจอ SplashPage
 //import 'notification_page.dart'; // เพิ่มการ import หน้าจอ NotificationPage
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // เรียกใช้ ensureInitialized ก่อน initializeApp
+  WidgetsFlutterBinding
+      .ensureInitialized(); // เรียกใช้ ensureInitialized ก่อน initializeApp
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
