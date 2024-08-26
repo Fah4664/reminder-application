@@ -1,10 +1,19 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <package="com.example.reminder_application">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.reminder_application">
+
     <!-- สิทธิ์สำหรับการสั่น -->
     <uses-permission android:name="android.permission.VIBRATE"/>
 
     <!-- สิทธิ์สำหรับการแจ้งเตือนใน Android 13 ขึ้นไป -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Queries สำหรับการค้นหา Activity -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT"/>
+            <data android:mimeType="text/plain"/>
+        </intent>
+    </queries>
 
     <!-- แอปพลิเคชัน -->
     <application
@@ -50,13 +59,7 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
     </application>
 
-    <!-- Queries สำหรับการค้นหา Activity -->
-    <queries>
-        <intent>
-            <action android:name="android.intent.action.PROCESS_TEXT"/>
-            <data android:mimeType="text/plain"/>
-        </intent>
-    </queries>
 </manifest>
