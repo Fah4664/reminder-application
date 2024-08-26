@@ -1,22 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/task_provider.dart';
-//import 'package:intl/intl.dart';
 import 'add_task_page.dart';
 import 'search_page.dart';
 import 'view_task_page.dart';
-//import 'edit_task_page.dart';
-import '../models/task.dart';
 import 'task_details_popup.dart';
 import 'utils/date_utils.dart';
+import 'utils/color_utils.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<TaskProvider>(context, listen: false).loadTasks();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFFFFF), // สีพื้นหลังของ Scaffold
+      backgroundColor: const Color(0xFFFFFFFF),
       appBar: AppBar(
         title: const Center(child: Text('Track Goals')),
       ),
@@ -31,14 +40,11 @@ class HomePage extends StatelessWidget {
           return ListView.builder(
             itemCount: taskProvider.tasks.length,
             itemBuilder: (context, index) {
-              // จัดเรียง task ตามวันที่สิ้นสุด
-              final sortedTasks = List<Task>.from(taskProvider.tasks)
-                ..sort((a, b) => a.endDateTime!.compareTo(b.endDateTime!));
-              final task = sortedTasks[index];
+              final task = taskProvider.tasks[index];
 
               return Card(
                 elevation: 4,
-                color: task.color ?? const Color(0xFFede3e3),
+                color: task.color != null ? colorFromString(task.color!) : const Color(0xFFede3e3),
                 margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                 child: ListTile(
                   title: Column(
@@ -46,16 +52,12 @@ class HomePage extends StatelessWidget {
                     children: [
                       Text(
                         task.title,
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 5),
                       Text(
                         formatDateRange(task.startDateTime, task.endDateTime),
-                        style: const TextStyle(
-                            fontSize: 16,
-                            color: Color(
-                                0xFF000000)), // เปลี่ยนสีข้อความให้เหมาะสมกับพื้นหลัง
+                        style: const TextStyle(fontSize: 16, color: Color(0xFF000000)),
                       ),
                       const SizedBox(height: 5),
                       Container(
@@ -68,8 +70,7 @@ class HomePage extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Container(
-                            width: (MediaQuery.of(context).size.width - 100) *
-                                (task.sliderValue * 100 / 150),
+                            width: (MediaQuery.of(context).size.width - 100) * (task.sliderValue / 100),
                             height: 15,
                             decoration: BoxDecoration(
                               color: const Color(0xFF717273),
@@ -81,7 +82,7 @@ class HomePage extends StatelessWidget {
                     ],
                   ),
                   onTap: () {
-                    showTaskDetailsPopup(context, task, index); // ใช้สีจาก Task
+                    showTaskDetailsPopup(context, task, index);
                   },
                 ),
               );
@@ -93,7 +94,7 @@ class HomePage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            const SizedBox(width: 48), // ขนาดว่างด้านซ้าย
+            const SizedBox(width: 48),
             IconButton(
               icon: Image.asset(
                 'assets/icons/target.png',
@@ -115,7 +116,6 @@ class HomePage extends StatelessWidget {
                 width: 29,
               ),
               onPressed: () async {
-                // เก็บ TaskProvider ไว้ในตัวแปรก่อนที่จะมี async gap
                 final taskProvider = Provider.of<TaskProvider>(context, listen: false);
                 final newTask = await Navigator.push(
                   context,
@@ -155,10 +155,11 @@ class HomePage extends StatelessWidget {
                 );
               },
             ),
-            const SizedBox(width: 48), // ขนาดว่างด้านขวา
+            const SizedBox(width: 48),
           ],
         ),
       ),
     );
   }
+
 }
