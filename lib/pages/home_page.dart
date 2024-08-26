@@ -7,6 +7,7 @@ import 'view_task_page.dart';
 import '../task_details_popup.dart';
 import '../utils/date_utils.dart';
 import '../utils/color_utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -28,6 +29,15 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: const Color(0xFFFFFFFF),
       appBar: AppBar(
         title: const Center(child: Text('Track Goals')),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              Navigator.pushReplacementNamed(context, '/login');
+            },
+          ),
+        ],
       ),
       body: Consumer<TaskProvider>(
         builder: (context, taskProvider, child) {
