@@ -5,9 +5,10 @@ import 'providers/task_provider.dart';
 import 'edit_task_page.dart';
 import '../models/task.dart';
 import 'utils/date_utils.dart';
+import 'utils/color_utils.dart';
 
 void showTaskDetailsPopup(BuildContext context, Task task, int index) {
-  Color dialogColor = task.color ?? Colors.grey; // Fallback color
+  Color dialogColor = task.color != null ? colorFromString(task.color!) : const Color(0xFFede3e3);
   showDialog(
     context: context,
     builder: (BuildContext context) {
