@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/task.dart';
-import '../task_form.dart';
+import '../detail_task_from/task_form.dart';
 
 class EditTaskPage extends StatelessWidget {
   final Task task;
