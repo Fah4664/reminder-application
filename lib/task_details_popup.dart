@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'providers/task_provider.dart';
-import 'edit_task_page.dart';
+import 'pages/edit_task_page.dart';
 import '../models/task.dart';
 import 'utils/date_utils.dart';
 import 'utils/color_utils.dart';
 
 void showTaskDetailsPopup(BuildContext context, Task task, int index) {
-  Color dialogColor = task.color != null ? colorFromString(task.color!) : const Color(0xFFede3e3);
+  Color dialogColor = task.color != null
+      ? colorFromString(task.color!)
+      : const Color(0xFFede3e3);
   showDialog(
     context: context,
     builder: (BuildContext context) {
