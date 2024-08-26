@@ -16,6 +16,9 @@ dependencies:
   url_launcher: ^6.3.0
   shared_preferences: ^2.0.15
   flutter_svg: ^1.0.0
+  firebase_core: ^2.8.0
+  cloud_firestore: ^4.14.0
+  
 
 dev_dependencies:
   flutter_test:
