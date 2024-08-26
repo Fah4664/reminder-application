@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "41721016057",
+    "project_id": "reminder-f3484",
+    "storage_bucket": "reminder-f3484.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:41721016057:android:7fd19865b83aa06df4bc28",
+        "android_client_info": {
+          "package_name": "com.example.remember_application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAo932_7HxDva2zYYSZAgnnj6RvqxCD6pg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
