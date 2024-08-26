@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'providers/task_provider.dart';
+import '../providers/task_provider.dart';
 import 'add_task_page.dart';
 import 'search_page.dart';
 import 'view_task_page.dart';
-import 'task_details_popup.dart';
-import 'utils/date_utils.dart';
-import 'utils/color_utils.dart';
+import '../task_details_popup.dart';
+import '../utils/date_utils.dart';
+import '../utils/color_utils.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -44,7 +44,9 @@ class _HomePageState extends State<HomePage> {
 
               return Card(
                 elevation: 4,
-                color: task.color != null ? colorFromString(task.color!) : const Color(0xFFede3e3),
+                color: task.color != null
+                    ? colorFromString(task.color!)
+                    : const Color(0xFFede3e3),
                 margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                 child: ListTile(
                   title: Column(
@@ -52,12 +54,14 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Text(
                         task.title,
-                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 5),
                       Text(
                         formatDateRange(task.startDateTime, task.endDateTime),
-                        style: const TextStyle(fontSize: 16, color: Color(0xFF000000)),
+                        style: const TextStyle(
+                            fontSize: 16, color: Color(0xFF000000)),
                       ),
                       const SizedBox(height: 5),
                       Container(
@@ -70,7 +74,8 @@ class _HomePageState extends State<HomePage> {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Container(
-                            width: (MediaQuery.of(context).size.width - 100) * (task.sliderValue / 100),
+                            width: (MediaQuery.of(context).size.width - 100) *
+                                (task.sliderValue / 100),
                             height: 15,
                             decoration: BoxDecoration(
                               color: const Color(0xFF717273),
@@ -116,7 +121,8 @@ class _HomePageState extends State<HomePage> {
                 width: 29,
               ),
               onPressed: () async {
-                final taskProvider = Provider.of<TaskProvider>(context, listen: false);
+                final taskProvider =
+                    Provider.of<TaskProvider>(context, listen: false);
                 final newTask = await Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const AddTaskPage()),
@@ -161,5 +167,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
 }
