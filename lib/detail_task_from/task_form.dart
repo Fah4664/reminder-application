@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 //import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-import 'models/task.dart';
+import '../models/task.dart';
 //import 'providers/task_provider.dart';
-import 'utils/date_time_utils.dart';
+import '../utils/date_time_utils.dart';
 import 'notification_box.dart';
 import 'track_goals_box.dart';
 import 'color_picker.dart'; 
