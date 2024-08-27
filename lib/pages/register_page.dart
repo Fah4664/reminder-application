@@ -28,7 +28,6 @@ class _RegisterPageState extends State<RegisterPage> {
             .fetchSignInMethodsForEmail(_emailController.text);
 
         if (user.isNotEmpty) {
-          // ignore: use_build_context_synchronously
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Email is already registered.')),
           );
@@ -37,7 +36,6 @@ class _RegisterPageState extends State<RegisterPage> {
             email: _emailController.text,
             password: _passwordController.text,
           );
-          // ignore: use_build_context_synchronously
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Registration successful!')),
           );
@@ -50,7 +48,6 @@ class _RegisterPageState extends State<RegisterPage> {
           );
         }
       } catch (e) {
-        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Registration failed: $e')),
         );
@@ -65,6 +62,8 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // เปลี่ยนสีพื้นหลังเป็นสีครีม
+      backgroundColor: const Color.fromARGB(255, 246, 242, 242),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -130,10 +129,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       MaterialPageRoute(builder: (context) => LoginPage()),
                     );
                   },
-                  child: const Text(
+                  child: Text(
                     'Already have an account? Log in',
                     style: TextStyle(
-                      color: Color.fromARGB(255, 0, 0, 0), // สีตัวอักษร
+                      color: Colors.grey.shade800, // สีตัวอักษร
                     ),
                   ),
                 ),
@@ -156,16 +155,14 @@ class _RegisterPageState extends State<RegisterPage> {
       controller: controller,
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(
-            color: Color.fromARGB(255, 0, 0, 0)), // สีตัวอักษร Label
+        labelStyle: TextStyle(color: Colors.grey.shade800), // สีตัวอักษร Label
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
       ),
       obscureText: obscureText,
       keyboardType: keyboardType,
-      style: const TextStyle(
-          color: Color.fromARGB(255, 0, 0, 0)), // สีตัวอักษรใน TextField
+      style: TextStyle(color: Colors.grey.shade800), // สีตัวอักษรใน TextField
       validator: validator,
     );
   }
