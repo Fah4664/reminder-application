@@ -5,6 +5,7 @@ import 'register_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _LoginPageState createState() => _LoginPageState();
 }
 
@@ -28,15 +29,17 @@ class _LoginPageState extends State<LoginPage> {
         );
 
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login successful!')),
+          const SnackBar(content: Text('Login successful!')),
         );
 
         // นำผู้ใช้ไปที่หน้า HomePage
         Navigator.pushReplacement(
+          // ignore: use_build_context_synchronously
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),
         );
       } catch (e) {
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Login failed: ${e.toString()}')),
         );
@@ -52,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       // เปลี่ยนสีพื้นหลังเป็นสีฟ้า
-      backgroundColor: Color.fromARGB(255, 246, 242, 242),
+      backgroundColor: const Color.fromARGB(255, 246, 242, 242),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
