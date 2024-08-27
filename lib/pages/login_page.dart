@@ -51,6 +51,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // เปลี่ยนสีพื้นหลังเป็นสีฟ้า
+      backgroundColor: Color.fromARGB(255, 246, 242, 242),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
