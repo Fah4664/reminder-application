@@ -3,7 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'login_page.dart';
 
 class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _RegisterPageState createState() => _RegisterPageState();
 }
 
@@ -21,30 +24,33 @@ class _RegisterPageState extends State<RegisterPage> {
 
       try {
         final user = await FirebaseAuth.instance
+            // ignore: deprecated_member_use
             .fetchSignInMethodsForEmail(_emailController.text);
 
         if (user.isNotEmpty) {
+          // ignore: use_build_context_synchronously
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Email is already registered.')),
+            const SnackBar(content: Text('Email is already registered.')),
           );
         } else {
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: _emailController.text,
             password: _passwordController.text,
           );
+          // ignore: use_build_context_synchronously
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Registration successful!')),
+            const SnackBar(content: Text('Registration successful!')),
           );
 
           // นำผู้ใช้ไปที่หน้า LoginPage
           Navigator.pushReplacement(
+            // ignore: use_build_context_synchronously
             context,
             MaterialPageRoute(builder: (context) => LoginPage()),
           );
-
-          // คุณสามารถนำไปที่หน้าอื่นได้ที่นี่
         }
       } catch (e) {
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Registration failed: $e')),
         );
@@ -67,6 +73,12 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                // เพิ่มรูปภาพที่นี่
+                Image.asset(
+                  'assets/images/reminder.png',
+                  height: 150.0,
+                ),
+                const SizedBox(height: 32.0),
                 _buildTextField(
                   controller: _emailController,
                   label: 'Email',
@@ -78,7 +90,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 _buildTextField(
                   controller: _passwordController,
                   label: 'Password',
@@ -90,24 +102,27 @@ class _RegisterPageState extends State<RegisterPage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 32.0),
+                const SizedBox(height: 32.0),
                 _isLoading
-                    ? CircularProgressIndicator()
+                    ? const CircularProgressIndicator()
                     : ElevatedButton(
                         onPressed: _register,
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 32.0, vertical: 12.0),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
-                        child: Text(
+                        child: const Text(
                           'Register',
-                          style: TextStyle(fontSize: 18.0),
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            color: Color.fromARGB(255, 0, 0, 0), // สีตัวอักษร
+                          ),
                         ),
                       ),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 TextButton(
                   onPressed: () {
                     Navigator.push(
@@ -115,7 +130,12 @@ class _RegisterPageState extends State<RegisterPage> {
                       MaterialPageRoute(builder: (context) => LoginPage()),
                     );
                   },
-                  child: Text('Already have an account? Log in'),
+                  child: const Text(
+                    'Already have an account? Log in',
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 0, 0, 0), // สีตัวอักษร
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -136,12 +156,16 @@ class _RegisterPageState extends State<RegisterPage> {
       controller: controller,
       decoration: InputDecoration(
         labelText: label,
+        labelStyle: const TextStyle(
+            color: Color.fromARGB(255, 0, 0, 0)), // สีตัวอักษร Label
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
       ),
       obscureText: obscureText,
       keyboardType: keyboardType,
+      style: const TextStyle(
+          color: Color.fromARGB(255, 0, 0, 0)), // สีตัวอักษรใน TextField
       validator: validator,
     );
   }
