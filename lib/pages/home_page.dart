@@ -7,7 +7,7 @@ import 'view_task_page.dart';
 import '../task_details_popup.dart';
 import '../utils/date_utils.dart';
 import '../utils/color_utils.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart'; 
 import 'login_page.dart';
 
 class HomePage extends StatefulWidget {
