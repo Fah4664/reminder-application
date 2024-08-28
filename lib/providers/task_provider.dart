@@ -10,6 +10,41 @@ class TaskProvider with ChangeNotifier {
 
   List<Task> get tasks => _tasks; // รายการ tasks ที่ยังไม่เสร็จ
   List<Task> get completedTasks => _completedTasks; // รายการ tasks ที่เสร็จแล้ว
+  
+  Stream<List<Task>>? _tasksStream;
+  Stream<List<Task>>? get tasksStream => _tasksStream;
+
+  TaskProvider() {
+    _initTasksStream();
+  }
+
+  void _initTasksStream() {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return;
+
+    _tasksStream = db
+        .collection('userTasks')
+        .doc(uid)
+        .collection('tasksID')
+        .snapshots()
+        .map((snapshot) {
+      _tasks.clear();
+      _completedTasks.clear();
+      return snapshot.docs.map((doc) {
+        final task = Task.fromMap(doc.data());
+        if (task.isCompleted) {
+          _completedTasks.add(task);
+        } else {
+          _tasks.add(task);
+        }
+        return task;
+      }).toList();
+    });
+
+    _tasksStream?.listen((_) {
+      notifyListeners();
+    });
+  }
 
   // ฟังก์ชันสำหรับเพิ่มหรืออัปเดต task
   Future<void> addTask(Task task) async {
@@ -99,6 +134,7 @@ class TaskProvider with ChangeNotifier {
 
   // ฟังก์ชันสำหรับโหลด tasks จาก Firestore
   Future<void> loadTasks() async {
+    _initTasksStream();
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) {
       print('No user logged in');
