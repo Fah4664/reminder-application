@@ -105,5 +105,4 @@ class TaskProvider with ChangeNotifier {
       notifyListeners(); // Notify listeners to refresh UI
     });
   }
-
 }
