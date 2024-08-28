@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/task.dart';
 import '../providers/task_provider.dart';
 import 'add_task_page.dart';
 import 'search_page.dart';
@@ -21,9 +22,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<TaskProvider>(context, listen: false).loadTasks();
-    });
   }
 
   @override
@@ -51,20 +50,24 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: Consumer<TaskProvider>(
-        builder: (context, taskProvider, child) {
-          print('Rebuilding UI with ${taskProvider.tasks.length} tasks');
-          if (taskProvider.tasks.isEmpty) {
-            return const Center(
-              child: Text('No tasks added yet.'),
-            );
+      body: StreamBuilder<List<Task>>(
+        stream: Provider.of<TaskProvider>(context).tasksStream,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('No tasks added yet.'));
           }
 
+          final tasks = snapshot.data!.where((task) => !task.isCompleted).toList();
           return ListView.builder(
-            itemCount: taskProvider.tasks.length,
+            itemCount: tasks.length,
             itemBuilder: (context, index) {
-              final task = taskProvider.tasks[index];
-
+              final task = tasks[index];
               return Card(
                 elevation: 4,
                 color: task.color != null
