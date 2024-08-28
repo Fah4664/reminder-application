@@ -9,6 +9,7 @@ import 'track_goals_box.dart';
 import 'color_picker.dart'; 
 import 'task_title.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class TaskForm extends StatefulWidget {
   final Task? initialTask; // ใช้ในการแก้ไข
@@ -17,7 +18,6 @@ class TaskForm extends StatefulWidget {
   @override
   TaskFormState createState() => TaskFormState();
 }
-
 
 class TaskFormState extends State<TaskForm> {
   late TextEditingController titleController;
@@ -62,6 +62,7 @@ class TaskFormState extends State<TaskForm> {
   void saveForm() async {
     final String title = titleController.text;
     final String description = descriptionController.text;
+
     if (title.isNotEmpty) {
       final DateTime? startDateTime = startDate != null && startTime != null
           ? DateTime(
@@ -80,10 +81,21 @@ class TaskFormState extends State<TaskForm> {
               endTime!.minute)
           : null;
       final colorString = selectedColor.value.toRadixString(16).padLeft(8, '0'); // แปลง Color เป็น String
-      
+
+      // รับ uid จากผู้ใช้ที่ล็อกอิน
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        print('Error: User not logged in');
+        return;
+      }
+      final String uid = user.uid;
       if (widget.initialTask != null) {
         // Update existing task
-        final taskRef = FirebaseFirestore.instance.collection('tasks').doc(widget.initialTask!.id);
+        final taskRef = FirebaseFirestore.instance
+            .collection('userTasks')
+            .doc(uid) // ใช้ uid เป็นส่วนหนึ่งของคอลเลคชัน
+            .collection('tasksID')
+            .doc(widget.initialTask!.id);
         await taskRef.update({
           'title': title,
           'description': description,
@@ -97,7 +109,11 @@ class TaskFormState extends State<TaskForm> {
         Navigator.pop(context, widget.initialTask);
       } else {
         // Add new task
-        final taskRef = FirebaseFirestore.instance.collection('tasks').doc();
+        final taskRef = FirebaseFirestore.instance
+            .collection('userTasks')
+            .doc(uid) // ใช้ uid เป็นส่วนหนึ่งของคอลเลคชัน
+            .collection('tasksID')
+            .doc(); // สร้างเอกสารใหม่ใน userTasks collection
         final newTask = Task(
           id: taskRef.id,
           title: title,
@@ -109,11 +125,12 @@ class TaskFormState extends State<TaskForm> {
           color: colorString,
           sliderValue: sliderValue,
         );
-        await taskRef.set(newTask.toMap()); // Ensure your Task model has a toMap() method
+        await taskRef.set(newTask.toMap()); // บันทึกข้อมูลลงใน Firestore
         Navigator.pop(context);
       }
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
