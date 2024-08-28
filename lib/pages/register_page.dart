@@ -12,6 +12,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -24,7 +25,8 @@ class _RegisterPageState extends State<RegisterPage> {
       });
 
       try {
-        final userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        final userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text,
           password: _passwordController.text,
         );
@@ -33,8 +35,9 @@ class _RegisterPageState extends State<RegisterPage> {
         final String? uid = user?.uid;
 
         if (uid != null) {
-          // เก็บชื่อเมลลงใน Cloud Firestore
+          // เก็บชื่อและเมลลงใน Cloud Firestore
           await FirebaseFirestore.instance.collection('users').doc(uid).set({
+            'name': _nameController.text,
             'email': _emailController.text,
           });
         }
@@ -83,6 +86,17 @@ class _RegisterPageState extends State<RegisterPage> {
                   height: 150.0,
                 ),
                 const SizedBox(height: 32.0),
+                _buildTextField(
+                  controller: _nameController,
+                  label: 'Name',
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter your name';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16.0),
                 _buildTextField(
                   controller: _emailController,
                   label: 'Email',
@@ -137,7 +151,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: Text(
                     'Already have an account? Log in',
                     style: TextStyle(
-                      color: Colors.grey.shade800,
+                      color: const Color.fromARGB(255, 0, 0, 0),
                     ),
                   ),
                 ),
@@ -160,14 +174,14 @@ class _RegisterPageState extends State<RegisterPage> {
       controller: controller,
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(color: Colors.grey.shade800),
+        labelStyle: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
       ),
       obscureText: obscureText,
       keyboardType: keyboardType,
-      style: TextStyle(color: Colors.grey.shade800),
+      style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
       validator: validator,
     );
   }
