@@ -1,5 +1,3 @@
-//import 'package:flutter/material.dart';
-
 class Task {
   String id; // เพิ่ม id
   String title;
@@ -10,6 +8,8 @@ class Task {
   String notificationOption;
   String? color; // เปลี่ยนเป็น String สำหรับการจัดเก็บใน Firestore
   double sliderValue;
+  bool isCompleted;
+
 
   Task({
     required this.id,
@@ -21,10 +21,11 @@ class Task {
     this.notificationOption = 'None',
     this.color, // ใช้ String แทน Color
     required this.sliderValue,
+    this.isCompleted = false,
   });
 
   // Getter สำหรับตรวจสอบสถานะว่า task เสร็จสมบูรณ์หรือไม่
-  bool get isCompleted => sliderValue >= 100.0;
+  bool get isTaskCompleted => sliderValue >= 100.0;
 
   // ฟังก์ชันสำหรับแปลง Task เป็น Map
   Map<String, dynamic> toMap() {
@@ -38,6 +39,7 @@ class Task {
       'notificationOption': notificationOption,
       'color': color,
       'sliderValue': sliderValue,
+      'isCompleted': isCompleted,
     };
   }
 
@@ -53,6 +55,7 @@ class Task {
       notificationOption: map['notificationOption'] as String? ?? 'None',
       color: map['color'] as String?, // แปลงจาก String เป็น Color เมื่ออ่านจาก Firestore
       sliderValue: map['sliderValue'] as double,
+      isCompleted: map['isCompleted'] ?? false,
     );
   }
 
@@ -66,6 +69,7 @@ class Task {
     String? notificationOption,
     String? color,
     double? sliderValue,
+    bool? isCompleted,
   }) {
     return Task(
       id: id ?? this.id,
@@ -77,6 +81,7 @@ class Task {
       notificationOption: notificationOption ?? this.notificationOption,
       color: color ?? this.color,
       sliderValue: sliderValue ?? this.sliderValue,
+      isCompleted: isCompleted ?? this.isCompleted,
     );
   }
 }
