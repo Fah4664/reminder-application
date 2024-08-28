@@ -5,7 +5,6 @@ import 'register_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
-  // ignore: library_private_types_in_public_api
   _LoginPageState createState() => _LoginPageState();
 }
 
@@ -34,12 +33,10 @@ class _LoginPageState extends State<LoginPage> {
 
         // นำผู้ใช้ไปที่หน้า HomePage
         Navigator.pushReplacement(
-          // ignore: use_build_context_synchronously
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),
         );
       } catch (e) {
-        // ignore: use_build_context_synchronously
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Login failed: ${e.toString()}')),
@@ -53,10 +50,32 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  void _forgotPassword() async {
+    if (_emailController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter your email')),
+      );
+      return;
+    }
+
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(
+        email: _emailController.text,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Password reset email sent!')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to send reset email: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // เปลี่ยนสีพื้นหลังเป็นสีฟ้า
       backgroundColor: const Color.fromARGB(255, 246, 242, 242),
       body: Center(
         child: Padding(
@@ -94,7 +113,20 @@ class _LoginPageState extends State<LoginPage> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 32.0),
+                const SizedBox(height: 8.0),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: _forgotPassword,
+                    child: const Text(
+                      'Forgot Password?',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16.0),
                 _isLoading
                     ? const CircularProgressIndicator()
                     : ElevatedButton(
@@ -110,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                           'Log in',
                           style: TextStyle(
                             fontSize: 18.0,
-                            color: Color.fromARGB(255, 0, 0, 0), // สีตัวอักษร
+                            color: Color.fromARGB(255, 0, 0, 0),
                           ),
                         ),
                       ),
@@ -125,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: const Text(
                     'Don\'t have an account? Register',
                     style: TextStyle(
-                      color: Color.fromARGB(255, 0, 0, 0), // สีตัวอักษร
+                      color: Color.fromARGB(255, 0, 0, 0),
                     ),
                   ),
                 ),
