@@ -36,7 +36,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
         if (uid != null) {
           // เก็บชื่อและเมลลงใน Cloud Firestore
-          await FirebaseFirestore.instance.collection('users').doc(uid).set({
+          await FirebaseFirestore.instance.collection('usersID').doc(uid).set({
             'name': _nameController.text,
             'email': _emailController.text,
           });
