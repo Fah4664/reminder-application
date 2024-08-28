@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'login_page.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -23,38 +24,44 @@ class _RegisterPageState extends State<RegisterPage> {
       });
 
       try {
-        final user = await FirebaseAuth.instance
-            // ignore: deprecated_member_use
-            .fetchSignInMethodsForEmail(_emailController.text);
+        final userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
 
-        if (user.isNotEmpty) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Email is already registered.')),
-          );
-        } else {
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: _emailController.text,
-            password: _passwordController.text,
-          );
+        final User? user = userCredential.user;
+        final String? uid = user?.uid;
+
+        if (uid != null) {
+          // เก็บชื่อเมลลงใน Cloud Firestore
+          await FirebaseFirestore.instance.collection('users').doc(uid).set({
+            'email': _emailController.text,
+          });
+        }
+
+        if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Registration successful!')),
           );
 
           // นำผู้ใช้ไปที่หน้า LoginPage
           Navigator.pushReplacement(
-            // ignore: use_build_context_synchronously
             context,
             MaterialPageRoute(builder: (context) => LoginPage()),
           );
         }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Registration failed: $e')),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Registration failed: $e')),
+          );
+        }
       } finally {
-        setState(() {
-          _isLoading = false;
-        });
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
       }
     }
   }
@@ -62,7 +69,6 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // เปลี่ยนสีพื้นหลังเป็นสีครีม
       backgroundColor: const Color.fromARGB(255, 246, 242, 242),
       body: Center(
         child: Padding(
@@ -72,7 +78,6 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // เพิ่มรูปภาพที่นี่
                 Image.asset(
                   'assets/images/reminder.png',
                   height: 150.0,
@@ -117,7 +122,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           'Register',
                           style: TextStyle(
                             fontSize: 18.0,
-                            color: Color.fromARGB(255, 0, 0, 0), // สีตัวอักษร
+                            color: Color.fromARGB(255, 0, 0, 0),
                           ),
                         ),
                       ),
@@ -132,7 +137,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: Text(
                     'Already have an account? Log in',
                     style: TextStyle(
-                      color: Colors.grey.shade800, // สีตัวอักษร
+                      color: Colors.grey.shade800,
                     ),
                   ),
                 ),
@@ -155,14 +160,14 @@ class _RegisterPageState extends State<RegisterPage> {
       controller: controller,
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(color: Colors.grey.shade800), // สีตัวอักษร Label
+        labelStyle: TextStyle(color: Colors.grey.shade800),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
       ),
       obscureText: obscureText,
       keyboardType: keyboardType,
-      style: TextStyle(color: Colors.grey.shade800), // สีตัวอักษรใน TextField
+      style: TextStyle(color: Colors.grey.shade800),
       validator: validator,
     );
   }
