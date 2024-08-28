@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/task.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class TaskProvider with ChangeNotifier {
   final List<Task> _tasks = []; // รายการสำหรับเก็บ tasks ที่ยังไม่เสร็จ
@@ -11,21 +12,23 @@ class TaskProvider with ChangeNotifier {
   List<Task> get completedTasks => _completedTasks; // รายการ tasks ที่เสร็จแล้ว
 
   // ฟังก์ชันสำหรับเพิ่มหรืออัปเดต task
-  void addTask(Task task) {
+  Future<void> addTask(Task task) async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return; // ตรวจสอบ uid
     final index = _tasks.indexWhere((t) => t.id == task.id);
     if (index == -1) {
-      // ถ้า task ยังไม่มีในรายการ ให้เพิ่ม task ใหม่
       _tasks.add(task);
-      db.collection('tasks').doc(task.id).set(task.toMap()); // บันทึก task ลงใน Firestore
+      await db.collection('userTasks').doc(uid).collection('tasksID').doc(task.id).set(task.toMap()); // ใช้ uid
     } else {
-      // ถ้า task มีอยู่แล้วในรายการ ให้ทำการอัปเดต task ที่มีอยู่
-      updateTask(task);
+      await updateTask(task);
     }
     notifyListeners(); // แจ้งให้ผู้ฟังทราบว่ามีการเปลี่ยนแปลง
   }
 
   // ฟังก์ชันสำหรับอัปเดต task ที่มีอยู่
-  void updateTask(Task updatedTask) {
+  Future<void> updateTask(Task updatedTask) async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return; // ตรวจสอบ uid
     final index = _tasks.indexWhere((task) => task.id == updatedTask.id);
     if (index != -1) {
       _tasks[index] = updatedTask.copyWith(
@@ -37,34 +40,35 @@ class TaskProvider with ChangeNotifier {
         color: updatedTask.color,
         sliderValue: updatedTask.sliderValue,
       );
-      // อัปเดต task ใน Firestore
-      db.collection('tasks').doc(updatedTask.id).update(updatedTask.toMap());
-      // ถ้า task ถูกทำเครื่องหมายว่าเสร็จสมบูรณ์ให้ย้ายไปที่ _completedTasks
+      await db.collection('userTasks').doc(uid).collection('tasksID').doc(updatedTask.id).update(updatedTask.toMap()); // ใช้ uid
       if (updatedTask.isCompleted) {
         markTaskAsCompleted(updatedTask);
       }
       notifyListeners(); // แจ้งให้ผู้ฟังทราบว่ามีการเปลี่ยนแปลง
     } else {
-      // จัดการกรณีที่ไม่พบ task
       throw Exception('ไม่พบงาน: ${updatedTask.id}');
     }
   }
 
-  // ฟังก์ชันสำหรับลบ task ออกจากทั้ง _activeTasks และ _completedTasks
-  void removeTask(Task task) {
+  // ฟังก์ชันสำหรับลบ task
+  Future<void> removeTask(Task task) async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return; // ตรวจสอบ uid
     _tasks.remove(task);
     _completedTasks.remove(task);
-    db.collection('tasks').doc(task.id).delete(); // ลบ task จาก Firestore
+    await db.collection('userTasks').doc(uid).collection('tasksID').doc(task.id).delete(); // ใช้ uid
     notifyListeners(); // แจ้งให้ผู้ฟังทราบว่ามีการเปลี่ยนแปลง
   }
 
   // ฟังก์ชันสำหรับอัปเดตตัวเลือกการแจ้งเตือน
-  void setNotificationOption(String taskId, String newNotificationOption) {
+  Future<void> setNotificationOption(String taskId, String newNotificationOption) async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return; // ตรวจสอบ uid
     final index = _tasks.indexWhere((task) => task.id == taskId);
     if (index != -1) {
       final updatedTask = _tasks[index].copyWith(notificationOption: newNotificationOption);
       _tasks[index] = updatedTask;
-      db.collection('tasks').doc(taskId).update(updatedTask.toMap()); // อัปเดต Firestore
+      await db.collection('userTasks').doc(uid).collection('tasksID').doc(taskId).update(updatedTask.toMap()); // ใช้ uid
       notifyListeners(); // แจ้งให้ผู้ฟังทราบว่ามีการเปลี่ยนแปลง
     } else {
       throw Exception('ไม่พบงาน: $taskId');
@@ -72,26 +76,37 @@ class TaskProvider with ChangeNotifier {
   }
 
   // ฟังก์ชันสำหรับทำเครื่องหมายว่า task เสร็จสมบูรณ์
-  void markTaskAsCompleted(Task task) {
+  Future<void> markTaskAsCompleted(Task task) async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return; // ตรวจสอบ uid
     if (_tasks.remove(task)) {
       _completedTasks.add(task);
-      db.collection('tasks').doc(task.id).update({'isCompleted': true}); // อัปเดต Firestore
+      await db.collection('userTasks').doc(uid).collection('tasksID').doc(task.id).update({'isCompleted': true}); // ใช้ uid
       notifyListeners(); // แจ้งให้ผู้ฟังทราบว่ามีการเปลี่ยนแปลง
     }
   }
 
   // ฟังก์ชันสำหรับอัปเดตความก้าวหน้า (progress) ของ task
-  void updateTaskProgress(int index, double newProgress) {
+  Future<void> updateTaskProgress(int index, double newProgress) async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return; // ตรวจสอบ uid
     if (index >= 0 && index < _tasks.length) {
       _tasks[index] = _tasks[index].copyWith(sliderValue: newProgress);
-      db.collection('tasks').doc(_tasks[index].id).update({'sliderValue': newProgress}); // อัปเดต Firestore
+      await db.collection('userTasks').doc(uid).collection('tasksID').doc(_tasks[index].id).update({'sliderValue': newProgress}); // ใช้ uid
       notifyListeners(); // แจ้งให้ผู้ฟังทราบว่ามีการเปลี่ยนแปลง
     }
   }
 
   // ฟังก์ชันสำหรับโหลด tasks จาก Firestore
-  void loadTasks() {
-    db.collection('tasks').snapshots().listen((snapshot) {
+  Future<void> loadTasks() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) {
+      print('No user logged in');
+      return;
+    }
+    try {
+      final taskCollection = db.collection('userTasks').doc(uid).collection('tasksID');
+      final snapshot = await taskCollection.get();
       _tasks.clear();
       _completedTasks.clear();
       for (var doc in snapshot.docs) {
@@ -102,7 +117,9 @@ class TaskProvider with ChangeNotifier {
           _tasks.add(task);
         }
       }
-      notifyListeners(); // Notify listeners to refresh UI
-    });
+      notifyListeners(); // แจ้งให้ผู้ฟังทราบว่ามีการเปลี่ยนแปลง
+    } catch (e) {
+      print('Error loading tasks: $e');
+    }
   }
 }
