@@ -21,7 +21,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<TaskProvider>(context, listen: false).loadTasks();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<TaskProvider>(context, listen: false).loadTasks();
+    });
   }
 
   @override
@@ -41,7 +43,6 @@ class _HomePageState extends State<HomePage> {
                   MaterialPageRoute(builder: (context) => LoginPage()),
                 );
               } catch (e) {
-                // จัดการข้อผิดพลาดหากเกิดขึ้น
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Error signing out: $e')),
                 );
@@ -52,6 +53,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Consumer<TaskProvider>(
         builder: (context, taskProvider, child) {
+          print('Rebuilding UI with ${taskProvider.tasks.length} tasks');
           if (taskProvider.tasks.isEmpty) {
             return const Center(
               child: Text('No tasks added yet.'),
@@ -86,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       const SizedBox(height: 5),
                       Container(
-                        width: 200,
+                        width: MediaQuery.of(context).size.width - 30, // Adjust width to match your layout
                         height: 15,
                         decoration: BoxDecoration(
                           color: const Color(0xFFd0d0d0),
@@ -142,8 +144,7 @@ class _HomePageState extends State<HomePage> {
                 width: 29,
               ),
               onPressed: () async {
-                final taskProvider =
-                    Provider.of<TaskProvider>(context, listen: false);
+                final taskProvider = Provider.of<TaskProvider>(context, listen: false);
                 final newTask = await Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const AddTaskPage()),
@@ -151,7 +152,7 @@ class _HomePageState extends State<HomePage> {
                 if (newTask != null) {
                   taskProvider.addTask(newTask);
                 }
-              },
+              }
             ),
             const Spacer(),
             IconButton(
