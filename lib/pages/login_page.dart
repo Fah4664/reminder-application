@@ -40,9 +40,11 @@ class _LoginPageState extends State<LoginPage> {
         );
       } catch (e) {
         // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login failed: ${e.toString()}')),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Login failed: ${e.toString()}')),
+          );
+        }
       } finally {
         setState(() {
           _isLoading = false;
