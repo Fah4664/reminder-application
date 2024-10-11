@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 
-Color colorFromString(String s) {
-  // ตรวจสอบสตริงสีว่ามี # หรือไม่
-  if (s.startsWith('#')) {
-    s = s.substring(1); // ลบ # ออก
+Color colorFromString(String colorString) {
+  // ตรวจสอบให้แน่ใจว่าสตริงสีอยู่ในรูปแบบที่ถูกต้อง
+  if (colorString.startsWith('#')) {
+    colorString = colorString.substring(1); // ลบ # ออก
   }
-  
-  // ตรวจสอบว่ามี 6 ตัวอักษร (RRGGBB) หรือไม่
-  if (s.length == 6) {
-    s = 'FF$s'; // เพิ่ม FF สำหรับความโปร่งใสเต็มที่
+  if (colorString.length == 6) {
+    colorString = 'FF' + colorString; // เพิ่มค่า alpha ถ้าขาด
+  } else if (colorString.length != 8) {
+    throw FormatException('Invalid color format');
   }
-  
-  // แปลงสตริงเป็นตัวเลขฐาน 16
-  return Color(int.parse(s, radix: 16));
+  // แปลงสตริงสีเป็นตัวเลขฐาน 16
+  try {
+    return Color(int.parse(colorString, radix: 16));
+  } catch (e) {
+    throw FormatException('Invalid color value');
+  }
 }
