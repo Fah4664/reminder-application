@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       const SizedBox(height: 5),
                       Container(
-                        width: MediaQuery.of(context).size.width - 30, // Adjust width to match your layout
+                        width: 200,
                         height: 15,
                         decoration: BoxDecoration(
                           color: const Color(0xFFd0d0d0),
@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> {
                           alignment: Alignment.centerLeft,
                           child: Container(
                             width: (MediaQuery.of(context).size.width - 100) *
-                                (task.sliderValue / 100),
+                                (task.sliderValue * 100 / 150),
                             height: 15,
                             decoration: BoxDecoration(
                               color: const Color(0xFF717273),
