@@ -124,7 +124,7 @@ void showTaskDetailsPopup(BuildContext context, Task task, int index) {
                 },
                 style: TextButton.styleFrom(
                   foregroundColor: const Color(0xFF000000), // สีข้อความของปุ่ม
-                  backgroundColor: const Color(0xFFd0d0d0), // สีพื้นหลังของปุ่ม
+                  backgroundColor: Color.fromRGBO(208, 208, 208, 0.8), // สีเทาโปร่งแสง
                   shape: RoundedRectangleBorder(
                     borderRadius:
                         BorderRadius.circular(5.0), // ความโค้งของมุมปุ่ม
