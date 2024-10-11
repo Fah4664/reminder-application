@@ -10,10 +10,11 @@ import 'color_picker.dart';
 import 'task_title.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../utils/color_utils.dart';
 
 class TaskForm extends StatefulWidget {
-  final Task? initialTask; // ใช้ในการแก้ไข
-  const TaskForm({super.key, this.initialTask}); // เปลี่ยน 'key' เป็นพารามิเตอร์ super
+  final Task? initialTask;
+  const TaskForm({super.key, this.initialTask});
 
   @override
   TaskFormState createState() => TaskFormState();
@@ -39,15 +40,15 @@ class TaskFormState extends State<TaskForm> {
     isAllDay = widget.initialTask?.isAllDay ?? false;
     startDate = widget.initialTask?.startDateTime ?? DateTime.now();
     startTime = widget.initialTask?.startDateTime != null
-        ? TimeOfDay.fromDateTime(widget.initialTask!.startDateTime!)
-        : TimeOfDay.now();
+      ? TimeOfDay.fromDateTime(widget.initialTask!.startDateTime!)
+      : TimeOfDay.now();
     endDate = widget.initialTask?.endDateTime ?? DateTime.now();
     endTime = widget.initialTask?.endDateTime != null
-        ? TimeOfDay.fromDateTime(widget.initialTask!.endDateTime!)
-        : TimeOfDay.now();
+      ? TimeOfDay.fromDateTime(widget.initialTask!.endDateTime!)
+      : TimeOfDay.now();
     selectedColor = widget.initialTask?.color != null
-        ? colorFromString(widget.initialTask!.color!) // แปลง String เป็น Color
-        : Colors.grey;
+      ? colorFromString(widget.initialTask!.color!) // แปลง String เป็น Color
+      : Colors.grey;
     notificationOption = widget.initialTask?.notificationOption ?? 'None';
     sliderValue = widget.initialTask?.sliderValue ?? 0.0; // กำหนดค่าเริ่มต้นให้กับ sliderValue ถ้าไม่มีค่าให้เป็น 0.0
   }
@@ -241,7 +242,7 @@ class TaskFormState extends State<TaskForm> {
                               'All Day',
                               style: TextStyle(fontSize: 19),
                             ),
-                            const SizedBox(width: 50),
+                            const SizedBox(width: 35),
                             GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -291,7 +292,7 @@ class TaskFormState extends State<TaskForm> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: <Widget>[
                                     SizedBox(
-                                      width: 100,
+                                      width: 90,
                                       height: 35,
                                       child: TextButton(
                                         onPressed: () => selectDate(context, true, (dateTime) {
@@ -300,7 +301,7 @@ class TaskFormState extends State<TaskForm> {
                                           });
                                         }),
                                         style: TextButton.styleFrom(
-                                          padding: const EdgeInsets.all(3.0),
+                                          padding: const EdgeInsets.all(1.0),
                                           backgroundColor: const Color(0xFFd0d0d0),
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(5.0),
@@ -316,7 +317,7 @@ class TaskFormState extends State<TaskForm> {
                                     ),
                                     const SizedBox(width: 10),
                                     SizedBox(
-                                      width: 65,
+                                      width: 75,
                                       height: 35,
                                       child: TextButton(
                                         onPressed: () => selectTime(context, true, (timeOfDay) {
@@ -325,7 +326,7 @@ class TaskFormState extends State<TaskForm> {
                                           });
                                         }),
                                         style: TextButton.styleFrom(
-                                          padding: const EdgeInsets.all(3.0),
+                                          padding: const EdgeInsets.all(1.0),
                                           backgroundColor: const Color(0xFFd0d0d0),
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(5.0),
@@ -355,7 +356,7 @@ class TaskFormState extends State<TaskForm> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: <Widget>[
                                     SizedBox(
-                                      width: 100,
+                                      width: 90,
                                       height: 35,
                                       child: TextButton(
                                         onPressed: () => selectDate(context, false, (dateTime) {
@@ -364,7 +365,7 @@ class TaskFormState extends State<TaskForm> {
                                           });
                                         }),
                                         style: TextButton.styleFrom(
-                                          padding: const EdgeInsets.all(3.0),
+                                          padding: const EdgeInsets.all(1.0),
                                           backgroundColor: const Color(0xFFd0d0d0),
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(5.0),
@@ -380,7 +381,7 @@ class TaskFormState extends State<TaskForm> {
                                     ),
                                     const SizedBox(width: 10),
                                     SizedBox(
-                                      width: 65,
+                                      width: 75,
                                       height: 35,
                                       child: TextButton(
                                         onPressed: () => selectTime(context, false, (timeOfDay) {
@@ -389,7 +390,7 @@ class TaskFormState extends State<TaskForm> {
                                           });
                                         }),
                                         style: TextButton.styleFrom(
-                                          padding: const EdgeInsets.all(3.0),
+                                          padding: const EdgeInsets.all(1.0),
                                           backgroundColor: const Color(0xFFd0d0d0),
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(5.0),
@@ -406,6 +407,9 @@ class TaskFormState extends State<TaskForm> {
                               ),
                             ],
                           ),
+                          
+
+                          
                         ] else ...[
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -414,30 +418,38 @@ class TaskFormState extends State<TaskForm> {
                                 'Start Date',
                                 style: TextStyle(fontSize: 19),
                               ),
-                              SizedBox(
-                                width: 100,
-                                height: 35,
-                                child: TextButton(
-                                  onPressed: () => selectDate(context, true, (dateTime) {
-                                    setState(() {
-                                      startDate = dateTime;
-                                    });
-                                  }),
-                                  style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.all(3.0),
-                                    backgroundColor: const Color(0xFFd0d0d0),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    SizedBox(
+                                      width: 90,
+                                      height: 35,
+                                      child: TextButton(
+                                        onPressed: () => selectDate(context, true, (dateTime) {
+                                          setState(() {
+                                            startDate = dateTime;
+                                          });
+                                        }),
+                                        style: TextButton.styleFrom(
+                                          padding: const EdgeInsets.all(1.0),
+                                          backgroundColor: const Color(0xFFd0d0d0),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                          ),
+                                        ),
+                                        child: Text(
+                                          startDate == null
+                                              ? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                                              : DateFormat('yyyy-MM-dd').format(startDate!),
+                                          style: const TextStyle(fontSize: 15, color: Color(0xFF000000)),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  child: Text(
-                                    startDate == null
-                                        ? DateFormat('yyyy-MM-dd').format(DateTime.now())
-                                        : DateFormat('yyyy-MM-dd').format(startDate!),
-                                    style: const TextStyle(fontSize: 15, color: Color(0xFF000000)),
-                                  ),
+                                  ],
                                 ),
                               ),
+                              const SizedBox(width: 85), // ถ้าต้องการช่องว่างเพิ่มเติม สามารถปรับที่นี่ได้
                             ],
                           ),
                           const SizedBox(height: 10),
@@ -448,32 +460,42 @@ class TaskFormState extends State<TaskForm> {
                                 'End Date',
                                 style: TextStyle(fontSize: 19),
                               ),
-                              SizedBox(
-                                width: 100,
-                                height: 35,
-                                child: TextButton(
-                                  onPressed: () => selectDate(context, false, (dateTime) {
-                                    setState(() {
-                                      endDate = dateTime;
-                                    });
-                                  }),
-                                  style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.all(3.0),
-                                    backgroundColor: const Color(0xFFd0d0d0),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    SizedBox(
+                                      width: 90,
+                                      height: 35,
+                                      child: TextButton(
+                                        onPressed: () => selectDate(context, false, (dateTime) {
+                                          setState(() {
+                                            endDate = dateTime;
+                                          });
+                                        }),
+                                        style: TextButton.styleFrom(
+                                          padding: const EdgeInsets.all(1.0),
+                                          backgroundColor: const Color(0xFFd0d0d0),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                          ),
+                                        ),
+                                        child: Text(
+                                          endDate == null
+                                              ? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                                              : DateFormat('yyyy-MM-dd').format(endDate!),
+                                          style: const TextStyle(fontSize: 15, color: Color(0xFF000000)),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  child: Text(
-                                    endDate == null
-                                        ? DateFormat('yyyy-MM-dd').format(DateTime.now())
-                                        : DateFormat('yyyy-MM-dd').format(endDate!),
-                                    style: const TextStyle(fontSize: 15, color: Color(0xFF000000)),
-                                  ),
+                                    const SizedBox(width: 85),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
+
+
                         ]
                       ],
                     ),
@@ -520,27 +542,6 @@ class TaskFormState extends State<TaskForm> {
         ),
       ),
     );
-  }
-  // ฟังก์ชันสำหรับแปลงจาก String เป็น Color
-  // ฟังก์ชันเพื่อแปลงสตริงสีเป็นอ็อบเจกต์ Color
-
-
-  Color colorFromString(String colorString) {
-    // ตรวจสอบให้แน่ใจว่าสตริงสีอยู่ในรูปแบบที่ถูกต้อง
-    if (colorString.startsWith('#')) {
-      colorString = colorString.substring(1); // ลบ # ออก
-    }  
-    if (colorString.length == 6) {
-      colorString = 'FF' + colorString; // เพิ่มค่า alpha ถ้าขาด
-    } else if (colorString.length != 8) {
-      throw FormatException('Invalid color format');
-    }
-    // แปลงสตริงสีเป็นตัวเลขฐาน 16และตรวจสอบการแปลง
-    try {
-      return Color(int.parse(colorString, radix: 16));
-    } catch (e) {
-      throw FormatException('Invalid color value');
-    }
   }
   
 }
