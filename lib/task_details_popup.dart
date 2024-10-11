@@ -4,13 +4,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'providers/task_provider.dart';
 import 'pages/edit_task_page.dart';
 import '../models/task.dart';
-import 'utils/date_utils.dart';
-import 'utils/color_utils.dart';
+import '../utils/color_utils.dart'; // Make sure the path is correct
+import '../utils/date_utils.dart'; // Make sure the path is correct
 
 void showTaskDetailsPopup(BuildContext context, Task task, int index) {
   Color dialogColor = task.color != null
-      ? colorFromString(task.color!)
-      : const Color(0xFFede3e3);
+    ? colorFromString(task.color!)
+    : const Color(0xFFede3e3);
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -64,25 +64,35 @@ void showTaskDetailsPopup(BuildContext context, Task task, int index) {
                 ),
               ),
               const SizedBox(height: 10),
-              Container(
-                width: 200,
-                height: 15,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFd0d0d0),
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    width: (MediaQuery.of(context).size.width - 100) *
-                        (task.sliderValue * 100 / 150),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start, // จัดเรียงให้เริ่มจากซ้าย
+                children: [
+                  Container(
+                    width: 200,
                     height: 15,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF717273),
+                      color: const Color(0xFFd0d0d0),
                       borderRadius: BorderRadius.circular(15.0),
                     ),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        width: (MediaQuery.of(context).size.width - 100) *
+                            (task.sliderValue * 100 / 150),
+                        height: 15,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF717273),
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                  const SizedBox(width: 10), // ระยะห่างระหว่างแถบและข้อความ
+                  Text(
+                    '${(task.sliderValue * 100).toStringAsFixed(0)}%', // แสดงเปอร์เซ็นต์
+                    style: const TextStyle(fontSize: 16, color: Color(0xFF000000)),
+                  ),
+                ],
               ),
               const SizedBox(height: 10),
               Text(
