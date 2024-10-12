@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../models/task.dart';
+import '../utils/color_utils.dart';
+import 'task_title_box.dart';
+import 'date_time_selector.dart';
 import 'notification_picker.dart';
 import 'track_goals_box.dart';
 import 'color_picker.dart';
-import 'task_title_box.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import '../utils/color_utils.dart';
-import 'date_time_selector.dart';
 
 class TaskForm extends StatefulWidget {
   final Task? initialTask;
@@ -18,54 +18,46 @@ class TaskForm extends StatefulWidget {
 }
 
 class TaskFormState extends State<TaskForm> {
-  late TextEditingController
-      titleController; // Controller for the task title input
-  late TextEditingController
-      descriptionController; // Controller for the task description input
+  late TextEditingController titleController; // Controller for the task title input
+  late TextEditingController descriptionController; // Controller for the task description input
   DateTime? startDate; // Variable to hold the start date of the task
   TimeOfDay? startTime; // Variable to hold the start time of the task
   DateTime? endDate; // Variable to hold the end date of the task
   TimeOfDay? endTime; // Variable to hold the end time of the task
   late bool isAllDay; // Flag to determine if the task is an all-day event
   late Color selectedColor; // Variable to store the selected color for the task
-  String?
-      notificationOption; // Variable to store the selected notification option
-  double sliderValue =
-      0.0; // Variable to hold the value of a slider (e.g., progress)
+  String? notificationOption; // Variable to store the selected notification option
+  double sliderValue = 0.0; // Variable to hold the value of a slider (e.g., progress)
 
   @override
   void initState() {
     super.initState();
     // Initialize the title controller with the existing task title or an empty string
-    titleController =
-        TextEditingController(text: widget.initialTask?.title ?? '');
+    titleController = TextEditingController(text: widget.initialTask?.title ?? '');
     // Initialize the description controller with the existing task description or an empty string
-    descriptionController =
-        TextEditingController(text: widget.initialTask?.description ?? '');
+    descriptionController = TextEditingController(text: widget.initialTask?.description ?? '');
     // Set whether the task is an all-day event, defaulting to false if no existing task
     isAllDay = widget.initialTask?.isAllDay ?? false;
     // Set the start date, defaulting to the current date if no existing task
     startDate = widget.initialTask?.startDateTime ?? DateTime.now();
     // Set the start time, converting the existing DateTime to TimeOfDay if available
     startTime = widget.initialTask?.startDateTime != null
-        ? TimeOfDay.fromDateTime(widget.initialTask!.startDateTime!)
-        : TimeOfDay.now();
+      ? TimeOfDay.fromDateTime(widget.initialTask!.startDateTime!)
+      : TimeOfDay.now();
     // Set the end date, defaulting to the current date if no existing task
     endDate = widget.initialTask?.endDateTime ?? DateTime.now();
     // Set the end time, converting the existing DateTime to TimeOfDay if available
     endTime = widget.initialTask?.endDateTime != null
-        ? TimeOfDay.fromDateTime(widget.initialTask!.endDateTime!)
-        : TimeOfDay.now();
+      ? TimeOfDay.fromDateTime(widget.initialTask!.endDateTime!)
+      : TimeOfDay.now();
     // Set the selected color, converting the existing color string to Color if available
     selectedColor = widget.initialTask?.color != null
-        ? colorFromString(widget.initialTask!
-            .color!) // Convert String to Color // แปลง String เป็น Color
-        : Colors.grey;
+      ? colorFromString(widget.initialTask!.color!) // Convert String to Color
+      : Colors.grey;
     // Set the notification option, defaulting to 'None' if not specified
     notificationOption = widget.initialTask?.notificationOption ?? 'None';
     // Set the slider value, defaulting to 0.0 if not specified
-    sliderValue = widget.initialTask?.sliderValue ??
-        0.0; // Initialize slider value  // กำหนดค่าเริ่มต้นให้กับ sliderValue ถ้าไม่มีค่าให้เป็น 0.0
+    sliderValue = widget.initialTask?.sliderValue ?? 0.0;
   }
 
   @override
@@ -84,22 +76,18 @@ class TaskFormState extends State<TaskForm> {
     if (title.isNotEmpty) {
       // Create DateTime objects for start and end date and time.
       final DateTime? startDateTime = startDate != null && startTime != null
-          ? DateTime(startDate!.year, startDate!.month, startDate!.day,
-              startTime!.hour, startTime!.minute)
-          : null;
+        ? DateTime(startDate!.year, startDate!.month, startDate!.day, startTime!.hour, startTime!.minute)
+        : null;
       final DateTime? endDateTime = endDate != null && endTime != null
-          ? DateTime(endDate!.year, endDate!.month, endDate!.day, endTime!.hour,
-              endTime!.minute)
-          : null;
+        ? DateTime(endDate!.year, endDate!.month, endDate!.day, endTime!.hour, endTime!.minute)
+        : null;
       // Convert selected color to a hex string for storage.
-      final colorString = selectedColor.value
-          .toRadixString(16)
-          .padLeft(8, '0'); // แปลง Color เป็น String
+      final colorString = selectedColor.value.toRadixString(16).padLeft(8, '0'); // แปลง Color เป็น String
 
       // Get the currently logged-in user. // รับ uid จากผู้ใช้ที่ล็อกอิน
       final user = FirebaseAuth.instance.currentUser;
       if (user == null) {
-        print('Error: User not logged in');
+        'Error: User not logged in';
         return;
       }
       final String uid = user.uid;
@@ -107,10 +95,10 @@ class TaskFormState extends State<TaskForm> {
         // If editing an existing task, update the task in Firestore.
         // Update existing task
         final taskRef = FirebaseFirestore.instance
-            .collection('userTasks')
-            .doc(uid) // ใช้ uid เป็นส่วนหนึ่งของคอลเลคชัน
-            .collection('tasksID')
-            .doc(widget.initialTask!.id);
+          .collection('userTasks')
+          .doc(uid)
+          .collection('tasksID')
+          .doc(widget.initialTask!.id);
         await taskRef.update({
           'title': title,
           'description': description,
@@ -127,10 +115,10 @@ class TaskFormState extends State<TaskForm> {
       } else {
         // Add new task
         final taskRef = FirebaseFirestore.instance
-            .collection('userTasks')
-            .doc(uid) // ใช้ uid เป็นส่วนหนึ่งของคอลเลคชัน
-            .collection('tasksID')
-            .doc(); // สร้างเอกสารใหม่ใน userTasks collection
+          .collection('userTasks')
+          .doc(uid) // ใช้ uid เป็นส่วนหนึ่งของคอลเลคชัน
+          .collection('tasksID')
+          .doc(); // สร้างเอกสารใหม่ใน userTasks collection
         final newTask = Task(
           id: taskRef.id,
           title: title,
@@ -164,9 +152,9 @@ class TaskFormState extends State<TaskForm> {
           child: IntrinsicHeight(
             child: Container(
               margin:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 80.0),
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 80.0),
               padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
               decoration: BoxDecoration(
                 color: const Color(0xFFf2f2f2),
                 borderRadius: BorderRadius.circular(15.0),
@@ -228,7 +216,7 @@ class TaskFormState extends State<TaskForm> {
                   // Container for task title and description input fields
                   Container(
                     padding: const EdgeInsets.only(
-                        top: 1.0, bottom: 1.0, left: 15.0, right: 15.0),
+                      top: 1.0, bottom: 1.0, left: 15.0, right: 15.0),
                     decoration: BoxDecoration(
                       color: const Color(0xFFffffff),
                       borderRadius: BorderRadius.circular(15.0),
@@ -279,12 +267,10 @@ class TaskFormState extends State<TaskForm> {
                   const SizedBox(height: 5), // เพิ่มระยะห่างระหว่างกล่อง
                   // Notification and Track Goals section
                   NotificationPicker(
-                    notificationOption:
-                        notificationOption, // Use notificationOption here
+                    notificationOption: notificationOption, // Use notificationOption here
                     onOptionSelected: (newOption) {
                       setState(() {
-                        notificationOption =
-                            newOption; // Update notificationOption
+                        notificationOption = newOption; // Update notificationOption
                       });
                     },
                   ),
@@ -293,20 +279,17 @@ class TaskFormState extends State<TaskForm> {
                     progress: sliderValue, // ส่งค่าเริ่มต้นไปยัง TrackGoals
                     onProgressUpdated: (value) {
                       setState(() {
-                        sliderValue =
-                            value; // อัพเดตค่าความก้าวหน้าเมื่อมีการเปลี่ยนแปลง
+                        sliderValue = value; // อัพเดตค่าความก้าวหน้าเมื่อมีการเปลี่ยนแปลง
                       });
                     },
                   ),
                   const SizedBox(height: 5),
                   // Color Picker section
                   ColorPicker(
-                    selectedColor:
-                        selectedColor, // Color Picker section // ส่งสีที่เลือกไปยัง ColorPicker
+                    selectedColor: selectedColor, // Color Picker section // ส่งสีที่เลือกไปยัง ColorPicker
                     onColorSelected: (color) {
                       setState(() {
-                        selectedColor =
-                            color; // Update selected color // อัพเดตสีที่ถูกเลือกเมื่อผู้ใช้เลือกสี
+                        selectedColor = color; // Update selected color // อัพเดตสีที่ถูกเลือกเมื่อผู้ใช้เลือกสี
                       });
                     },
                   ),
