@@ -34,6 +34,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Center(
             child: Text('Track Goals')), // App title shown in the top bar
+            automaticallyImplyLeading: false,
         actions: [
           IconButton(
               icon: const Icon(Icons.logout), // Log out button

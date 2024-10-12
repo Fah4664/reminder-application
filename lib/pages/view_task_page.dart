@@ -15,6 +15,7 @@ class ViewTasksPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text('View Completed Tasks')),
+        automaticallyImplyLeading: false,
       ),
       body: Consumer<TaskProvider>(
         builder: (context, taskProvider, child) {
