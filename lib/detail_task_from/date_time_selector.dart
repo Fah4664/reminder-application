@@ -267,21 +267,34 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
                   'Start Date',
                   style: TextStyle(fontSize: 19),
                 ),
-                Container(
-                  width: 90,
-                  height: 35,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFd0d0d0),
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  child: Center(
-                    child: Text(
-                      DateFormat('yyyy-MM-dd').format(startDate ?? DateTime.now()),
-                      style: const TextStyle(fontSize: 15, color: Color(0xFF000000)),
-                    ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      SizedBox(
+                        width: 90,
+                        height: 35,
+                        child: TextButton(
+                          onPressed: () => selectDate(context, true),
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.all(1.0),
+                            backgroundColor: const Color(0xFFd0d0d0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                          ),
+                          child: Text(
+                            startDate == null
+                                ? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                                : DateFormat('yyyy-MM-dd').format(startDate!),
+                            style: const TextStyle(fontSize: 15, color: Color(0xFF000000)),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 85),
+                    ],
                   ),
                 ),
-                const SizedBox(width: 85),
               ],
             ),
             const SizedBox(height: 10),
@@ -292,21 +305,34 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
                   'End Date',
                   style: TextStyle(fontSize: 19),
                 ),
-                Container(
-                  width: 90,
-                  height: 35,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFd0d0d0),
-            borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  child: Center(
-                    child: Text(
-                      DateFormat('yyyy-MM-dd').format(endDate ?? DateTime.now()),
-                      style: const TextStyle(fontSize: 15, color: Color(0xFF000000)),
-                    ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      SizedBox(
+                        width: 90,
+                        height: 35,
+                        child: TextButton(
+                          onPressed: () => selectDate(context, false),
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.all(1.0),
+                            backgroundColor: const Color(0xFFd0d0d0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                          ),
+                          child: Text(
+                            endDate == null
+                                ? DateFormat('yyyy-MM-dd').format(DateTime.now())
+                                : DateFormat('yyyy-MM-dd').format(endDate!),
+                            style: const TextStyle(fontSize: 15, color: Color(0xFF000000)),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 85),
+                    ],
                   ),
                 ),
-                const SizedBox(width: 85),
               ],
             ),
           ],
