@@ -240,15 +240,22 @@ class _SearchPageState extends State<SearchPage> {
               },
             ),
             const Spacer(),
-            IconButton(
-              icon: Image.asset(
-                'assets/icons/search.png', // Icon for Search (current page)
-                height: 28,
-                width: 28,
-              ),
-              onPressed: () {
-                // Stay on this page, do nothing
-              },
+            Column(
+              mainAxisSize: MainAxisSize.min, // ให้ Column มีขนาดเล็กที่สุด
+              children: [
+                Image.asset(
+                  'assets/icons/search.png', // Icon for Search
+                  height: 28,
+                  width: 28,
+                ),
+                const Text(
+                  'Search', // ข้อความใต้ไอคอน
+                  style: TextStyle(
+                    fontSize: 10, // ขนาดฟอนต์เล็กๆ
+                    color: Colors.black, // สีของข้อความ
+                  ),
+                ),
+              ],
             ),
             const Spacer(),
             IconButton(
