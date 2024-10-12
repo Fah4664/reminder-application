@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 import '../models/task.dart';
-//import 'providers/task_provider.dart';
-import '../utils/date_time_utils.dart';
 import 'notification_box.dart';
 import 'track_goals_box.dart';
 import 'color_picker.dart';
@@ -11,6 +7,7 @@ import 'task_title.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../utils/color_utils.dart';
+import 'date_time_selector.dart';
 
 class TaskForm extends StatefulWidget {
   final Task? initialTask;
@@ -245,346 +242,40 @@ class TaskFormState extends State<TaskForm> {
                       ],
                     ),
                   ),
-
                   const SizedBox(height: 5),
-
                   // Container for date and time selection
-                  Container(
-                    padding: const EdgeInsets.all(15.0),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFffffff),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        const SizedBox(height: 1),
-                        // Row for "All Day" toggle
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            const Text(
-                              'All Day',
-                              style: TextStyle(fontSize: 19),
-                            ),
-                            const SizedBox(width: 35),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  isAllDay =
-                                      !isAllDay; // Toggle the All Day option
-                                });
-                              },
-                              child: Container(
-                                width: 65,
-                                height: 35,
-                                decoration: BoxDecoration(
-                                  color: isAllDay
-                                      ? const Color(0xFF717273)
-                                      : const Color(0xFFd0d0d0),
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                      color: const Color(0xFFFFFFFF)),
-                                ),
-                                child: Stack(
-                                  children: <Widget>[
-                                    AnimatedAlign(
-                                      duration:
-                                          const Duration(milliseconds: 200),
-                                      alignment: isAllDay
-                                          ? Alignment.centerRight
-                                          : Alignment.centerLeft,
-                                      child: Container(
-                                        width: 29,
-                                        height: 29,
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 3.0),
-                                        decoration: const BoxDecoration(
-                                          color: Color(0xFFffffff),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(15.0)),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        // If not All Day, show Start and End Date/Time selection
-                        if (!isAllDay) ...[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              const Text(
-                                'Start Date',
-                                style: TextStyle(fontSize: 19),
-                              ),
-                              Expanded(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: <Widget>[
-                                    SizedBox(
-                                      width: 90,
-                                      height: 35,
-                                      child: TextButton(
-                                        onPressed: () => selectDate(
-                                            context, true, (dateTime) {
-                                          setState(() {
-                                            startDate =
-                                                dateTime; // Update startDate
-                                          });
-                                        }),
-                                        style: TextButton.styleFrom(
-                                          padding: const EdgeInsets.all(1.0),
-                                          backgroundColor:
-                                              const Color(0xFFd0d0d0),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                          ),
-                                        ),
-                                        child: Text(
-                                          startDate == null
-                                              ? DateFormat('yyyy-MM-dd')
-                                                  .format(DateTime.now())
-                                              : DateFormat('yyyy-MM-dd')
-                                                  .format(startDate!),
-                                          style: const TextStyle(
-                                              fontSize: 15,
-                                              color: Color(0xFF000000)),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    // Button for selecting Start Time
-                                    SizedBox(
-                                      width: 75,
-                                      height: 35,
-                                      child: TextButton(
-                                        onPressed: () => selectTime(
-                                            context, true, (timeOfDay) {
-                                          setState(() {
-                                            startTime =
-                                                timeOfDay; // Update startTime
-                                          });
-                                        }),
-                                        style: TextButton.styleFrom(
-                                          padding: const EdgeInsets.all(1.0),
-                                          backgroundColor:
-                                              const Color(0xFFd0d0d0),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                          ),
-                                        ),
-                                        child: Text(
-                                          startTime == null
-                                              ? 'Time'
-                                              : startTime!.format(context),
-                                          style: const TextStyle(
-                                              fontSize: 15,
-                                              color: Color(0xFF000000)),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                          // Row for selecting End Date and Time
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              const Text(
-                                'End Date',
-                                style: TextStyle(fontSize: 19),
-                              ),
-                              Expanded(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: <Widget>[
-                                    // Button for selecting End Date
-                                    SizedBox(
-                                      width: 90,
-                                      height: 35,
-                                      child: TextButton(
-                                        onPressed: () => selectDate(
-                                            context, false, (dateTime) {
-                                          setState(() {
-                                            endDate =
-                                                dateTime; // Update endDate
-                                          });
-                                        }),
-                                        style: TextButton.styleFrom(
-                                          padding: const EdgeInsets.all(1.0),
-                                          backgroundColor:
-                                              const Color(0xFFd0d0d0),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                          ),
-                                        ),
-                                        child: Text(
-                                          endDate == null
-                                              ? DateFormat('yyyy-MM-dd')
-                                                  .format(DateTime.now())
-                                              : DateFormat('yyyy-MM-dd')
-                                                  .format(endDate!),
-                                          style: const TextStyle(
-                                              fontSize: 15,
-                                              color: Color(0xFF000000)),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    // Button for selecting End Time
-                                    SizedBox(
-                                      width: 75,
-                                      height: 35,
-                                      child: TextButton(
-                                        onPressed: () => selectTime(
-                                            context, false, (timeOfDay) {
-                                          setState(() {
-                                            endTime =
-                                                timeOfDay; // Update endTime
-                                          });
-                                        }),
-                                        style: TextButton.styleFrom(
-                                          padding: const EdgeInsets.all(1.0),
-                                          backgroundColor:
-                                              const Color(0xFFd0d0d0),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                          ),
-                                        ),
-                                        child: Text(
-                                          endTime == null
-                                              ? 'Time'
-                                              : endTime!.format(context),
-                                          style: const TextStyle(
-                                              fontSize: 15,
-                                              color: Color(0xFF000000)),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ] else ...[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              const Text(
-                                'Start Date',
-                                style: TextStyle(fontSize: 19),
-                              ),
-                              Expanded(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: <Widget>[
-                                    SizedBox(
-                                      width: 90,
-                                      height: 35,
-                                      child: TextButton(
-                                        onPressed: () => selectDate(
-                                            context, true, (dateTime) {
-                                          setState(() {
-                                            startDate = dateTime;
-                                          });
-                                        }),
-                                        style: TextButton.styleFrom(
-                                          padding: const EdgeInsets.all(1.0),
-                                          backgroundColor:
-                                              const Color(0xFFd0d0d0),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                          ),
-                                        ),
-                                        child: Text(
-                                          startDate == null
-                                              ? DateFormat('yyyy-MM-dd')
-                                                  .format(DateTime.now())
-                                              : DateFormat('yyyy-MM-dd')
-                                                  .format(startDate!),
-                                          style: const TextStyle(
-                                              fontSize: 15,
-                                              color: Color(0xFF000000)),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                  width:
-                                      85), // ถ้าต้องการช่องว่างเพิ่มเติม สามารถปรับที่นี่ได้
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                          // Button for selecting End Time
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              const Text(
-                                'End Date',
-                                style: TextStyle(fontSize: 19),
-                              ),
-                              Expanded(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: <Widget>[
-                                    SizedBox(
-                                      width: 90,
-                                      height: 35,
-                                      child: TextButton(
-                                        onPressed: () => selectDate(
-                                            context, false, (dateTime) {
-                                          setState(() {
-                                            endDate =
-                                                dateTime; // Update endTime
-                                          });
-                                        }),
-                                        style: TextButton.styleFrom(
-                                          padding: const EdgeInsets.all(1.0),
-                                          backgroundColor:
-                                              const Color(0xFFd0d0d0),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                          ),
-                                        ),
-                                        child: Text(
-                                          endDate == null
-                                              ? DateFormat('yyyy-MM-dd')
-                                                  .format(DateTime.now())
-                                              : DateFormat('yyyy-MM-dd')
-                                                  .format(endDate!),
-                                          style: const TextStyle(
-                                              fontSize: 15,
-                                              color: Color(0xFF000000)),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 85),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ]
-                      ],
-                    ),
+                  DateTimeSelector(
+                    startDate: startDate,
+                    startTime: startTime,
+                    endDate: endDate,
+                    endTime: endTime,
+                    isAllDay: isAllDay,
+                    onStartDateChanged: (newDate) {
+                      setState(() {
+                        startDate = newDate;
+                      });
+                    },
+                    onStartTimeChanged: (newTime) {
+                      setState(() {
+                        startTime = newTime;
+                      });
+                    },
+                    onEndDateChanged: (newDate) {
+                      setState(() {
+                        endDate = newDate;
+                      });
+                    },
+                    onEndTimeChanged: (newTime) {
+                      setState(() {
+                        endTime = newTime;
+                      });
+                    },
+                    onAllDayToggle: (newValue) {
+                      setState(() {
+                        isAllDay = newValue;
+                      });
+                    },
                   ),
-
                   const SizedBox(height: 5), // เพิ่มระยะห่างระหว่างกล่อง
                   // Notification and Track Goals section
                   NotificationBox(
@@ -597,9 +288,7 @@ class TaskFormState extends State<TaskForm> {
                       });
                     },
                   ),
-
                   const SizedBox(height: 5),
-
                   TrackGoals(
                     progress: sliderValue, // ส่งค่าเริ่มต้นไปยัง TrackGoals
                     onProgressUpdated: (value) {
@@ -609,7 +298,6 @@ class TaskFormState extends State<TaskForm> {
                       });
                     },
                   ),
-
                   const SizedBox(height: 5),
                   // Color Picker section
                   ColorPicker(
