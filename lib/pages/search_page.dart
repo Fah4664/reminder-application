@@ -54,8 +54,8 @@ class _SearchPageState extends State<SearchPage> {
                 width: 300, // Set the width of the search box
                 height: 60, // Set the height of the search box
                 decoration: BoxDecoration(
-                  color: const Color(
-                      0xFF9b9a8), // Background color of the search box
+                  color: const Color.fromARGB(
+                      255, 218, 224, 227), // สีเทาเป็นพื้นหลังของช่องค้นหา
                   borderRadius: BorderRadius.circular(20.0), // Rounded corners
                 ),
                 child: Padding(
