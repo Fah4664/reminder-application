@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import '../models/task.dart';
 import '../providers/task_provider.dart';
+import '../utils/date_utils.dart';
+import '../utils/color_utils.dart';
+import '../task_details_popup.dart';
+import 'login_page.dart';
 import 'add_task_page.dart';
 import 'search_page.dart';
 import 'view_task_page.dart';
-import '../task_details_popup.dart';
-import '../utils/date_utils.dart';
-import '../utils/color_utils.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'login_page.dart';
 
 // HomePage that displays the list of tasks
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: const Color(0xFFFFFFFF), // Set background to white
       appBar: AppBar(
         title: const Center(
-            child: Text('Track Goals')), // App title shown in the top bar
+          child: Text('Track Goals')), // App title shown in the top bar
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
@@ -41,12 +41,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () async {
                 try {
                   await FirebaseAuth.instance.signOut(); // Sign out
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            LoginPage()), // Navigate to LoginPage
-                  );
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
                 } catch (e) {
                   // Show error message if sign-out fails
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -62,22 +57,18 @@ class _HomePageState extends State<HomePage> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
-                child:
-                    CircularProgressIndicator()); // Show loading spinner when data is being fetched
+              child: CircularProgressIndicator()); // Show loading spinner when data is being fetched
           }
           if (snapshot.hasError) {
             return Center(
-                child: Text('Error: ${snapshot.error}')); // Show error message
+              child: Text('Error: ${snapshot.error}')); // Show error message
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(
-                child: Text(
-                    'No tasks added yet.')); // Show message when no tasks are available
+              child: Text('No tasks added yet.')); // Show message when no tasks are available
           }
-
           // Filter and show only incomplete tasks
-          final tasks =
-              snapshot.data!.where((task) => !task.isCompleted).toList();
+          final tasks = snapshot.data!.where((task) => !task.isCompleted).toList();
           return ListView.builder(
             itemCount: tasks.length, // Number of tasks to display
             itemBuilder: (context, index) {
@@ -86,7 +77,7 @@ class _HomePageState extends State<HomePage> {
                 elevation: 4,
                 color: task.color != null
                     ? colorFromString(
-                        task.color!) // Set card color based on task
+                      task.color!) // Set card color based on task
                     : const Color(0xFFede3e3),
                 margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                 child: ListTile(
@@ -97,14 +88,14 @@ class _HomePageState extends State<HomePage> {
                       Text(
                         task.title,
                         style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                          fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 5),
                       // Display task date range
                       Text(
                         formatDateRange(task.startDateTime, task.endDateTime),
                         style: const TextStyle(
-                            fontSize: 16, color: Color(0xFF000000)),
+                          fontSize: 16, color: Color(0xFF000000)),
                       ),
                       const SizedBox(height: 5),
                       // Task progress bar
@@ -119,8 +110,7 @@ class _HomePageState extends State<HomePage> {
                           alignment: Alignment.centerLeft,
                           child: Container(
                             // Progress bar width based on `sliderValue`
-                            width: (MediaQuery.of(context).size.width - 100) *
-                                (task.sliderValue * 100 / 150),
+                            width: (MediaQuery.of(context).size.width - 100) * (task.sliderValue * 100 / 150),
                             height: 15,
                             decoration: BoxDecoration(
                               color: const Color(0xFF717273),
@@ -156,10 +146,10 @@ class _HomePageState extends State<HomePage> {
                   width: 27,
                 ),
                 const Text(
-                  'Home', // ข้อความใต้ไอคอน
+                  'Home',
                   style: TextStyle(
-                    fontSize: 15, // ขนาดฟอนต์เล็กๆ
-                    color: Colors.black, // สีของข้อความ
+                    fontSize: 15,
+                    color: Colors.black,
                   ),
                 ),
               ],
@@ -173,16 +163,11 @@ class _HomePageState extends State<HomePage> {
                 ),
                 onPressed: () async {
                   final taskProvider =
-                      Provider.of<TaskProvider>(context, listen: false);
+                    Provider.of<TaskProvider>(context, listen: false);
                   // Open AddTaskPage and receive a new task
-                  final newTask = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AddTaskPage()),
-                  );
+                  final newTask = await Navigator.push(context, MaterialPageRoute(builder: (context) => const AddTaskPage()));
                   if (newTask != null) {
-                    taskProvider
-                        .addTask(newTask); // Add the new task to the list
+                    taskProvider.addTask(newTask); // Add the new task to the list
                   }
                 }),
             const Spacer(),
@@ -193,12 +178,8 @@ class _HomePageState extends State<HomePage> {
                 width: 28,
               ),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const SearchPage()), // Open SearchPage
-                );
+                // Open SearchPage
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchPage()));
               },
             ),
             const Spacer(),
@@ -209,12 +190,8 @@ class _HomePageState extends State<HomePage> {
                 width: 28,
               ),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const ViewTasksPage()), // Open ViewTasksPage for completed tasks
-                );
+                // Open ViewTasksPage for completed tasks
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const ViewTasksPage()));
               },
             ),
             const SizedBox(width: 48),
