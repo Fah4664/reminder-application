@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 
-// Widget for NotificationBox that allows users to select notification options.
-class NotificationBox extends StatefulWidget {
-  final String? notificationOption; // ตัวเลือกที่เลือกแล้ว
-  final Function(String)
-      onOptionSelected; // ฟังก์ชันที่เรียกเมื่อมีการเลือกตัวเลือก
+// Widget for Notification that allows users to select notification options.
+class Notification extends StatefulWidget {
+  // The currently selected notification option, can be null.
+  final String? notificationOption;
+  // Callback function that is called when a notification option is selected.
+  final Function(String) onOptionSelected;
 
-  const NotificationBox({
+  const Notification({
     super.key,
     this.notificationOption,
     required this.onOptionSelected,
   });
 
   @override
-  NotificationBoxState createState() => NotificationBoxState();
+  NotificationState createState() => NotificationState();
 }
 
-// State for NotificationBox to manage the selected notification option.
-class NotificationBoxState extends State<NotificationBox> {
-  // List of options for notifications.
-  // รายการตัวเลือกสำหรับการแจ้งเตือน
+// State for Notification to manage the selected notification option.
+class NotificationState extends State<Notification> {
+  // These options represent various timing options for notifications.
   final List<String> _options = [
     'None',
     'At time of event',
@@ -35,19 +35,17 @@ class NotificationBoxState extends State<NotificationBox> {
   ];
 
   // Variable to hold the selected option in the dialog.
-  // ตัวแปรสำหรับเก็บตัวเลือกที่เลือกในป๊อปอัพ
+  // This variable tracks the currently selected option within the dialog.
   String? _selectedOptionInDialog;
 
   @override
   void initState() {
     super.initState();
-    // Set the default value from widget.notificationOption or 'None'.
-    // ใช้ค่าเริ่มต้นจาก widget.notificationOption หรือ 'None'
+    // Defaults to 'None' if no option is specified.
     _selectedOptionInDialog = widget.notificationOption ?? 'None';
   }
 
-  // Function to show a popup dialog when the NotificationBox is tapped.
-  // ฟังก์ชันที่แสดงป๊อปอัพเมื่อคลิกที่ NotificationBox
+  // Function to show a popup dialog when the Notification is tapped.
   void _showOptionsDialog() {
     showDialog(
       context: context,
@@ -81,13 +79,15 @@ class NotificationBoxState extends State<NotificationBox> {
                       ),
                     ),
                     onTap: () {
+                      // Update selected option
                       setState(() {
                         _selectedOptionInDialog = option;
                       });
-                      widget.onOptionSelected(
-                          option); // Call function when an option is selected // เรียกฟังก์ชันเมื่อเลือกตัวเลือก
-                      Navigator.of(context)
-                          .pop(); // Close the popup // ปิดป๊อปอัพ
+                      // Call function when an option is selected
+                      // Notify parent about the selected option
+                      widget.onOptionSelected(option);
+                      // Close the dialog
+                      Navigator.of(context).pop(); 
                     },
                   ),
                 ),
@@ -101,12 +101,11 @@ class NotificationBoxState extends State<NotificationBox> {
 
   @override
   Widget build(BuildContext context) {
-    // Build method to create the UI for NotificationBox.
+    // Build method to create the UI for Notification.
     return GestureDetector(
-      onTap: _showOptionsDialog, // Show dialog when tapped
+      onTap: _showOptionsDialog,
       child: Container(
-        padding:
-            const EdgeInsets.all(15.0), // Padding inside the NotificationBox
+        padding: const EdgeInsets.all(15.0),
         decoration: BoxDecoration(
           color: const Color(0xFFffffff),
           borderRadius: BorderRadius.circular(15.0),
@@ -123,19 +122,18 @@ class NotificationBoxState extends State<NotificationBox> {
               onTap: _showOptionsDialog,
               child: Container(
                 padding: const EdgeInsets.symmetric(
-                    vertical: 10.0, horizontal: 15.0),
+                  vertical: 10.0, horizontal: 15.0),
                 decoration: BoxDecoration(
                   color: const Color(0xFFFFFFFF),
                   borderRadius: BorderRadius.circular(8.0),
-                  border:
-                      Border.all(color: const Color(0xFFd0d0d0), width: 1.0),
+                  border: Border.all(color: const Color(0xFFd0d0d0), width: 1.0),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      _selectedOptionInDialog ??
-                          'None', // Display 'None' if value is null // ใช้ 'None' ถ้าค่าเป็น null
+                      // Display the selected option or 'None'
+                      _selectedOptionInDialog ?? 'None',
                       style: TextStyle(
                         fontSize: 16,
                         color: const Color(0xFF717273).withOpacity(0.6),
