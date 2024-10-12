@@ -5,8 +5,17 @@ import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
+/// This class provides default Firebase options for your apps.
 ///
 /// Example:
+/// ```dart
+/// import 'firebase_options.dart';
+/// // ...
+/// await Firebase.initializeApp(
+///   options: DefaultFirebaseOptions.currentPlatform,
+/// );
+/// ```
+/// Example usage:
 /// ```dart
 /// import 'firebase_options.dart';
 /// // ...
@@ -21,6 +30,7 @@ class DefaultFirebaseOptions {
         'DefaultFirebaseOptions have not been configured for web - '
         'you can reconfigure this by running the FlutterFire CLI again.',
       );
+      // This message indicates that DefaultFirebaseOptions have not been set up for web
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -65,5 +75,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'reminder-f3484.appspot.com',
     iosBundleId: 'com.example.rememberApplication',
   );
-
 }
