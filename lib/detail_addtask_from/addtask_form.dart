@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/task.dart';
-import 'notification_box.dart';
+import 'notification_picker.dart';
 import 'track_goals_box.dart';
 import 'color_picker.dart';
 import 'task_title_box.dart';
@@ -278,7 +278,7 @@ class TaskFormState extends State<TaskForm> {
                   ),
                   const SizedBox(height: 5), // เพิ่มระยะห่างระหว่างกล่อง
                   // Notification and Track Goals section
-                  Notification(
+                  NotificationPicker(
                     notificationOption:
                         notificationOption, // Use notificationOption here
                     onOptionSelected: (newOption) {
