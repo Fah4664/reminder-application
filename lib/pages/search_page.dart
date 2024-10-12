@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:reminder_application/task_details_popup.dart';
 import '../../providers/task_provider.dart';
 import 'add_task_page.dart';
 import 'view_task_page.dart';
 import 'home_page.dart';
+import '../utils/date_utils.dart';
+import '../utils/color_utils.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _SearchPageState createState() => _SearchPageState();
 }
 
@@ -36,57 +38,128 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false, // ปิดการแสดงปุ่มย้อนกลับอัตโนมัติ
-        title: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          child: TextField(
-            controller: _searchController,
-            decoration: const InputDecoration(
-              hintText: 'Search...',
-              border: InputBorder.none,
-              prefixIcon: Icon(Icons.search),
+      body: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.only(top: 80.0),
+            child: Center(
+              child: Container(
+                width: 300,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF9b9a8),
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _searchController,
+                          decoration: InputDecoration(
+                            hintText: 'Search Tasks...',
+                            border: InputBorder.none,
+                            fillColor: Colors.transparent,
+                            filled: true,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      Icon(
+                        Icons.search,
+                        color: const Color(0xFF000000),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
-      ),
-      body: Consumer<TaskProvider>(
-        builder: (context, taskProvider, child) {
-          final results = taskProvider.tasks.where((task) {
-            return task.title
-                    .toLowerCase()
-                    .contains(searchQuery.toLowerCase()) ||
-                task.description
-                    .toLowerCase()
-                    .contains(searchQuery.toLowerCase());
-          }).toList();
+          const SizedBox(height: 10),
+          Expanded(
+            child: Consumer<TaskProvider>(
+              builder: (context, taskProvider, child) {
+                final results = taskProvider.tasks.where((task) {
+                  return task.title.toLowerCase().contains(searchQuery.toLowerCase()) ||
+                      task.description.toLowerCase().contains(searchQuery.toLowerCase());
+                }).toList();
 
-          return results.isEmpty
-              ? const Center(
-                  child: Text(
-                    'No tasks found',
-                    style: TextStyle(fontSize: 18, color: Colors.grey),
-                  ),
-                )
-              : ListView.builder(
-                  itemCount: results.length,
-                  itemBuilder: (context, index) {
-                    final task = results[index];
-                    return ListTile(
-                      title: Text(task.title),
-                      subtitle: Text(task.description),
-                      onTap: () {
-                        Navigator.pop(
-                            context, task); // ส่งข้อมูลกลับไปยังหน้า HomePage
-                      },
-                    );
-                  },
-                );
-        },
+                return results.isEmpty
+                    ? const Center(
+                        child: Text(
+                          'No tasks found',
+                          style: TextStyle(fontSize: 18, color: Colors.grey),
+                        ),
+                      )
+                    : ListView.builder(
+                        itemCount: results.length,
+                        itemBuilder: (context, index) {
+                          final task = results[index];
+                          return Card(
+                            elevation: 4,
+                            color: task.color != null
+                                ? colorFromString(task.color!) // Set card color based on task
+                                : const Color(0xFFede3e3),
+                            margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                            child: ListTile(
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Display task title
+                                  Text(
+                                    task.title,
+                                    style: const TextStyle(
+                                        fontSize: 20, fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  // Display task date range
+                                  Text(
+                                    formatDateRange(task.startDateTime, task.endDateTime),
+                                    style: const TextStyle(
+                                        fontSize: 16, color: Color(0xFF000000)),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  // Task progress bar
+                                  Container(
+                                    width: 200,
+                                    height: 15,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFd0d0d0),
+                                      borderRadius: BorderRadius.circular(15.0),
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Container(
+                                        // Progress bar width based on sliderValue
+                                        width: (MediaQuery.of(context).size.width - 100) *
+                                            (task.sliderValue * 100 / 150),
+                                        height: 15,
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFF717273),
+                                          borderRadius: BorderRadius.circular(15.0),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              onTap: () {
+                                // Show task details popup when tapped
+                                showTaskDetailsPopup(context, task, index);
+                              },
+                            ),
+                          );
+                        },
+                      );
+              },
+            ),
+          ),
+        ],
       ),
+      
+      // Bottom Navigation Bar
       bottomNavigationBar: BottomAppBar(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -140,8 +213,7 @@ class _SearchPageState extends State<SearchPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const ViewTasksPage()),
+                  MaterialPageRoute(builder: (context) => const ViewTasksPage()),
                 );
               },
             ),
