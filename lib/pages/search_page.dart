@@ -37,12 +37,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        automaticallyImplyLeading: false, // ปิดการแสดงปุ่มย้อนกลับอัตโนมัติ
         title: Container(
           decoration: BoxDecoration(
             color: Colors.white,
