@@ -127,11 +127,22 @@ class ViewTasksPage extends StatelessWidget {
               },
             ),
             const Spacer(), // Spacer between icons
-            IconButton(
-              icon: Image.asset('assets/icons/View Tasks.png', height: 28, width: 28), // Icon for current page
-              onPressed: () {
-                // Stay on this page, do nothing
-              },
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset(
+                'assets/icons/View Tasks.png', // Icon for current page
+                height: 28,
+                width: 28,
+              ),
+              const Text(
+                  'Completed', // ข้อความใต้ไอคอน
+                  style: TextStyle(
+                    fontSize: 15, // ขนาดฟอนต์เล็กๆ
+                    color: Colors.black, // สีของข้อความ
+                  ),
+                ),
+              ],
             ),
             const SizedBox(width: 48), // Empty space on the right
           ],
