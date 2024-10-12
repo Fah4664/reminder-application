@@ -1,15 +1,16 @@
+// Model class representing a Task.
 class Task {
-  String id; // เพิ่ม id
+  String id; // Task identifier. // เพิ่ม id
   String title;
   String description;
   bool isAllDay;
   DateTime? startDateTime;
   DateTime? endDateTime;
   String notificationOption;
-  String? color; // เปลี่ยนเป็น String สำหรับการจัดเก็บใน Firestore
+  String?
+      color; // Color for task representation, stored as a String for Firestore. // เปลี่ยนเป็น String สำหรับการจัดเก็บใน Firestore
   double sliderValue;
   bool isCompleted;
-
 
   Task({
     required this.id,
@@ -19,14 +20,16 @@ class Task {
     required this.startDateTime,
     required this.endDateTime,
     this.notificationOption = 'None',
-    this.color, // ใช้ String แทน Color
+    this.color, // Use String instead of Color // ใช้ String แทน Color
     required this.sliderValue,
     this.isCompleted = false,
   });
 
+  // Getter to check if the task is completed based on slider value.
   // Getter สำหรับตรวจสอบสถานะว่า task เสร็จสมบูรณ์หรือไม่
   bool get isTaskCompleted => sliderValue >= 100.0;
 
+// Function to convert Task to a Map for database storage.
   // ฟังก์ชันสำหรับแปลง Task เป็น Map
   Map<String, dynamic> toMap() {
     return {
@@ -43,6 +46,7 @@ class Task {
     };
   }
 
+  // Method to create a copy of the Task with optional updated fields.
   // ฟังก์ชันสำหรับสร้าง Task จาก Map
   factory Task.fromMap(Map<String, dynamic> map) {
     return Task(
@@ -50,10 +54,15 @@ class Task {
       title: map['title'] as String,
       description: map['description'] as String,
       isAllDay: map['isAllDay'] as bool? ?? false,
-      startDateTime: map['startDateTime'] != null ? DateTime.parse(map['startDateTime'] as String) : null,
-      endDateTime: map['endDateTime'] != null ? DateTime.parse(map['endDateTime'] as String) : null,
+      startDateTime: map['startDateTime'] != null
+          ? DateTime.parse(map['startDateTime'] as String)
+          : null,
+      endDateTime: map['endDateTime'] != null
+          ? DateTime.parse(map['endDateTime'] as String)
+          : null,
       notificationOption: map['notificationOption'] as String? ?? 'None',
-      color: map['color'] as String?, // แปลงจาก String เป็น Color เมื่ออ่านจาก Firestore
+      color: map['color']
+          as String?, // แปลงจาก String เป็น Color เมื่ออ่านจาก Firestore
       sliderValue: map['sliderValue'] as double,
       isCompleted: map['isCompleted'] ?? false,
     );
