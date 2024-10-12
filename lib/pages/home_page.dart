@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Center(
             child: Text('Track Goals')), // App title shown in the top bar
-            automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
               icon: const Icon(Icons.logout), // Log out button
@@ -147,20 +147,22 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             const SizedBox(width: 48),
-            IconButton(
-              icon: Image.asset(
-                'assets/icons/target.png',
-                height: 27,
-                width: 27,
-              ),
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const HomePage()), // Return to HomePage
-                );
-              },
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset(
+                  'assets/icons/target.png',
+                  height: 27,
+                  width: 27,
+                ),
+                const Text(
+                  'Home', // ข้อความใต้ไอคอน
+                  style: TextStyle(
+                    fontSize: 10, // ขนาดฟอนต์เล็กๆ
+                    color: Colors.black, // สีของข้อความ
+                  ),
+                ),
+              ],
             ),
             const Spacer(),
             IconButton(
