@@ -3,16 +3,15 @@ import 'package:flutter/material.dart';
 // Widget for tracking progress towards goals using a slider.
 class TrackGoals extends StatefulWidget {
   // Receives the initial progress (0-1) and a function to notify progress changes.
-  // รับค่าความก้าวหน้า (progress) และฟังก์ชันที่ใช้ในการแจ้งการเปลี่ยนแปลงของความก้าวหน้า
   final double progress;
   final ValueChanged<double> onProgressUpdated;
-
-  // Constructor for TrackGoals
-  // คอนสตรัคเตอร์ของ TrackGoals
+  // Constructor for TrackGoals.
   const TrackGoals({
     super.key,
-    required this.progress, // Set the initial progress value
-    required this.onProgressUpdated, // Set the function to notify progress changes
+    // Set the initial progress value.
+    required this.progress,
+    // Set the function to notify progress changes.
+    required this.onProgressUpdated,
   });
 
   @override
@@ -20,13 +19,14 @@ class TrackGoals extends StatefulWidget {
 }
 
 class TrackGoalsState extends State<TrackGoals> {
-  late double sliderValue; // Variable to hold the value of the slider
+  // Variable to hold the value of the slider.
+  late double sliderValue;
 
   @override
   void initState() {
     super.initState();
-    sliderValue =
-        widget.progress * 100.0; // Convert the progress to a percentage
+    // Convert the progress to a percentage (0-100) for the slider.
+    sliderValue = widget.progress * 100.0;
   }
 
   @override
@@ -39,62 +39,58 @@ class TrackGoalsState extends State<TrackGoals> {
         bottom: 2.0,
       ),
       decoration: BoxDecoration(
-        color: Colors.white, // Background color of the container
+        color: Colors.white,
         borderRadius:
-            BorderRadius.circular(15.0), // Rounded corners for the container
+          BorderRadius.circular(15.0),
         boxShadow: [
           BoxShadow(
-            color:
-                Colors.grey.withOpacity(0.2), // Shadow color for the container
-            blurRadius: 5.0, // Blur radius for the shadow
-            offset: const Offset(0, 2), // Position of the shadow
+            color: Colors.grey.withOpacity(0.2),
+            blurRadius: 5.0,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center, // Center the content
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          // Title of the widget.
           const Text(
-            'Track Goals', // Title of the widget
+            'Track Goals',
             style: TextStyle(fontSize: 20),
           ),
-          const SizedBox(height: 5), // Space between the title and the slider
+          const SizedBox(height: 5),
           Row(
             children: <Widget>[
               Expanded(
                 child: SliderTheme(
                   data: SliderThemeData(
-                    activeTrackColor: const Color(
-                        0xFF717273), // Color of the active slider track
-                    inactiveTrackColor: const Color(
-                        0xFFd0d0d0), // Color of the inactive slider track
-                    thumbColor:
-                        const Color(0xFF4c4949), // Color of the slider thumb
-                    overlayColor: const Color(0xFFd0d0d0).withAlpha(
-                        30), // Overlay color when the thumb is pressed
-                    trackHeight: 10.0, // Height of the slider track
+                    activeTrackColor: const Color(0xFF717273),
+                    inactiveTrackColor: const Color(0xFFd0d0d0),
+                    thumbColor:const Color(0xFF4c4949),
+                    overlayColor: const Color(0xFFd0d0d0).withAlpha(30),
+                    trackHeight: 10.0,
                   ),
                   child: Slider(
-                    value: sliderValue, // Current value of the slider
-                    min: 0.0, // Minimum value of the slider
-                    max: 100.0, // Maximum value of the slider
-                    divisions: 100, // Divide the slider into 100 parts
+                    value: sliderValue, // Current value of the slider.
+                    min: 0.0, // Minimum value of the slider.
+                    max: 100.0, // Maximum value of the slider.
+                    divisions: 100, // Divide the slider into 100 parts.
                     onChanged: (double value) {
-                      // Callback when the slider value changes
+                      // Callback when the slider value changes.
                       setState(() {
-                        sliderValue = value; // Update the slider value
-                        widget.onProgressUpdated(value /
-                            100.0); // Notify the parent of the progress update
+                        // Update the slider value and notify the parent of the progress update.
+                        sliderValue = value;
+                        // Convert back to a percentage (0.0-1.0) before notifying.
+                        widget.onProgressUpdated(value / 100.0);
                       });
                     },
                   ),
                 ),
               ),
-              const SizedBox(
-                  width:
-                      10), // Space between the slider and the percentage text
+              const SizedBox(width: 10),
+              // Display the percentage without decimal points.
               Text(
-                '${sliderValue.toStringAsFixed(0)}%', // Display the percentage without decimal points
+                '${sliderValue.toStringAsFixed(0)}%',
                 style: const TextStyle(fontSize: 16),
               ),
             ],
