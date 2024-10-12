@@ -5,21 +5,15 @@ import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Authentica
 
 // TaskProvider class, which manages task-related operations
 class TaskProvider with ChangeNotifier {
-  final List<Task> _tasks =
-      []; // List to store unfinished tasks // รายการสำหรับเก็บ tasks ที่ยังไม่เสร็จ
-  final List<Task> _completedTasks =
-      []; // List to store completed tasks // รายการสำหรับเก็บ tasks ที่เสร็จแล้ว
-  final FirebaseFirestore db = FirebaseFirestore
-      .instance; // Create an instance of Firestore // สร้างตัวอย่างของ FirebaseFirestore
+  final List<Task> _tasks = []; // List to store unfinished tasks // รายการสำหรับเก็บ tasks ที่ยังไม่เสร็จ
+  final List<Task> _completedTasks = []; // List to store completed tasks // รายการสำหรับเก็บ tasks ที่เสร็จแล้ว
+  final FirebaseFirestore db = FirebaseFirestore.instance; // Create an instance of Firestore // สร้างตัวอย่างของ FirebaseFirestore
 
-  List<Task> get tasks =>
-      _tasks; // Getter for unfinished tasks // รายการ tasks ที่ยังไม่เสร็จ
-  List<Task> get completedTasks =>
-      _completedTasks; // Getter for completed tasks
+  List<Task> get tasks => _tasks; // Getter for unfinished tasks // รายการ tasks ที่ยังไม่เสร็จ
+  List<Task> get completedTasks => _completedTasks; // Getter for completed tasks
 
   Stream<List<Task>>? _tasksStream; // Stream for real-time task updates
-  Stream<List<Task>>? get tasksStream =>
-      _tasksStream; // Getter for the tasks stream // รายการ tasks ที่เสร็จแล้ว
+  Stream<List<Task>>? get tasksStream => _tasksStream; // Getter for the tasks stream // รายการ tasks ที่เสร็จแล้ว
 
   // Constructor that initializes the tasks stream
   TaskProvider() {
@@ -28,8 +22,7 @@ class TaskProvider with ChangeNotifier {
 
   // Initialize the tasks stream to listen for changes in Firestore
   void _initTasksStream() {
-    final uid =
-        FirebaseAuth.instance.currentUser?.uid; // Get the current user's ID
+    final uid = FirebaseAuth.instance.currentUser?.uid; // Get the current user's ID
     if (uid == null) return; // If no user is logged in, exit the function
 
     // Create a stream to listen for task updates in Firestore
