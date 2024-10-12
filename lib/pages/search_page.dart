@@ -251,7 +251,7 @@ class _SearchPageState extends State<SearchPage> {
                 const Text(
                   'Search', // ข้อความใต้ไอคอน
                   style: TextStyle(
-                    fontSize: 10, // ขนาดฟอนต์เล็กๆ
+                    fontSize: 15, // ขนาดฟอนต์เล็กๆ
                     color: Colors.black, // สีของข้อความ
                   ),
                 ),
