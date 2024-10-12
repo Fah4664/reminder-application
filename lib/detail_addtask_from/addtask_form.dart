@@ -3,7 +3,7 @@ import '../models/task.dart';
 import 'notification_box.dart';
 import 'track_goals_box.dart';
 import 'color_picker.dart';
-import 'task_title.dart';
+import 'task_title_box.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../utils/color_utils.dart';
@@ -278,7 +278,7 @@ class TaskFormState extends State<TaskForm> {
                   ),
                   const SizedBox(height: 5), // เพิ่มระยะห่างระหว่างกล่อง
                   // Notification and Track Goals section
-                  NotificationBox(
+                  Notification(
                     notificationOption:
                         notificationOption, // Use notificationOption here
                     onOptionSelected: (newOption) {
