@@ -1,71 +1,98 @@
-import 'package:flutter/material.dart';
-import '../models/task.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart'; // Import the Flutter Material package
+import '../models/task.dart'; // Import the Task model
+import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore package
+import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Authentication package
 
+// TaskProvider class, which manages task-related operations
 class TaskProvider with ChangeNotifier {
-  final List<Task> _tasks = []; // รายการสำหรับเก็บ tasks ที่ยังไม่เสร็จ
-  final List<Task> _completedTasks = []; // รายการสำหรับเก็บ tasks ที่เสร็จแล้ว
-  final FirebaseFirestore db = FirebaseFirestore.instance; // สร้างตัวอย่างของ FirebaseFirestore
+  final List<Task> _tasks =
+      []; // List to store unfinished tasks // รายการสำหรับเก็บ tasks ที่ยังไม่เสร็จ
+  final List<Task> _completedTasks =
+      []; // List to store completed tasks // รายการสำหรับเก็บ tasks ที่เสร็จแล้ว
+  final FirebaseFirestore db = FirebaseFirestore
+      .instance; // Create an instance of Firestore // สร้างตัวอย่างของ FirebaseFirestore
 
-  List<Task> get tasks => _tasks; // รายการ tasks ที่ยังไม่เสร็จ
-  List<Task> get completedTasks => _completedTasks; // รายการ tasks ที่เสร็จแล้ว
-  
-  Stream<List<Task>>? _tasksStream;
-  Stream<List<Task>>? get tasksStream => _tasksStream;
+  List<Task> get tasks =>
+      _tasks; // Getter for unfinished tasks // รายการ tasks ที่ยังไม่เสร็จ
+  List<Task> get completedTasks =>
+      _completedTasks; // Getter for completed tasks
 
+  Stream<List<Task>>? _tasksStream; // Stream for real-time task updates
+  Stream<List<Task>>? get tasksStream =>
+      _tasksStream; // Getter for the tasks stream // รายการ tasks ที่เสร็จแล้ว
+
+  // Constructor that initializes the tasks stream
   TaskProvider() {
     _initTasksStream();
   }
 
+  // Initialize the tasks stream to listen for changes in Firestore
   void _initTasksStream() {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid == null) return;
+    final uid =
+        FirebaseAuth.instance.currentUser?.uid; // Get the current user's ID
+    if (uid == null) return; // If no user is logged in, exit the function
 
+    // Create a stream to listen for task updates in Firestore
     _tasksStream = db
         .collection('userTasks')
         .doc(uid)
         .collection('tasksID')
-        .snapshots()
+        .snapshots() // Listen for snapshot updates
         .map((snapshot) {
-      _tasks.clear();
-      _completedTasks.clear();
+      _tasks.clear(); // Clear the current list of tasks
+      _completedTasks.clear(); // Clear the list of completed tasks
       return snapshot.docs.map((doc) {
-        final task = Task.fromMap(doc.data());
+        // Map each document in the snapshot to a Task
+        final task = Task.fromMap(
+            doc.data()); // Convert Firestore document to Task object
         if (task.isCompleted) {
-          _completedTasks.add(task);
+          _completedTasks.add(task); // Add to completed tasks if it's completed
         } else {
-          _tasks.add(task);
+          _tasks.add(task); // Otherwise, add to unfinished tasks
         }
-        return task;
-      }).toList();
+        return task; // Return the Task object
+      }).toList(); // Convert the mapped tasks to a list
     });
 
+    // Listen for changes and notify listeners to update UI
     _tasksStream?.listen((_) {
       notifyListeners();
     });
   }
 
-  // ฟังก์ชันสำหรับเพิ่มหรืออัปเดต task
+  // Function to add or update a task
   Future<void> addTask(Task task) async {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid == null) return; // ตรวจสอบ uid
-    final index = _tasks.indexWhere((t) => t.id == task.id);
+    final uid =
+        FirebaseAuth.instance.currentUser?.uid; // Get the current user's ID
+    if (uid == null) return; // If no user is logged in, exit the function
+    final index = _tasks
+        .indexWhere((t) => t.id == task.id); // Check if task already exists
     if (index == -1) {
+      // If the task doesn't exist, add it
       _tasks.add(task);
-      await db.collection('userTasks').doc(uid).collection('tasksID').doc(task.id).set(task.toMap()); // ใช้ uid
+      // Add the task to Firestore
+      await db
+          .collection('userTasks')
+          .doc(uid)
+          .collection('tasksID')
+          .doc(task.id)
+          .set(task.toMap()); // Use user ID
     } else {
+      // If the task exists, update it
       await updateTask(task);
     }
-    notifyListeners(); // แจ้งให้ผู้ฟังทราบว่ามีการเปลี่ยนแปลง
+    notifyListeners(); // Notify listeners of changes // แจ้งให้ผู้ฟังทราบว่ามีการเปลี่ยนแปลง
   }
 
-  // ฟังก์ชันสำหรับอัปเดต task ที่มีอยู่
+  // Function to update an existing task  // ฟังก์ชันสำหรับอัปเดต task ที่มีอยู่
   Future<void> updateTask(Task updatedTask) async {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid == null) return; // ตรวจสอบ uid
-    final index = _tasks.indexWhere((task) => task.id == updatedTask.id);
+    final uid =
+        FirebaseAuth.instance.currentUser?.uid; // Get the current user's ID
+    if (uid == null) return; // If no user is logged in, exit the function
+    final index = _tasks
+        .indexWhere((task) => task.id == updatedTask.id); // Find task index
     if (index != -1) {
+      // If the task exists, update it
       _tasks[index] = updatedTask.copyWith(
         title: updatedTask.title,
         description: updatedTask.description,
@@ -75,87 +102,139 @@ class TaskProvider with ChangeNotifier {
         color: updatedTask.color,
         sliderValue: updatedTask.sliderValue,
       );
-      await db.collection('userTasks').doc(uid).collection('tasksID').doc(updatedTask.id).update(updatedTask.toMap()); // ใช้ uid
+      // Update the task in Firestore
+      await db
+          .collection('userTasks')
+          .doc(uid)
+          .collection('tasksID')
+          .doc(updatedTask.id)
+          .update(updatedTask.toMap()); // Use user ID
       if (updatedTask.isCompleted) {
-        markTaskAsCompleted(updatedTask);
+        markTaskAsCompleted(
+            updatedTask); // Mark the task as completed if applicable
       }
-      notifyListeners(); // แจ้งให้ผู้ฟังทราบว่ามีการเปลี่ยนแปลง
+      notifyListeners(); // Notify listeners of changes // แจ้งให้ผู้ฟังทราบว่ามีการเปลี่ยนแปลง
     } else {
-      throw Exception('ไม่พบงาน: ${updatedTask.id}');
+      throw Exception(
+          'Task not found: ${updatedTask.id}'); // Throw an error if task is not found
     }
   }
 
-  // ฟังก์ชันสำหรับลบ task
+  // Function to remove a task // ฟังก์ชันสำหรับลบ task
   Future<void> removeTask(Task task) async {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid == null) return; // ตรวจสอบ uid
-    _tasks.remove(task);
-    _completedTasks.remove(task);
-    await db.collection('userTasks').doc(uid).collection('tasksID').doc(task.id).delete(); // ใช้ uid
-    notifyListeners(); // แจ้งให้ผู้ฟังทราบว่ามีการเปลี่ยนแปลง
+    final uid =
+        FirebaseAuth.instance.currentUser?.uid; // Get the current user's ID
+    if (uid == null) return; // If no user is logged in, exit the function
+    _tasks.remove(task); // Remove the task from the local list
+    _completedTasks.remove(task); // Remove from completed tasks if necessary
+    // Delete the task from Firestore
+    await db
+        .collection('userTasks')
+        .doc(uid)
+        .collection('tasksID')
+        .doc(task.id)
+        .delete(); // Use user ID
+    notifyListeners(); // Notify listeners of changes // แจ้งให้ผู้ฟังทราบว่ามีการเปลี่ยนแปลง
   }
 
-  // ฟังก์ชันสำหรับอัปเดตตัวเลือกการแจ้งเตือน
-  Future<void> setNotificationOption(String taskId, String newNotificationOption) async {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid == null) return; // ตรวจสอบ uid
-    final index = _tasks.indexWhere((task) => task.id == taskId);
+  // Function to update the notification option for a task // ฟังก์ชันสำหรับอัปเดตตัวเลือกการแจ้งเตือน
+  Future<void> setNotificationOption(
+      String taskId, String newNotificationOption) async {
+    final uid =
+        FirebaseAuth.instance.currentUser?.uid; // Get the current user's ID
+    if (uid == null) return; // If no user is logged in, exit the function
+    final index =
+        _tasks.indexWhere((task) => task.id == taskId); // Find the task by ID
     if (index != -1) {
-      final updatedTask = _tasks[index].copyWith(notificationOption: newNotificationOption);
-      _tasks[index] = updatedTask;
-      await db.collection('userTasks').doc(uid).collection('tasksID').doc(taskId).update(updatedTask.toMap()); // ใช้ uid
-      notifyListeners(); // แจ้งให้ผู้ฟังทราบว่ามีการเปลี่ยนแปลง
+      final updatedTask = _tasks[index].copyWith(
+          notificationOption:
+              newNotificationOption); // Update notification option
+      _tasks[index] = updatedTask; // Update the task in local state
+      // Update the task in Firestore
+      await db
+          .collection('userTasks')
+          .doc(uid)
+          .collection('tasksID')
+          .doc(taskId)
+          .update(updatedTask.toMap()); // Use user ID
+      notifyListeners(); // Notify listeners of changes // แจ้งให้ผู้ฟังทราบว่ามีการเปลี่ยนแปลง
     } else {
-      throw Exception('ไม่พบงาน: $taskId');
+      throw Exception(
+          'Task not found: $taskId'); // Throw an error if task is not found
     }
   }
 
-  // ฟังก์ชันสำหรับทำเครื่องหมายว่า task เสร็จสมบูรณ์
+  // Function to mark a task as completed // ฟังก์ชันสำหรับทำเครื่องหมายว่า task เสร็จสมบูรณ์
   Future<void> markTaskAsCompleted(Task task) async {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid == null) return; // ตรวจสอบ uid
+    final uid =
+        FirebaseAuth.instance.currentUser?.uid; // Get the current user's ID
+    if (uid == null) return; // If no user is logged in, exit the function
     if (_tasks.remove(task)) {
-      _completedTasks.add(task);
-      await db.collection('userTasks').doc(uid).collection('tasksID').doc(task.id).update({'isCompleted': true}); // ใช้ uid
-      notifyListeners(); // แจ้งให้ผู้ฟังทราบว่ามีการเปลี่ยนแปลง
+      // Remove the task from unfinished tasks
+      _completedTasks.add(task); // Add it to completed tasks
+      // Update Firestore to mark the task as completed
+      await db
+          .collection('userTasks')
+          .doc(uid)
+          .collection('tasksID')
+          .doc(task.id)
+          .update({'isCompleted': true}); // Use user ID
+      notifyListeners(); // Notify listeners of changes // แจ้งให้ผู้ฟังทราบว่ามีการเปลี่ยนแปลง
     }
   }
 
-  // ฟังก์ชันสำหรับอัปเดตความก้าวหน้า (progress) ของ task
+  // Function to update the progress of a task   // ฟังก์ชันสำหรับอัปเดตความก้าวหน้า (progress) ของ task
   Future<void> updateTaskProgress(int index, double newProgress) async {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid == null) return; // ตรวจสอบ uid
+    final uid =
+        FirebaseAuth.instance.currentUser?.uid; // Get the current user's ID
+    if (uid == null) return; // If no user is logged in, exit the function
     if (index >= 0 && index < _tasks.length) {
-      _tasks[index] = _tasks[index].copyWith(sliderValue: newProgress);
-      await db.collection('userTasks').doc(uid).collection('tasksID').doc(_tasks[index].id).update({'sliderValue': newProgress}); // ใช้ uid
-      notifyListeners(); // แจ้งให้ผู้ฟังทราบว่ามีการเปลี่ยนแปลง
+      // Ensure index is within bounds
+      _tasks[index] = _tasks[index]
+          .copyWith(sliderValue: newProgress); // Update the task's progress
+      // Update Firestore with the new progress value
+      await db
+          .collection('userTasks')
+          .doc(uid)
+          .collection('tasksID')
+          .doc(_tasks[index].id)
+          .update({'sliderValue': newProgress}); // Use user ID
+      notifyListeners(); // Notify listeners of changes // แจ้งให้ผู้ฟังทราบว่ามีการเปลี่ยนแปลง
     }
   }
 
-  // ฟังก์ชันสำหรับโหลด tasks จาก Firestore
+// ฟังก์ชันสำหรับโหลด tasks จาก Firestore
+  // Function to load tasks from Firestore
   Future<void> loadTasks() async {
-    _initTasksStream();
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    _initTasksStream(); // Initialize the tasks stream
+    final uid =
+        FirebaseAuth.instance.currentUser?.uid; // Get the current user's ID
     if (uid == null) {
-      print('No user logged in');
+      print('No user logged in'); // Log a message if no user is logged in
       return;
     }
     try {
-      final taskCollection = db.collection('userTasks').doc(uid).collection('tasksID');
-      final snapshot = await taskCollection.get();
-      _tasks.clear();
-      _completedTasks.clear();
+      final taskCollection = db
+          .collection('userTasks')
+          .doc(uid)
+          .collection('tasksID'); // Reference to the user's task collection
+      final snapshot = await taskCollection.get(); // Get tasks from Firestore
+      _tasks.clear(); // Clear the current list of tasks
+      _completedTasks.clear(); // Clear the list of completed tasks
       for (var doc in snapshot.docs) {
-        final task = Task.fromMap(doc.data());
+        // Iterate through the documents in the snapshot
+        final task = Task.fromMap(
+            doc.data()); // Convert Firestore document to Task object
         if (task.isCompleted) {
-          _completedTasks.add(task);
+          _completedTasks.add(task); // Add to completed tasks if it's completed
         } else {
-          _tasks.add(task);
+          _tasks.add(task); // Otherwise, add to unfinished tasks
         }
       }
-      notifyListeners(); // แจ้งให้ผู้ฟังทราบว่ามีการเปลี่ยนแปลง
+      notifyListeners(); // Notify listeners of changes // แจ้งให้ผู้ฟังทราบว่ามีการเปลี่ยนแปลง
     } catch (e) {
-      print('Error loading tasks: $e');
+      print(
+          'Error loading tasks: $e'); // Log any errors encountered during loading
     }
   }
 }
