@@ -183,6 +183,24 @@ class TaskProvider with ChangeNotifier {
     }
   }
 
+  Future<void> unmarkTaskAsCompleted(Task task) async {
+    final uid = FirebaseAuth.instance.currentUser?.uid; // Get the current user's ID
+    if (uid == null) return; // If no user is logged in, exit the function
+
+    // Remove the task from completed tasks
+    if (_completedTasks.remove(task)) {
+      _tasks.add(task); // Add it back to unfinished tasks
+      // Update Firestore to unmark the task as completed
+      await db
+          .collection('userTasks')
+          .doc(uid)
+          .collection('tasksID')
+          .doc(task.id)
+          .update({'isCompleted': false}); // Use user ID
+      notifyListeners(); // Notify listeners of changes
+    }
+  }
+
   // Function to update the progress of a task   // ฟังก์ชันสำหรับอัปเดตความก้าวหน้า (progress) ของ task
   Future<void> updateTaskProgress(int index, double newProgress) async {
     final uid =
