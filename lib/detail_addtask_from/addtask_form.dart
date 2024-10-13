@@ -9,11 +9,15 @@ import 'notification_picker.dart';
 import 'track_goals_box.dart';
 import 'color_picker.dart';
 
+// This class represents a form for creating or editing a task.
 class TaskForm extends StatefulWidget {
+  // The task to be edited, or null if creating a new task.
   final Task? initialTask;
+  // Constructor with an optional initial task.
   const TaskForm({super.key, this.initialTask});
 
   @override
+  // Creates the state for the form.
   TaskFormState createState() => TaskFormState();
 }
 
@@ -71,7 +75,6 @@ class TaskFormState extends State<TaskForm> {
     // Retrieve title and description from the text controllers.
     final String title = titleController.text;
     final String description = descriptionController.text;
-
     // Check if the title is not empty.
     if (title.isNotEmpty) {
       // Create DateTime objects for start and end date and time.
@@ -82,9 +85,8 @@ class TaskFormState extends State<TaskForm> {
         ? DateTime(endDate!.year, endDate!.month, endDate!.day, endTime!.hour, endTime!.minute)
         : null;
       // Convert selected color to a hex string for storage.
-      final colorString = selectedColor.value.toRadixString(16).padLeft(8, '0'); // แปลง Color เป็น String
-
-      // Get the currently logged-in user. // รับ uid จากผู้ใช้ที่ล็อกอิน
+      final colorString = selectedColor.value.toRadixString(16).padLeft(8, '0');
+      // Get the currently logged-in user.
       final user = FirebaseAuth.instance.currentUser;
       if (user == null) {
         'Error: User not logged in';
@@ -116,9 +118,9 @@ class TaskFormState extends State<TaskForm> {
         // Add new task
         final taskRef = FirebaseFirestore.instance
           .collection('userTasks')
-          .doc(uid) // ใช้ uid เป็นส่วนหนึ่งของคอลเลคชัน
+          .doc(uid)
           .collection('tasksID')
-          .doc(); // สร้างเอกสารใหม่ใน userTasks collection
+          .doc();
         final newTask = Task(
           id: taskRef.id,
           title: title,
@@ -264,32 +266,32 @@ class TaskFormState extends State<TaskForm> {
                       });
                     },
                   ),
-                  const SizedBox(height: 5), // เพิ่มระยะห่างระหว่างกล่อง
+                  const SizedBox(height: 5),
                   // Notification and Track Goals section
                   NotificationPicker(
-                    notificationOption: notificationOption, // Use notificationOption here
+                    notificationOption: notificationOption,
                     onOptionSelected: (newOption) {
                       setState(() {
-                        notificationOption = newOption; // Update notificationOption
+                        notificationOption = newOption;
                       });
                     },
                   ),
                   const SizedBox(height: 5),
                   TrackGoals(
-                    progress: sliderValue, // ส่งค่าเริ่มต้นไปยัง TrackGoals
+                    progress: sliderValue,
                     onProgressUpdated: (value) {
                       setState(() {
-                        sliderValue = value; // อัพเดตค่าความก้าวหน้าเมื่อมีการเปลี่ยนแปลง
+                        sliderValue = value;
                       });
                     },
                   ),
                   const SizedBox(height: 5),
                   // Color Picker section
                   ColorPicker(
-                    selectedColor: selectedColor, // Color Picker section // ส่งสีที่เลือกไปยัง ColorPicker
+                    selectedColor: selectedColor,
                     onColorSelected: (color) {
                       setState(() {
-                        selectedColor = color; // Update selected color // อัพเดตสีที่ถูกเลือกเมื่อผู้ใช้เลือกสี
+                        selectedColor = color;
                       });
                     },
                   ),
