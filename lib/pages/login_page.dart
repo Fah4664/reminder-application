@@ -31,9 +31,7 @@ class _LoginPageState extends State<LoginPage> {
       });
 
       try {
-        // Attempt to sign in the user with email and password
-        UserCredential userCredential =
-            await FirebaseAuth.instance.signInWithEmailAndPassword(
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _emailController.text,
           password: _passwordController.text,
         );
@@ -43,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
           const SnackBar(content: Text('Login successful!')),
         );
 
-        // Navigate to HomePage after successful login // นำผู้ใช้ไปที่หน้า HomePage
+        // Navigate to HomePage after successful login
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),
@@ -61,6 +59,7 @@ class _LoginPageState extends State<LoginPage> {
           _isLoading = false;
         });
       }
+
     }
   }
 
