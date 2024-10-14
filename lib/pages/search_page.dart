@@ -2,74 +2,71 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reminder_application/task_details_popup.dart';
 import '../../providers/task_provider.dart';
-import 'add_task_page.dart';
-import 'view_task_page.dart';
-import 'home_page.dart';
 import '../utils/date_utils.dart';
 import '../utils/color_utils.dart';
+import 'home_page.dart';
+import 'add_task_page.dart';
+import 'view_task_page.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({super.key}); // Constructor for SearchPage
+  // Constructor for SearchPage.
+  const SearchPage({super.key});
 
   @override
-  _SearchPageState createState() =>
-      _SearchPageState(); // Create the state for SearchPage
+  // Create the state for SearchPage.
+  SearchPageState createState() => SearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
-  final TextEditingController _searchController =
-      TextEditingController(); // Controller for the search input
-  String searchQuery = ''; // Variable to store the current search query
+class SearchPageState extends State<SearchPage> {
+  // Controller for the search input.
+  final TextEditingController _searchController = TextEditingController();
+  // Variable to store the current search query.
+  String searchQuery = '';
 
   @override
   void initState() {
-    super.initState(); // Call the superclass's initState method
+    super.initState(); // Call the superclass's initState method.
     _searchController.addListener(() {
-      // Listen for changes in the search input
+      // Listen for changes in the search input.
       setState(() {
-        // Trigger a rebuild when the search query changes
-        searchQuery = _searchController.text; // Update the search query
+        // Trigger a rebuild when the search query changes.
+        searchQuery = _searchController.text; // Update the search query.
       });
     });
   }
 
   @override
   void dispose() {
-    _searchController
-        .dispose(); // Dispose of the controller to free up resources
-    super.dispose(); // Call the superclass's dispose method
+    _searchController.dispose(); // Dispose of the controller to free up resources.
+    super.dispose(); // Call the superclass's dispose method.
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Scaffold widget for the basic structure
+      // Scaffold widget for the basic structure.
       body: Column(
-        // Main body as a column
+        // Main body as a column.
         children: [
           Container(
-            padding: const EdgeInsets.only(top: 80.0), // Add padding at the top
+            padding: const EdgeInsets.only(top: 80.0),
             child: Center(
               child: Container(
-                width: 300, // Set the width of the search box
-                height: 60, // Set the height of the search box
+                width: 300,
+                height: 60,
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(
-                      255, 218, 224, 227), // สีเทาเป็นพื้นหลังของช่องค้นหา
-                  borderRadius: BorderRadius.circular(20.0), // Rounded corners
+                  color: const Color(0xFFDAE0E3),
+                  borderRadius: BorderRadius.circular(20.0),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0), // Horizontal padding
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0), 
                   child: Row(
-                    mainAxisAlignment:
-                        MainAxisAlignment.center, // Center align the contents
+                    mainAxisAlignment: MainAxisAlignment.center, // Center align the contents
                     children: [
                       Expanded(
                         child: TextField(
                           // TextField for user input
-                          controller:
-                              _searchController, // Link the controller to the TextField
+                          controller: _searchController, // Link the controller to the TextField
                           decoration: const InputDecoration(
                             hintText: 'Search Tasks...', // Placeholder text
                             border: InputBorder.none, // No border
@@ -78,8 +75,7 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                          width: 5), // Space between TextField and icon
+                      const SizedBox(width: 5), // Space between TextField and icon
                       const Icon(
                         Icons.search, // Search icon
                         color: Color(0xFF000000), // Color of the icon
@@ -90,8 +86,7 @@ class _SearchPageState extends State<SearchPage> {
               ),
             ),
           ),
-          const SizedBox(
-              height: 10), // Space between the search box and the results
+          const SizedBox(height: 10), // Space between the search box and the results
           Expanded(
             child: Consumer<TaskProvider>(
               // Listen to changes in TaskProvider
@@ -99,11 +94,10 @@ class _SearchPageState extends State<SearchPage> {
                 final results = taskProvider.tasks.where((task) {
                   // Filter tasks based on the search query
                   return task.title
-                          .toLowerCase()
-                          .contains(searchQuery.toLowerCase()) ||
-                      task.description
-                          .toLowerCase()
-                          .contains(searchQuery.toLowerCase());
+                    .toLowerCase()
+                    .contains(searchQuery.toLowerCase()) || task.description
+                    .toLowerCase()
+                    .contains(searchQuery.toLowerCase());
                 }).toList();
 
                 return results.isEmpty // Check if the results are empty
@@ -122,65 +116,48 @@ class _SearchPageState extends State<SearchPage> {
                             // Card widget for each task
                             elevation: 4, // Shadow elevation
                             color: task.color != null
-                                ? colorFromString(
-                                    task.color!) // Set card color based on task
-                                : const Color(0xFFede3e3), // Default color
+                              ? colorFromString(task.color!) // Set card color based on task
+                              : const Color(0xFFede3e3), // Default color
                             margin: const EdgeInsets.symmetric(
-                                vertical: 5,
-                                horizontal: 20), // Margin around the card
+                              vertical: 5,
+                              horizontal: 20), // Margin around the card
                             child: ListTile(
                               title: Column(
-                                crossAxisAlignment: CrossAxisAlignment
-                                    .start, // Align text to the start
+                                crossAxisAlignment: CrossAxisAlignment.start, // Align text to the start
                                 children: [
                                   // Display task title
                                   Text(
                                     task.title,
                                     style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
                                   ),
-                                  const SizedBox(
-                                      height:
-                                          5), // Space between title and date
+                                  const SizedBox(height:5), // Space between title and date
                                   // Display task date range
                                   Text(
                                     formatDateRange(
-                                        task.startDateTime, task.endDateTime),
+                                      task.startDateTime, task.endDateTime),
                                     style: const TextStyle(
-                                        fontSize: 16, color: Color(0xFF000000)),
+                                      fontSize: 16, color: Color(0xFF000000)),
                                   ),
-                                  const SizedBox(
-                                      height:
-                                          5), // Space between date and progress bar
+                                  const SizedBox(height:5), // Space between date and progress bar
                                   // Task progress bar
                                   Container(
                                     width: 200, // Width of the progress bar
                                     height: 15, // Height of the progress bar
                                     decoration: BoxDecoration(
-                                      color: const Color(
-                                          0xFFd0d0d0), // Background color of the progress bar
-                                      borderRadius: BorderRadius.circular(
-                                          15.0), // Rounded corners
+                                      color: const Color(0xFFd0d0d0), // Background color of the progress bar
+                                      borderRadius: BorderRadius.circular(15.0), // Rounded corners
                                     ),
                                     child: Align(
-                                      alignment: Alignment
-                                          .centerLeft, // Align progress to the left
+                                      alignment: Alignment.centerLeft, // Align progress to the left
                                       child: Container(
                                         // Progress bar width based on sliderValue
-                                        width: (MediaQuery.of(context)
-                                                    .size
-                                                    .width -
-                                                100) *
-                                            (task.sliderValue *
-                                                100 /
-                                                150), // Calculate progress width
+                                        width: (MediaQuery.of(context).size.width - 100) * (task.sliderValue * 100 / 150), // Calculate progress width
                                         height: 15,
                                         decoration: BoxDecoration(
-                                          color: const Color(
-                                              0xFF717273), // Progress color
-                                          borderRadius: BorderRadius.circular(
-                                              15.0), // Rounded corners
+                                          color: const Color(0xFF717273), // Progress color
+                                          borderRadius: BorderRadius.circular(15.0), // Rounded corners
                                         ),
                                       ),
                                     ),
@@ -205,54 +182,50 @@ class _SearchPageState extends State<SearchPage> {
       bottomNavigationBar: BottomAppBar(
         child: Row(
           mainAxisAlignment:
-              MainAxisAlignment.spaceBetween, // Space between icons
+            MainAxisAlignment.spaceBetween, 
           children: <Widget>[
-            const SizedBox(width: 48), // Empty space on the left
+            const SizedBox(width: 48), 
             IconButton(
               icon: Image.asset(
-                'assets/icons/target.png', // Icon for Home
+                'assets/icons/target.png', 
                 height: 27,
                 width: 27,
               ),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const HomePage()), // Navigate to HomePage
+                  MaterialPageRoute(builder: (context) => const HomePage()),
                 );
               },
             ),
             const Spacer(),
             IconButton(
               icon: Image.asset(
-                'assets/icons/Add Task.png', // Icon for Add Task
+                'assets/icons/Add Task.png', 
                 height: 29,
                 width: 29,
               ),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const AddTaskPage()), // Navigate to AddTaskPage
+                  MaterialPageRoute(builder: (context) => const AddTaskPage()),
                 );
               },
             ),
             const Spacer(),
             Column(
-              mainAxisSize: MainAxisSize.min, // ให้ Column มีขนาดเล็กที่สุด
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Image.asset(
-                  'assets/icons/search.png', // Icon for Search
+                  'assets/icons/search.png',
                   height: 28,
                   width: 28,
                 ),
                 const Text(
-                  'Search', // ข้อความใต้ไอคอน
+                  'Search',
                   style: TextStyle(
-                    fontSize: 15, // ขนาดฟอนต์เล็กๆ
-                    color: Colors.black, // สีของข้อความ
+                    fontSize: 15,
+                    color: Colors.black,
                   ),
                 ),
               ],
@@ -260,20 +233,18 @@ class _SearchPageState extends State<SearchPage> {
             const Spacer(),
             IconButton(
               icon: Image.asset(
-                'assets/icons/View Tasks.png', // Icon for View Tasks
+                'assets/icons/View Tasks.png',
                 height: 28,
                 width: 28,
               ),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const ViewTasksPage()), // Navigate to ViewTasksPage
+                  MaterialPageRoute(builder: (context) => const ViewTasksPage()), // Navigate to ViewTasksPage
                 );
               },
             ),
-            const SizedBox(width: 48), // Empty space on the right
+            const SizedBox(width: 48),
           ],
         ),
       ),
