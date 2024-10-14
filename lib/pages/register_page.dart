@@ -181,27 +181,31 @@ class RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  // Function to build a text field with common properties.
+  // Function to build a text field for name, email, and password
   Widget _buildTextField({
-    required TextEditingController controller,
-    required String label,
-    bool obscureText = false,
-    TextInputType keyboardType = TextInputType.text,
-    required String? Function(String?) validator,
+    required TextEditingController controller, // Controller for text input
+    required String label, // Label for the text field
+    bool obscureText = false, // Whether to obscure text (for passwords)
+    TextInputType keyboardType = TextInputType.text, // Type of keyboard to use
+    required String? Function(String?) validator, // Validator function for input
   }) {
     return TextFormField(
-      controller: controller,
+      controller: controller, // Assign the controller
       decoration: InputDecoration(
-        labelText: label,
-        labelStyle: const TextStyle(color:  Color.fromARGB(255, 0, 0, 0)),
+        labelText: label, // Set the label
+        labelStyle: const TextStyle(
+          color: Color.fromARGB(255, 0, 0, 0), // Label text color
+        ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(8.0), // Rounded corners for the border
         ),
       ),
-      obscureText: obscureText, // Hide text if true.
-      keyboardType: keyboardType, // Set keyboard type.
-      style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
-      validator: validator, // Attach validation function.
+      obscureText: obscureText, // Whether to obscure text
+      keyboardType: keyboardType, // Set keyboard type
+      style: const TextStyle(
+        color: Color.fromARGB(255, 0, 0, 0), // Text color in the TextField
+      ),
+      validator: validator, // Assign the validator function
     );
   }
 }
