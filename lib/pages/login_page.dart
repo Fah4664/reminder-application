@@ -5,12 +5,13 @@ import 'register_page.dart'; // Importing RegisterPage widget
 
 // The main LoginPage widget, which is a StatefulWidget
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+  
   @override
-  _LoginPageState createState() =>
-      _LoginPageState(); // Creating the state for LoginPage
+  LoginPageState createState() => LoginPageState(); // Creating the state for LoginPage
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPageState extends State<LoginPage> {
   // Controllers for email and password input fields
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
