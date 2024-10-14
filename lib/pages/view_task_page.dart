@@ -1,16 +1,16 @@
-import 'package:flutter/material.dart'; // Import Flutter material design library
-import 'package:provider/provider.dart'; // Import provider package for state management
-import 'package:reminder_application/utils/date_utils.dart'; // Import date utility functions
-import 'add_task_page.dart'; // Import the page to add new tasks
-import '../providers/task_provider.dart'; // Import task provider for state management
-import 'home_page.dart'; // Import home page
-import 'search_page.dart'; // Import search page
-import '../utils/color_utils.dart'; // Import color utility functions
-import 'package:reminder_application/task_details_popup.dart'; // Import the file where showTaskDetailsPopup is defined
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart'; 
+import 'package:reminder_application/utils/date_utils.dart';
+import 'package:reminder_application/task_details_popup.dart';
+import '../providers/task_provider.dart';
+import '../utils/color_utils.dart';
+import 'home_page.dart';
+import 'add_task_page.dart';
+import 'search_page.dart';
 
-// Define the ViewTasksPage as a StatelessWidget
+// Define the ViewTasksPage as a StatelessWidget.
 class ViewTasksPage extends StatelessWidget {
-  const ViewTasksPage({super.key}); // Constructor
+  const ViewTasksPage({super.key});
 
   @override
   Widget build(BuildContext context) {
