@@ -29,7 +29,7 @@ class ReminderApp extends StatelessWidget {
         title: 'Reminder App', // Title of the app
         // Set the primary color of the app.
         theme: ThemeData(primarySwatch: Colors.blue),
-        home: AuthGate(), // Set AuthGate as the initial home screen
+        home: const AuthGate(), // Set AuthGate as the initial home screen
       ),
     );
   }
@@ -37,6 +37,7 @@ class ReminderApp extends StatelessWidget {
 
 // AuthGate widget to determine which screen to show based on authentication status
 class AuthGate extends StatelessWidget {
+  const AuthGate({super.key});
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
@@ -45,14 +46,14 @@ class AuthGate extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.active) {
           if (snapshot.hasData) {
             // If the user is logged in // ผู้ใช้ล็อกอินอยู่แล้ว
-            return HomePage(); // Navigate to the HomePage
+            return const HomePage(); // Navigate to the HomePage
           } else {
             // If the user is not logged in // ผู้ใช้ยังไม่ได้ล็อกอิน
-            return LoginPage(); // Navigate to the LoginPage
+            return const LoginPage(); // Navigate to the LoginPage
           }
         }
         // While waiting for Firebase to respond, show the SplashPage // ขณะรอข้อมูลจาก Firebase
-        return SplashPage(); // Display SplashPage while waiting for authentication data
+        return const SplashPage(); // Display SplashPage while waiting for authentication data
       },
     );
   }
