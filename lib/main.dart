@@ -48,11 +48,11 @@ class AuthGate extends StatelessWidget {
             // If the user is logged in // ผู้ใช้ล็อกอินอยู่แล้ว
             return const HomePage(); // Navigate to the HomePage
           } else {
-            // If the user is not logged in // ผู้ใช้ยังไม่ได้ล็อกอิน
+            // If the user is not logged in
             return const LoginPage(); // Navigate to the LoginPage
           }
         }
-        // While waiting for Firebase to respond, show the SplashPage // ขณะรอข้อมูลจาก Firebase
+        // While waiting for Firebase to respond, show the SplashPage
         return const SplashPage(); // Display SplashPage while waiting for authentication data
       },
     );
