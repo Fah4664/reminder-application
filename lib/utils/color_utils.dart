@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 
+// Function to convert a hex color string into a Color object.
 Color colorFromString(String colorString) {
-  // ตรวจสอบให้แน่ใจว่าสตริงสีอยู่ในรูปแบบที่ถูกต้อง
+  // Remove the '#' character from the start of the string, if present.
   if (colorString.startsWith('#')) {
-    colorString = colorString.substring(1); // ลบ # ออก
+    colorString = colorString.substring(1);
   }
+  // If the string is 6 characters long (e.g., 'FFFFFF').
+  //assume it's RGB and prepend 'FF' for full opacity.
   if (colorString.length == 6) {
-    colorString = 'FF' + colorString; // เพิ่มค่า alpha ถ้าขาด
+    colorString = 'FF' + colorString;
+    // If the string is not 8 characters (ARGB format), throw an error.
   } else if (colorString.length != 8) {
-    throw FormatException('Invalid color format');
+    throw const FormatException('Invalid color format');
   }
-  // แปลงสตริงสีเป็นตัวเลขฐาน 16
+  // Try to parse the string as a hexadecimal integer and convert it to a Color object.
   try {
     return Color(int.parse(colorString, radix: 16));
+    // If parsing fails, throw an error indicating an invalid color value.
   } catch (e) {
-    throw FormatException('Invalid color value');
+    throw const FormatException('Invalid color value');
   }
 }
