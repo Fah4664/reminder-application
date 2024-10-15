@@ -1,32 +1,30 @@
-import 'package:flutter/material.dart'; // Importing Flutter material design package
-import 'package:firebase_auth/firebase_auth.dart'; // Importing Firebase Authentication package
-import 'home_page.dart'; // Importing HomePage widget
-import 'register_page.dart'; // Importing RegisterPage widget
+import 'package:flutter/material.dart'; 
+import 'package:firebase_auth/firebase_auth.dart'; 
+import 'home_page.dart'; 
+import 'register_page.dart';
 
-// The main LoginPage widget, which is a StatefulWidget
+// The main LoginPage widget, which is a StatefulWidget.
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
   
   @override
-  LoginPageState createState() => LoginPageState(); // Creating the state for LoginPage
+  LoginPageState createState() => LoginPageState(); // Creating the state for LoginPage.
 }
 
 class LoginPageState extends State<LoginPage> {
-  // Controllers for email and password input fields
+  // Controllers for email and password input fields.
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
-  // GlobalKey to manage the form state
+  // GlobalKey to manage the form state.
   final _formKey = GlobalKey<FormState>();
-
-  // A boolean to manage loading state during login
+  // A boolean to manage loading state during login.
   bool _isLoading = false;
 
-  // Function to handle login
+  // Function to handle login.
   void _login() async {
-    // Validate the form
+    // Validate the form.
     if (_formKey.currentState!.validate()) {
-      // Show loading indicator
+      // Show loading indicator.
       setState(() {
         _isLoading = true;
       });
@@ -37,25 +35,25 @@ class LoginPageState extends State<LoginPage> {
           password: _passwordController.text,
         );
 
-        // Show success message
+        // Show success message.
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login successful!')),
         );
 
-        // Navigate to HomePage after successful login
+        // Navigate to HomePage after successful login.
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),
         );
       } catch (e) {
-        // Show error message if login fails
+        // Show error message if login fails.
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Login failed: ${e.toString()}')),
           );
         }
       } finally {
-        // Hide loading indicator
+        // Hide loading indicator.
         setState(() {
           _isLoading = false;
         });
@@ -64,118 +62,116 @@ class LoginPageState extends State<LoginPage> {
     }
   }
 
-  // Function to handle password reset
+  // Function to handle password reset.
   void _forgotPassword() async {
-    // Check if email field is empty
+    // Check if email field is empty.
     if (_emailController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter your email')),
       );
-      return; // Exit the function if email is empty
+      return; // Exit the function if email is empty.
     }
 
     try {
-      // Send password reset email
+      // Send password reset email.
       await FirebaseAuth.instance.sendPasswordResetEmail(
         email: _emailController.text,
       );
 
-      // Show success message
+      // Show success message.
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Password reset email sent!')),
       );
     } catch (e) {
-      // Show error message if sending reset email fails
+      // Show error message if sending reset email fails.
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to send reset email: $e')),
       );
     }
   }
 
-  // Building the UI for the LoginPage
+  // Building the UI for the LoginPage.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          const Color.fromARGB(255, 246, 242, 242), // Set background color
+      backgroundColor: const Color.fromARGB(255, 246, 242, 242), 
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(16.0), // Padding around the form
+          padding: const EdgeInsets.all(16.0),
           child: Form(
-            key: _formKey, // Assign the form key for validation
+            key: _formKey, // Assign the form key for validation.
             child: Column(
-              mainAxisSize: MainAxisSize.min, // Minimize the size of the column
+              mainAxisSize: MainAxisSize.min, 
               children: [
-                // Logo image at the top
+                // Logo image at the top.
                 Image.asset(
                   'assets/images/reminder.png',
-                  height: 150.0, // Set image height
+                  height: 150.0, 
                 ),
-                const SizedBox(height: 32.0), // Space between widgets
-                // Email text field
+                const SizedBox(height: 32.0),
+                // Email text field.
                 _buildTextField(
                   controller: _emailController,
                   label: 'Email',
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return 'Please enter your email'; // Error message if email is empty
+                      // Error message if email is empty.
+                      return 'Please enter your email';
                     }
                     return null; // No error
                   },
                 ),
-                const SizedBox(height: 16.0), // Space between widgets
-                // Password text field
+                const SizedBox(height: 16.0), 
+                // Password text field.
                 _buildTextField(
                   controller: _passwordController,
                   label: 'Password',
                   obscureText: true, // Hide password input
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return 'Please enter your password'; // Error message if password is empty
+                      // Error message if password is empty.
+                      return 'Please enter your password';
                     }
-                    return null; // No error
+                    return null; // No error.
                   },
                 ),
-                const SizedBox(height: 8.0), // Space between widgets
-                // "Forgot Password?" button
+                const SizedBox(height: 8.0), 
+                // "Forgot Password?" button.
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed:
-                        _forgotPassword, // Call the forgot password function
+                        _forgotPassword, // Call the forgot password function.
                     child: const Text(
                       'Forgot Password?',
                       style: TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), // Text color
+                        color: Color.fromARGB(255, 0, 0, 0),
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 16.0), // Space between widgets
-                // Show loading indicator or login button
+                const SizedBox(height: 16.0),
+                // Show loading indicator or login button.
                 _isLoading
-                    ? const CircularProgressIndicator() // Show loading indicator if logging in
-                    : ElevatedButton(
-                        onPressed: _login, // Call the login function
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 32.0, vertical: 12.0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                        ),
-                        child: const Text(
-                          'Log in',
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            color: Color.fromARGB(
-                                255, 0, 0, 0), // Button text color
-                          ),
+                  // Show loading indicator if logging in.
+                  ? const CircularProgressIndicator() 
+                  : ElevatedButton(
+                    onPressed: _login, // Call the login function.
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0),),
+                      ),
+                      child: const Text(
+                        'Log in',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          color: Color.fromARGB(255, 0, 0, 0),
                         ),
                       ),
-                const SizedBox(height: 20.0), // Space between widgets
-                // "Register" button to navigate to the registration page
+                    ),
+                const SizedBox(height: 20.0), 
+                // "Register" button to navigate to the registration page.
                 TextButton(
                   onPressed: () {
                     Navigator.push(
@@ -186,7 +182,7 @@ class LoginPageState extends State<LoginPage> {
                   child: const Text(
                     'Don\'t have an account? Register',
                     style: TextStyle(
-                      color: Color.fromARGB(255, 0, 0, 0), // Text color
+                      color: Color.fromARGB(255, 0, 0, 0),
                     ),
                   ),
                 ),
@@ -198,33 +194,28 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 
-  // Function to build a text field
+  // Function to build a text field.
   Widget _buildTextField({
-    required TextEditingController controller, // Controller for text input
-    required String label, // Label for the text field
-    bool obscureText = false, // Whether to obscure text (for passwords)
-    TextInputType keyboardType = TextInputType.text, // Type of keyboard to use
-    required String? Function(String?)
-        validator, // Validator function for input
+    required TextEditingController controller, // Controller for text input.
+    required String label, // Label for the text field.
+    bool obscureText = false, // Whether to obscure text (for passwords).
+    TextInputType keyboardType = TextInputType.text, // Type of keyboard to use.
+    required String? Function(String?)validator, // Validator function for input.
   }) {
     return TextFormField(
-      controller: controller, // Assign the controller
+      controller: controller, // Assign the controller.
       decoration: InputDecoration(
-        labelText: label, // Set the label
+        labelText: label, // Set the label.
         labelStyle: const TextStyle(
-            color: Color.fromARGB(
-                255, 0, 0, 0)), // Label text color / สีตัวอักษร Label
-        border: OutlineInputBorder(
-          borderRadius:
-              BorderRadius.circular(8.0), // Rounded corners for the border
+          color: Color.fromARGB(255, 0, 0, 0)), 
+        border: OutlineInputBorder(borderRadius:BorderRadius.circular(8.0), 
         ),
       ),
-      obscureText: obscureText, // Whether to obscure text
-      keyboardType: keyboardType, // Set keyboard type
+      obscureText: obscureText, // Whether to obscure text.
+      keyboardType: keyboardType, // Set keyboard type.
       style: const TextStyle(
-          color: Color.fromARGB(255, 0, 0,
-              0)), // Text color in the TextField // สีตัวอักษรใน TextField
-      validator: validator, // Assign the validator function
+          color: Color.fromARGB(255, 0, 0,0)), 
+      validator: validator, // Assign the validator function.
     );
   }
 }
