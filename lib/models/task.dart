@@ -49,14 +49,13 @@ class Task {
       description: map['description'] as String,
       isAllDay: map['isAllDay'] as bool? ?? false, // Default to false if not present.
       startDateTime: map['startDateTime'] != null
-          ? DateTime.parse(map['startDateTime'] as String) // Parse DateTime from string.
-          : null,
+        ? DateTime.parse(map['startDateTime'] as String) // Parse DateTime from string.
+        : null,
       endDateTime: map['endDateTime'] != null
-          ? DateTime.parse(map['endDateTime'] as String)
-          : null,
+        ? DateTime.parse(map['endDateTime'] as String)
+        : null,
       notificationOption: map['notificationOption'] as String? ?? 'None',
-      color: map['color']
-          as String?,
+      color: map['color'] as String?,
       sliderValue: map['sliderValue'] as double,
       isCompleted: map['isCompleted'] ?? false, // Default to false if not present.
     );
