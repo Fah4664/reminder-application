@@ -1,0 +1,51 @@
+import 'package:flutter/material.dart';
+
+  // Opens a date picker to select a date.
+  Future<void> selectDate(BuildContext context, bool isStartDate) async {
+    DateTime? selectedDate = await showDatePicker(
+      context: context,
+      initialDate: isStartDate ? (startDate ?? DateTime.now()) : (endDate ?? DateTime.now()),
+      // Earliest selectable date.
+      firstDate: DateTime.now(),
+      // Latest selectable date.
+      lastDate: DateTime(2100),
+    );
+
+    // Update the state with the selected date if not null.
+    if (selectedDate != null) {
+      setState(() {
+        if (isStartDate) {
+          // Update start date
+          startDate = selectedDate;
+          widget.onStartDateChanged(selectedDate);
+        } else {
+          // Update end date
+          endDate = selectedDate;
+          widget.onEndDateChanged(selectedDate);
+        }
+      });
+    }
+  }
+
+  // Opens a time picker to select a time.
+  Future<void> selectTime(BuildContext context, bool isStartTime) async {
+    TimeOfDay? selectedTime = await showTimePicker(
+      context: context,
+      initialTime: isStartTime ? (startTime ?? TimeOfDay.now()) : (endTime ?? TimeOfDay.now()),
+    );
+
+    // Update the state with the selected time if not null.
+    if (selectedTime != null) {
+      setState(() {
+        if (isStartTime) {
+          // Update start time.
+          startTime = selectedTime;
+          widget.onStartTimeChanged(selectedTime);
+        } else {
+          endTime = selectedTime;
+          // Update end time.
+          widget.onEndTimeChanged(selectedTime);
+        }
+      });
+    }
+  }
