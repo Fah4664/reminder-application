@@ -163,7 +163,7 @@ class RegisterPageState extends State<RegisterPage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
+                      MaterialPageRoute(builder: (context) => const LoginPage()),
                     );
                   },
                   child: const Text(
@@ -181,31 +181,31 @@ class RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  // Function to build a text field for name, email, and password
+  // Function to build a text field for name, email, and password.
   Widget _buildTextField({
-    required TextEditingController controller, // Controller for text input
-    required String label, // Label for the text field
-    bool obscureText = false, // Whether to obscure text (for passwords)
-    TextInputType keyboardType = TextInputType.text, // Type of keyboard to use
-    required String? Function(String?) validator, // Validator function for input
+    required TextEditingController controller, // Controller for text input.
+    required String label, // Label for the text field.
+    bool obscureText = false, // Whether to obscure text (for passwords).
+    TextInputType keyboardType = TextInputType.text, // Type of keyboard to use.
+    required String? Function(String?) validator, // Validator function for input.
   }) {
     return TextFormField(
-      controller: controller, // Assign the controller
+      controller: controller,
       decoration: InputDecoration(
-        labelText: label, // Set the label
+        labelText: label, 
         labelStyle: const TextStyle(
-          color: Color.fromARGB(255, 0, 0, 0), // Label text color
+          color: Color.fromARGB(255, 0, 0, 0),
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0), // Rounded corners for the border
+          borderRadius: BorderRadius.circular(8.0), // Rounded corners for the border.
         ),
       ),
-      obscureText: obscureText, // Whether to obscure text
-      keyboardType: keyboardType, // Set keyboard type
+      obscureText: obscureText, // Whether to obscure text.
+      keyboardType: keyboardType, // Set keyboard type.
       style: const TextStyle(
-        color: Color.fromARGB(255, 0, 0, 0), // Text color in the TextField
+        color: Color.fromARGB(255, 0, 0, 0),
       ),
-      validator: validator, // Assign the validator function
+      validator: validator, // Assign the validator function.
     );
   }
 }
