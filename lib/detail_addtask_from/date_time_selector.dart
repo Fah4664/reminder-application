@@ -15,7 +15,6 @@ class DateTimeSelector extends StatefulWidget {
   final ValueChanged<TimeOfDay> onEndTimeChanged; // Callback when the end time changes
   final ValueChanged<bool> onAllDayToggle; // Callback when the all-day toggle changes
 
-
   const DateTimeSelector({
     Key? key,
     required this.startDate,
