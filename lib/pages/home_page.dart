@@ -76,29 +76,28 @@ class HomePageState extends State<HomePage> {
               return Card(
                 elevation: 4,
                 color: task.color != null
-                    ? colorFromString(
-                      task.color!) // Set card color based on task
+                    ? colorFromString(task.color!) // Set card color based on task.
                     : const Color(0xFFede3e3),
                 margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                 child: ListTile(
                   title: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Display task title
+                      // Display task title.
                       Text(
                         task.title,
                         style: const TextStyle(
                           fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 5),
-                      // Display task date range
+                      // Display task date range.
                       Text(
                         formatDateRange(task.startDateTime, task.endDateTime),
                         style: const TextStyle(
                           fontSize: 16, color: Color(0xFF000000)),
                       ),
                       const SizedBox(height: 5),
-                      // Task progress bar
+                      // Task progress bar.
                       Container(
                         width: 200,
                         height: 15,
@@ -109,7 +108,7 @@ class HomePageState extends State<HomePage> {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Container(
-                            // Progress bar width based on `sliderValue`
+                            // Progress bar width based on sliderValue.
                             width: (MediaQuery.of(context).size.width - 100) * (task.sliderValue * 100 / 150),
                             height: 15,
                             decoration: BoxDecoration(
@@ -122,7 +121,7 @@ class HomePageState extends State<HomePage> {
                     ],
                   ),
                   onTap: () {
-                    // Show task details popup when tapped
+                    // Show task details popup when tapped.
                     showTaskDetailsPopup(context, task, index);
                   },
                 ),
