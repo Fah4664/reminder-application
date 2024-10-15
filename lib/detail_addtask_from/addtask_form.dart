@@ -22,45 +22,45 @@ class TaskForm extends StatefulWidget {
 }
 
 class TaskFormState extends State<TaskForm> {
-  late TextEditingController titleController; // Controller for the task title input
-  late TextEditingController descriptionController; // Controller for the task description input
-  DateTime? startDate; // Variable to hold the start date of the task
-  TimeOfDay? startTime; // Variable to hold the start time of the task
-  DateTime? endDate; // Variable to hold the end date of the task
-  TimeOfDay? endTime; // Variable to hold the end time of the task
-  late bool isAllDay; // Flag to determine if the task is an all-day event
-  late Color selectedColor; // Variable to store the selected color for the task
-  String? notificationOption; // Variable to store the selected notification option
-  double sliderValue = 0.0; // Variable to hold the value of a slider (e.g., progress)
+  late TextEditingController titleController; // Controller for the task title input.
+  late TextEditingController descriptionController; // Controller for the task description input.
+  DateTime? startDate; // Variable to hold the start date of the task.
+  TimeOfDay? startTime; // Variable to hold the start time of the task.
+  DateTime? endDate; // Variable to hold the end date of the task.
+  TimeOfDay? endTime; // Variable to hold the end time of the task.
+  late bool isAllDay; // Flag to determine if the task is an all-day event.
+  late Color selectedColor; // Variable to store the selected color for the task.
+  String? notificationOption; // Variable to store the selected notification option.
+  double sliderValue = 0.0; // Variable to hold the value of a slider (e.g., progress).
 
   @override
   void initState() {
     super.initState();
-    // Initialize the title controller with the existing task title or an empty string
+    // Initialize the title controller with the existing task title or an empty string.
     titleController = TextEditingController(text: widget.initialTask?.title ?? '');
-    // Initialize the description controller with the existing task description or an empty string
+    // Initialize the description controller with the existing task description or an empty string.
     descriptionController = TextEditingController(text: widget.initialTask?.description ?? '');
-    // Set whether the task is an all-day event, defaulting to false if no existing task
+    // Set whether the task is an all-day event, defaulting to false if no existing task.
     isAllDay = widget.initialTask?.isAllDay ?? false;
-    // Set the start date, defaulting to the current date if no existing task
+    // Set the start date, defaulting to the current date if no existing task.
     startDate = widget.initialTask?.startDateTime ?? DateTime.now();
-    // Set the start time, converting the existing DateTime to TimeOfDay if available
+    // Set the start time, converting the existing DateTime to TimeOfDay if available.
     startTime = widget.initialTask?.startDateTime != null
       ? TimeOfDay.fromDateTime(widget.initialTask!.startDateTime!)
       : TimeOfDay.now();
-    // Set the end date, defaulting to the current date if no existing task
+    // Set the end date, defaulting to the current date if no existing task.
     endDate = widget.initialTask?.endDateTime ?? DateTime.now();
-    // Set the end time, converting the existing DateTime to TimeOfDay if available
+    // Set the end time, converting the existing DateTime to TimeOfDay if available.
     endTime = widget.initialTask?.endDateTime != null
       ? TimeOfDay.fromDateTime(widget.initialTask!.endDateTime!)
       : TimeOfDay.now();
-    // Set the selected color, converting the existing color string to Color if available
+    // Set the selected color, converting the existing color string to Color if available.
     selectedColor = widget.initialTask?.color != null
-      ? colorFromString(widget.initialTask!.color!) // Convert String to Color
+      ? colorFromString(widget.initialTask!.color!) // Convert String to Color.
       : Colors.grey;
-    // Set the notification option, defaulting to 'None' if not specified
+    // Set the notification option, defaulting to 'None' if not specified.
     notificationOption = widget.initialTask?.notificationOption ?? 'None';
-    // Set the slider value, defaulting to 0.0 if not specified
+    // Set the slider value, defaulting to 0.0 if not specified.
     sliderValue = widget.initialTask?.sliderValue ?? 0.0;
   }
 
@@ -133,7 +133,7 @@ class TaskFormState extends State<TaskForm> {
           sliderValue: sliderValue,
         );
         // Save the new task data to Firestore.
-        await taskRef.set(newTask.toMap()); // บันทึกข้อมูลลงใน Firestore
+        await taskRef.set(newTask.toMap());
         // Navigate back to the previous screen.
         Navigator.pop(context);
       }
@@ -142,9 +142,9 @@ class TaskFormState extends State<TaskForm> {
 
   @override
   Widget build(BuildContext context) {
-    // Check if we are editing an existing task
+    // Check if we are editing an existing task.
     final isEditing = widget.initialTask != null;
-    // Determine the button text based on whether we are editing or saving a new task
+    // Determine the button text based on whether we are editing or saving a new task.
     final buttonText = isEditing ? 'Update' : 'Save';
 
     return Scaffold(
@@ -172,11 +172,11 @@ class TaskFormState extends State<TaskForm> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  // Row containing buttons for Cancel, title, and Save/Update
+                  // Row containing buttons for Cancel, title, and Save/Update.
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      // Cancel button to pop the current page
+                      // Cancel button to pop the current page.
                       TextButton(
                         onPressed: () {
                           Navigator.pop(context);
@@ -199,7 +199,7 @@ class TaskFormState extends State<TaskForm> {
                           color: Color(0xFF000000),
                         ),
                       ),
-                      // Save/Update button to save the task
+                      // Save/Update button to save the task.
                       TextButton(
                         onPressed: saveForm,
                         style: TextButton.styleFrom(
@@ -215,7 +215,7 @@ class TaskFormState extends State<TaskForm> {
                     ],
                   ),
                   const SizedBox(height: 5),
-                  // Container for task title and description input fields
+                  // Container for task title and description input fields.
                   Container(
                     padding: const EdgeInsets.only(
                       top: 1.0, bottom: 1.0, left: 15.0, right: 15.0),
@@ -233,7 +233,7 @@ class TaskFormState extends State<TaskForm> {
                     ),
                   ),
                   const SizedBox(height: 5),
-                  // Container for date and time selection
+                  // Container for date and time selection.
                   DateTimeSelector(
                     startDate: startDate,
                     startTime: startTime,
@@ -267,7 +267,7 @@ class TaskFormState extends State<TaskForm> {
                     },
                   ),
                   const SizedBox(height: 5),
-                  // Notification and Track Goals section
+                  // Notification and Track Goals section.
                   NotificationPicker(
                     notificationOption: notificationOption,
                     onOptionSelected: (newOption) {
@@ -286,7 +286,7 @@ class TaskFormState extends State<TaskForm> {
                     },
                   ),
                   const SizedBox(height: 5),
-                  // Color Picker section
+                  // Color Picker section.
                   ColorPicker(
                     selectedColor: selectedColor,
                     onColorSelected: (color) {
